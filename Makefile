@@ -1,6 +1,7 @@
 # based on a Makefile from CS225
 EXENAME = game
-OBJS = GameMap.o Unit.o main.o
+
+OBJS = Unit.o Node.o Player.o Monster.o Game.o main.o
 
 CXX = clang++
 LD = clang++
@@ -15,11 +16,20 @@ $(EXENAME) : $(OBJS)
 main.o : main.cpp
 	$(CXX) $(CXXFLAGS) main.cpp
 
-GameMap.o :	GameMap.h GameMap.cpp
-	$(CXX) $(CXXFLAGS) GameMap.cpp
+Game.o :	Game.h Game.cpp
+	$(CXX) $(CXXFLAGS) Game.cpp
 
 Unit.o : Unit.cpp Unit.h
 	$(CXX) $(CXXFLAGS) Unit.cpp
 
+Player.o : Player.cpp Player.h
+	$(CXX) $(CXXFLAGS) Player.cpp
+
+Monster.o : Monster.cpp Monster.h
+	$(CXX) $(CXXFLAGS) Monster.cpp
+
+Node.o : Node.cpp Node.h
+	$(CXX) $(CXXFLAGS) Node.cpp
+
 clean :
-	rm *.o $(EXENAME)
+	rm -f *.o $(EXENAME)
