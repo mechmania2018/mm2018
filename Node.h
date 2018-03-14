@@ -18,6 +18,10 @@ public:
   void remove_unit(Unit* unit);
 
   void do_movement_tick();
+
+  /*
+   * assumes that there is a player at this node
+   */
   void do_damage_tick();
 
 private:

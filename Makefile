@@ -1,5 +1,5 @@
 # based on a Makefile from CS225
-EXENAME = game
+EXENAME = game.exe
 
 OBJS = Unit.o Node.o Player.o Monster.o Game.o main.o
 

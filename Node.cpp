@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "Node.h"
 
 Node::Node(node_id_t id, std::map<node_id_t, Node*>* map) {
@@ -36,7 +38,7 @@ void Node::do_movement_tick() {
 
     if (u->do_movement_tick()) {
       units.erase(units.begin() + i);
-      (*id_map)[u->get_destination()]->add_unit(u);
+      (*id_map)[u->get_location()]->add_unit(u);
     }
   }
 }
