@@ -38,9 +38,11 @@ void Game::do_movement_tick(){
 }
 
 void Game::do_damage_tick(){
-  nodes[player1.get_location()].do_damage_tick();
+  if (player1.get_location() != HELL_NODE_ID) {
+    nodes[player1.get_location()].do_damage_tick();
+  }
 
-  if (player1.get_location() != player2.get_location()) {
+  if (player1.get_location() != player2.get_location() && player2.get_location() != HELL_NODE_ID) {
     nodes[player2.get_location()].do_damage_tick();
   }
 }
@@ -51,6 +53,8 @@ void Game::do_monster_deaths(){
 }
 
 void Game::do_monster_deaths(Player& p) {
+  if (p.get_location() == HELL_NODE_ID) return;
+
   for (Unit* u : nodes[p.get_location()].get_units()) {
     if (u->is_monster() && u->get_health() <= p.get_kung_fu()) {
       u->die();
@@ -63,7 +67,8 @@ int Game::get_winner() {
     return 1;
   } else if (player2.get_num_victory_points() > player1.get_num_victory_points()) {
     return 2;
+  } else if (player1.get_location() == HELL_NODE_ID && player2.get_location() == HELL_NODE_ID) {
+    return 3;
   }
-
   return 0;
 }

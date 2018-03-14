@@ -35,7 +35,7 @@ public:
   void do_monster_deaths();
 
   /*
-   * returns 0 if no winner yet, 1 if player 1 wins, or 2 if player 2 wins
+   * returns 0 if no winner yet, 1 if player 1 wins, 2 if player 2 wins, or 3 if it's a tie (both players are dead)
    */
   int get_winner();
 
