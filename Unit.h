@@ -33,13 +33,7 @@ public:
    */
   void take_damage();
 
-  void die();
-
-  struct Death_Effects {
-    int exp_to_players;
-    int health_to_players;
-    int victory_pts_to_players;
-  };
+  void die(node_id_t hell_node_id);
 
 private:
   int health;
@@ -48,7 +42,6 @@ private:
   int movement_counter;
   node_id_t location;
   node_id_t destination;
-  //Death_Effects effects;
 };
 
 #endif

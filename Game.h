@@ -4,7 +4,6 @@
 #include <map>
 #include <vector>
 
-#include "Node.h"
 #include "Unit.h"
 #include "Player.h"
 #include "types.h"
@@ -34,19 +33,29 @@ public:
 
   void do_monster_deaths();
 
+  void do_player_deaths();
+
   /*
    * returns 0 if no winner yet, 1 if player 1 wins, 2 if player 2 wins, or 3 if it's a tie (both players are dead)
    */
   int get_winner();
 
+  void print_player_healths();
+
 private:
+  struct Node {
+    std::vector<node_id_t> adjacent;
+    std::vector<Unit*> units;
+  };
+
   std::vector<Node> nodes;
-  Node hell;
-  std::map<node_id_t, Node*> node_id_map;
   Player player1;
   Player player2;
 
   void do_monster_deaths(Player& p);
+  void do_player_death(Player& p);
+  node_id_t get_hell_node_id();
+  void do_damage_tick(Node& n);
 };
 
 # endif

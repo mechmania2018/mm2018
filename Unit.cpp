@@ -51,8 +51,8 @@ void Unit::take_damage() {
   health -= ATTACK_DAMAGE;
 }
 
-void Unit::die() {
+void Unit::die(node_id_t hell_node_id) {
   destination = location;
-  location = HELL_NODE_ID;
+  location = hell_node_id;
   movement_counter = BASE_MOVEMENT_COUNTER;
 }
