@@ -3,6 +3,7 @@
 
 #include "types.h"
 
+#define NO_MOVEMENT_DEST -1
 #define BASE_MOVEMENT_COUNTER 7
 #define ATTACK_DAMAGE 1
 

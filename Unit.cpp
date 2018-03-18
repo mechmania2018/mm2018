@@ -8,7 +8,7 @@ Unit::Unit(int init_health, int kung_fu, int speed, node_id_t location) {
   this->speed = speed;
   this->location = location;
   this->movement_counter = BASE_MOVEMENT_COUNTER;
-  this->destination = -1;
+  this->destination = NO_MOVEMENT_DEST;
 }
 
 node_id_t Unit::get_destination(){
@@ -36,6 +36,11 @@ int Unit::get_kung_fu(){
 }
 
 bool Unit::do_movement_tick(){
+  if (destination == NO_MOVEMENT_DEST) {
+    movement_counter = BASE_MOVEMENT_COUNTER;
+    return false;
+  }
+
   movement_counter --;
 
   if (movement_counter <= speed) {

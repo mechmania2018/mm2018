@@ -56,6 +56,8 @@ private:
   void do_player_death(Player& p);
   node_id_t get_hell_node_id();
   void do_damage_tick(Node& n);
+  void remove_unit(Node& n, Unit* unit);
+  void add_unit(Node& n, Unit* unit);
 };
 
 # endif

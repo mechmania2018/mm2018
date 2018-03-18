@@ -17,7 +17,7 @@ void Game::add_connection(node_id_t node1, node_id_t node2){
 }
 
 void Game::add_unit(Unit* u){
-  nodes[u->get_location()].units.push_back(u);
+  add_unit(nodes[u->get_location()], u);
 }
 
 std::vector<node_id_t> Game::get_adjacent_nodes(node_id_t node){
@@ -29,13 +29,13 @@ std::vector<Unit*> Game::get_units_at(node_id_t node){
 }
 
 void Game::do_movement_tick(){
-  for (Node n : nodes) {
+  for (Node &n : nodes) {
     for (unsigned i = 0; i < n.units.size(); i ++){
       Unit* u = n.units[i];
 
       if (u->do_movement_tick()) {
-        n.units.erase(n.units.begin() + i);
-        nodes[u->get_location()].units.push_back(u);
+        remove_unit(n, u);
+        add_unit(nodes[u->get_location()], u);
       }
     }
   }
@@ -62,6 +62,8 @@ void Game::do_monster_deaths(Player& p) {
   for (Unit* u : nodes[p.get_location()].units) {
     if (u->is_monster() && u->get_health() <= p.get_kung_fu()) {
       u->die(get_hell_node_id());
+      remove_unit(nodes[p.get_location()], u);
+      add_unit(nodes[get_hell_node_id()], u);
     }
   }
 }
@@ -77,6 +79,8 @@ void Game::do_player_death(Player& p){
   for (Unit* u : nodes[p.get_location()].units) {
     if (u->get_kung_fu() > p.get_health()) {
       p.die(get_hell_node_id());
+      remove_unit(nodes[p.get_location()], &p);
+      add_unit(nodes[get_hell_node_id()], &p);
       break;
     }
   }
@@ -98,6 +102,10 @@ void Game::print_player_healths() {
   std::cout << "Player 1 location: " << player1.get_location() << std::endl;
   std::cout << "Player 2 health: " << player2.get_health() << std::endl;
   std::cout << "Player 2 location: " << player2.get_location() << std::endl;
+  for (Unit* u : nodes[player1.get_location()].units){
+    std::cout << u->is_monster();
+  }
+  std::cout << std::endl;
 }
 
 int Game::get_hell_node_id() {
@@ -110,4 +118,17 @@ void Game::do_damage_tick(Node& n) {
       u->take_damage();
     }
   }
+}
+
+void Game::remove_unit(Node& n, Unit* unit) {
+  for (unsigned i = 0; i < n.units.size(); i ++) {
+    if (n.units[i] == unit) {
+      n.units.erase(n.units.begin() + i);
+      return;
+    }
+  }
+}
+
+void Game::add_unit(Node& n, Unit* unit) {
+  n.units.push_back(unit);
 }
