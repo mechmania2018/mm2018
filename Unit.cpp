@@ -46,6 +46,7 @@ bool Unit::do_movement_tick(){
   if (movement_counter <= speed) {
     movement_counter = BASE_MOVEMENT_COUNTER;
     location = destination;
+    destination = NO_MOVEMENT_DEST;
     return true;
   }
 

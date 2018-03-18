@@ -7,8 +7,11 @@ Game::Game(int size) {
     nodes.push_back(Node());
   }
 
-  nodes[0].units.push_back(&player1);
-  nodes[0].units.push_back(&player2);
+  player1.set_destination(1);
+  player2.set_destination(1);
+
+  add_unit(nodes[0], &player1);
+  add_unit(nodes[0], &player2);
 }
 
 void Game::add_connection(node_id_t node1, node_id_t node2){
@@ -30,7 +33,7 @@ std::vector<Unit*> Game::get_units_at(node_id_t node){
 
 void Game::do_movement_tick(){
   for (Node &n : nodes) {
-    for (unsigned i = 0; i < n.units.size(); i ++){
+    for (int i = n.units.size() - 1; i >= 0; i --){
       Unit* u = n.units[i];
 
       if (u->do_movement_tick()) {
@@ -102,10 +105,6 @@ void Game::print_player_healths() {
   std::cout << "Player 1 location: " << player1.get_location() << std::endl;
   std::cout << "Player 2 health: " << player2.get_health() << std::endl;
   std::cout << "Player 2 location: " << player2.get_location() << std::endl;
-  for (Unit* u : nodes[player1.get_location()].units){
-    std::cout << u->is_monster();
-  }
-  std::cout << std::endl;
 }
 
 int Game::get_hell_node_id() {
