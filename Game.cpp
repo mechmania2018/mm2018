@@ -7,7 +7,7 @@ Game::Game(int size) {
     nodes.push_back(Node());
   }
 
-  player1.set_destination(1);
+  player1.set_destination(1); // just for debugging
   player2.set_destination(1);
 
   add_unit(nodes[0], &player1);
@@ -36,9 +36,12 @@ void Game::do_movement_tick(){
     for (int i = n.units.size() - 1; i >= 0; i --){
       Unit* u = n.units[i];
 
-      if (u->do_movement_tick()) {
+      u->decrement_movement_counter();
+      if (u->time_to_move()) {
+        u->reset_movement_counter();
         remove_unit(n, u);
-        add_unit(nodes[u->get_location()], u);
+        add_unit(nodes[u->get_destination()], u);
+        u->set_location(u->get_destination());
       }
     }
   }

@@ -22,19 +22,19 @@ public:
    virtual bool is_monster() = 0;
    virtual bool is_player() = 0;
 
-  /*
-   * decrements the movement_counter by 1
-   * if movement_counter <= speed, returns true, changes the monster's location, and resets the movement counter.
-   * otherwise, returns false
-   */
-  bool do_movement_tick();
+  void decrement_movement_counter();
+  bool time_to_move();
+  void reset_movement_counter();
 
   /*
    * subtracts ATTACK_DAMAGE from health
    */
   void take_damage();
 
-  void die(node_id_t hell_node_id);
+  virtual void die(node_id_t hell_node_id);
+
+protected:
+  void set_health(int new_health);
 
 private:
   int health;

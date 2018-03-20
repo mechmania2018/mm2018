@@ -4,7 +4,7 @@
 #include "Unit.h"
 #include "types.h"
 
-#define INIT_PLAYER_HEALTH 15
+#define INIT_PLAYER_HEALTH 7
 
 class Player : public Unit {
 public:

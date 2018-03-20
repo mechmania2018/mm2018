@@ -23,12 +23,12 @@ int main() {
   game.add_unit(&m);
 
   while (game.get_winner() == 0) {
-    // TODO: get and do player decisions
+    //TODO: get and do player decisions
     //std::cout << "Monster health: " << m.get_health() << std::endl;
-    // std::cout << "Monster location: " << m.get_location() << std::endl;
-    // std::cout << "Monster destination: " << m.get_destination() << std::endl;
-    // game.print_player_healths();
-    // std::cout << std::endl;
+    //std::cout << "Monster location: " << m.get_location() << std::endl;
+    //std::cout << "Monster destination: " << m.get_destination() << std::endl;
+    //game.print_player_healths();
+    //std::cout << std::endl;
 
     game.do_movement_tick();
     game.do_damage_tick();

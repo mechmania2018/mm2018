@@ -11,6 +11,8 @@ public:
   bool is_player();
   bool is_monster();
 
+  void die(node_id_t hell_node_id);
+
 private:
   int base_health;
 };

@@ -35,22 +35,18 @@ int Unit::get_kung_fu(){
   return kung_fu;
 }
 
-bool Unit::do_movement_tick(){
-  if (destination == NO_MOVEMENT_DEST) {
-    movement_counter = BASE_MOVEMENT_COUNTER;
-    return false;
+void Unit::decrement_movement_counter() {
+  if (destination != NO_MOVEMENT_DEST) {
+    movement_counter --;
   }
+}
 
-  movement_counter --;
+bool Unit::time_to_move() {
+  return (movement_counter <= speed);
+}
 
-  if (movement_counter <= speed) {
-    movement_counter = BASE_MOVEMENT_COUNTER;
-    location = destination;
-    destination = NO_MOVEMENT_DEST;
-    return true;
-  }
-
-  return false;
+void Unit::reset_movement_counter(){
+  movement_counter = BASE_MOVEMENT_COUNTER;
 }
 
 void Unit::take_damage() {
@@ -61,4 +57,8 @@ void Unit::die(node_id_t hell_node_id) {
   destination = location;
   location = hell_node_id;
   movement_counter = BASE_MOVEMENT_COUNTER;
+}
+
+void Unit::set_health(int new_health) {
+  health = new_health;
 }
