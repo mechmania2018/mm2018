@@ -8,19 +8,30 @@
 
 class Unit {
 public:
-  Unit(int init_health, int kung_fu, int speed, node_id_t location);
-
-  /*
-   * bonuses given to players on the same node when this unit dies
-   * TODO: use this
-   */
   struct DeathEffects {
+    DeathEffects(int e, int s, int k, int h, int v) {
+      exp = e;
+      speed = s;
+      kung_fu = k;
+      health = h;
+      victory_points = v;
+    }
+
     int exp;
     int speed;
     int kung_fu;
     int health;
     int victory_points;
   };
+
+  Unit(int init_health, int kung_fu, int speed, node_id_t location, DeathEffects effects);
+
+  /*
+   * bonuses given to players on the same node when this unit dies
+   * TODO: use this
+   */
+
+  DeathEffects get_death_effects();
 
   /*
    * getter and setter for unit's destination
@@ -82,6 +93,7 @@ private:
   int _movement_counter;
   node_id_t _location;
   node_id_t _destination;
+  DeathEffects _effects;
 };
 
 #endif

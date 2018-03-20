@@ -2,8 +2,8 @@
 
 #include "Monster.h"
 
-Monster::Monster(int health, int kung_fu, int speed, node_id_t location) :
-  Unit(health, kung_fu, speed, location){
+Monster::Monster(int health, int kung_fu, int speed, node_id_t location, DeathEffects effects) :
+  Unit(health, kung_fu, speed, location, effects){
     base_health = health;
 }
 

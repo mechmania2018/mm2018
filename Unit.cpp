@@ -2,13 +2,17 @@
 
 #include "Unit.h"
 
-Unit::Unit(int init_health, int kung_fu, int speed, node_id_t location) {
+Unit::Unit(int init_health, int kung_fu, int speed, node_id_t location, DeathEffects effects) : _effects(effects) {
   _health = init_health;
   _kung_fu = kung_fu;
   _speed = speed;
   _location = location;
   _movement_counter = BASE_MOVEMENT_COUNTER;
   _destination = location;
+}
+
+Unit::DeathEffects Unit::get_death_effects() {
+  return _effects;
 }
 
 node_id_t Unit::get_destination(){

@@ -58,6 +58,8 @@ public:
 
   void print_game();
 
+  node_id_t get_hell_node_id();
+
 private:
   struct Node {
     std::vector<node_id_t> adjacent;
@@ -70,7 +72,6 @@ private:
 
   void do_monster_deaths(Player& p);
   void do_player_death(Player& p);
-  node_id_t get_hell_node_id();
   void do_damage_tick(Node& n);
   void remove_unit(Node& n, Unit* unit);
   void add_unit(Node& n, Unit* unit);

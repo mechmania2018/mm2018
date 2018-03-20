@@ -15,6 +15,9 @@ public:
   bool is_player();
   bool is_monster();
 
+  /*
+   * makes the appropriate changes to the Player based on the death effects
+   */
   void activate_death_effects(DeathEffects effects);
 
 private:

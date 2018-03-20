@@ -1,6 +1,6 @@
 #include "Player.h"
 
-Player::Player() : Unit(INIT_PLAYER_HEALTH, 0, 0, 0){
+Player::Player() : Unit(INIT_PLAYER_HEALTH, 0, 0, 0, DeathEffects(0, 0, 0, 0, 0)){
   experience_points = 0;
   victory_points = 0;
 }
