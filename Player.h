@@ -15,6 +15,8 @@ public:
   bool is_player();
   bool is_monster();
 
+  void activate_death_effects(DeathEffects effects);
+
 private:
   int experience_points;
   int victory_points;

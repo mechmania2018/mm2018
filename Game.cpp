@@ -7,8 +7,8 @@ Game::Game(int size) {
     nodes.push_back(Node());
   }
 
-  player1.set_destination(1); // just for debugging
-  player2.set_destination(1);
+  player1.change_destination(1); // just for debugging
+  player2.change_destination(1); // just for debugging
 
   add_unit(nodes[0], &player1);
   add_unit(nodes[0], &player2);
@@ -108,6 +108,10 @@ void Game::print_player_healths() {
   std::cout << "Player 1 location: " << player1.get_location() << std::endl;
   std::cout << "Player 2 health: " << player2.get_health() << std::endl;
   std::cout << "Player 2 location: " << player2.get_location() << std::endl;
+}
+
+void print_game() {
+  //TODO
 }
 
 int Game::get_hell_node_id() {

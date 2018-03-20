@@ -16,3 +16,11 @@ bool Player::is_monster() {
 bool Player::is_player() {
   return true;
 }
+
+void Player::activate_death_effects(DeathEffects effects) {
+  experience_points += effects.exp;
+  add_speed(effects.speed);
+  add_kung_fu(effects.kung_fu);
+  set_health(get_health() + effects.health);
+  victory_points += effects.victory_points;
+}

@@ -12,7 +12,14 @@ class Game{
 public:
   Game(int num_nodes);
 
+  // TODO: use this
+  struct Decision {
+    node_id_t destination;
+    int level_up_choice;
+  };
+
   /*
+   * adds a connection between node1 and node2
    * assumes that node1 and node2 are not already connected
    */
   void add_connection(node_id_t node1, node_id_t node2);
@@ -31,8 +38,14 @@ public:
    */
   void do_damage_tick();
 
+  /*
+   * Checks if monster healths are lower than player's kung-fu, and kills them if so
+   */
   void do_monster_deaths();
 
+  /*
+   * Checks if player healths are lower than another unit's kung-fu, and kills them if so
+   */
   void do_player_deaths();
 
   /*
@@ -40,7 +53,10 @@ public:
    */
   int get_winner();
 
+  // just for debugging
   void print_player_healths();
+
+  void print_game();
 
 private:
   struct Node {

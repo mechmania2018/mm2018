@@ -3,62 +3,69 @@
 #include "Unit.h"
 
 Unit::Unit(int init_health, int kung_fu, int speed, node_id_t location) {
-  this->health = init_health;
-  this->kung_fu = kung_fu;
-  this->speed = speed;
-  this->location = location;
-  this->movement_counter = BASE_MOVEMENT_COUNTER;
-  this->destination = NO_MOVEMENT_DEST;
+  _health = init_health;
+  _kung_fu = kung_fu;
+  _speed = speed;
+  _location = location;
+  _movement_counter = BASE_MOVEMENT_COUNTER;
+  _destination = location;
 }
 
 node_id_t Unit::get_destination(){
-  return destination;
+  return _destination;
 }
 
-void Unit::set_destination(node_id_t node){
-  destination = node;
+void Unit::change_destination(node_id_t node){
+  _movement_counter = BASE_MOVEMENT_COUNTER;
+  _destination = node;
 }
 
 node_id_t Unit::get_location(){
-  return location;
+  return _location;
 }
 
 void Unit::set_location(node_id_t node){
-  location = node;
+  _location = node;
 }
 
 int Unit::get_health() {
-  return health;
+  return _health;
 }
 
 int Unit::get_kung_fu(){
-  return kung_fu;
+  return _kung_fu;
 }
 
 void Unit::decrement_movement_counter() {
-  if (destination != NO_MOVEMENT_DEST) {
-    movement_counter --;
-  }
+  _movement_counter --;
 }
 
 bool Unit::time_to_move() {
-  return (movement_counter <= speed);
+  return (_movement_counter <= _speed);
 }
 
 void Unit::reset_movement_counter(){
-  movement_counter = BASE_MOVEMENT_COUNTER;
+  _movement_counter = BASE_MOVEMENT_COUNTER;
 }
 
 void Unit::take_damage() {
-  health -= ATTACK_DAMAGE;
+  _health --;
 }
 
 void Unit::die(node_id_t hell_node_id) {
-  destination = location;
-  location = hell_node_id;
-  movement_counter = BASE_MOVEMENT_COUNTER;
+  _destination = _location;
+  _location = hell_node_id;
+  _movement_counter = BASE_MOVEMENT_COUNTER;
 }
 
 void Unit::set_health(int new_health) {
-  health = new_health;
+  _health = new_health;
+}
+
+void Unit::add_speed(int speed_added) {
+  _speed = std::min(_speed + speed_added, MAX_SPEED);
+}
+
+void Unit::add_kung_fu(int kung_fu_added) {
+  _kung_fu += kung_fu_added;
 }
