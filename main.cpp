@@ -4,8 +4,6 @@
 #include "Unit.h"
 #include "Monster.h"
 
-//TODO: add death effects
-
 int main() {
   Game game = Game(10);
 

@@ -62,6 +62,7 @@ void Game::do_monster_deaths(){
   do_monster_deaths(_player2);
 }
 
+//TODO: do the death effects stuff when monsters die
 void Game::do_monster_deaths(Player& p) {
   if (p.get_location() == get_hell_node_id()) return;
 
@@ -75,21 +76,32 @@ void Game::do_monster_deaths(Player& p) {
 }
 
 void Game::do_player_deaths(){
-  do_player_death(_player1);
-  do_player_death(_player2);
+  bool p1_dies = will_player_die(_player1);
+  bool p2_dies = will_player_die(_player2);
+
+  if (p1_dies) {
+    _player1.die(get_hell_node_id());
+    remove_unit(_nodes[_player1.get_location()], &_player1);
+    add_unit(_nodes[get_hell_node_id()], &_player1);
+  }
+
+  if (p2_dies) {
+    _player2.die(get_hell_node_id());
+    remove_unit(_nodes[_player2.get_location()], &_player2);
+    add_unit(_nodes[get_hell_node_id()], &_player2);
+  }
 }
 
-void Game::do_player_death(Player& p){
-  if (p.get_location() == get_hell_node_id()) return;
+bool Game::will_player_die(Player& p){
+  if (p.get_location() == get_hell_node_id()) return false;
 
   for (Unit* u : _nodes[p.get_location()].units) {
-    if (u->get_kung_fu() > p.get_health()) {
-      p.die(get_hell_node_id());
-      remove_unit(_nodes[p.get_location()], &p);
-      add_unit(_nodes[get_hell_node_id()], &p);
-      break;
+    if (u != &p && u->get_kung_fu() > p.get_health()) {
+      return true;
     }
   }
+
+  return false;
 }
 
 int Game::get_winner() {

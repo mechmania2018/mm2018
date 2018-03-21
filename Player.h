@@ -16,7 +16,7 @@ public:
   bool is_monster();
 
   /*
-   * makes the appropriate changes to the Player based on the death effects
+   * makes the appropriate changes to the Player based on the death effects from another Unit
    */
   void activate_death_effects(DeathEffects effects);
 

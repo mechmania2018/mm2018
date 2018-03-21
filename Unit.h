@@ -8,6 +8,9 @@
 
 class Unit {
 public:
+  /*
+   * struct that represents the effects of a Unit dying on the players in the same node as that unit
+   */
   struct DeathEffects {
     DeathEffects(int e, int s, int k, int h, int v) {
       exp = e;
@@ -27,14 +30,12 @@ public:
   Unit(int init_health, int kung_fu, int speed, node_id_t location, DeathEffects effects);
 
   /*
-   * bonuses given to players on the same node when this unit dies
-   * TODO: use this
+   * get the DeathEffects from killing this Unit
    */
-
   DeathEffects get_death_effects();
 
   /*
-   * getter and setter for unit's destination
+   * get the unit's destination
    */
   node_id_t get_destination();
 
@@ -62,8 +63,19 @@ public:
   virtual bool is_monster() = 0;
   virtual bool is_player() = 0;
 
+  /*
+   * decrements the Unit's movement counter
+   */
   void decrement_movement_counter();
+
+  /*
+   * returns true if it is time for the unit to move (when the movement counter is <= the unit's speed)
+   */
   bool time_to_move();
+
+  /*
+   * resets the Unit's movement counter to BASE_MOVEMENT_COUNTER
+   */
   void reset_movement_counter();
 
   /*
@@ -71,9 +83,15 @@ public:
    */
   void take_damage();
 
+  /*
+   * changes the unit's location to 'hell_node_id', changes its destination to its former location, and resets its movement counter
+   */
   virtual void die(node_id_t hell_node_id);
 
 protected:
+  /*
+   * set the unit's health to a specific value
+   */
   void set_health(int new_health);
 
   /*
