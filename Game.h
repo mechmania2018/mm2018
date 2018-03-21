@@ -66,9 +66,9 @@ private:
     std::vector<Unit*> units;
   };
 
-  std::vector<Node> nodes;
-  Player player1;
-  Player player2;
+  std::vector<Node> _nodes;
+  Player _player1;
+  Player _player2;
 
   void do_monster_deaths(Player& p);
   void do_player_death(Player& p);

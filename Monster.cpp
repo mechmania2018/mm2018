@@ -4,7 +4,7 @@
 
 Monster::Monster(int health, int kung_fu, int speed, node_id_t location, DeathEffects effects) :
   Unit(health, kung_fu, speed, location, effects){
-    base_health = health;
+    _base_health = health;
 }
 
 bool Monster::is_player(){
@@ -17,5 +17,5 @@ bool Monster::is_monster() {
 
 void Monster::die(node_id_t hell_node_id) {
   Unit::die(hell_node_id);
-  set_health(base_health);
+  set_health(_base_health);
 }

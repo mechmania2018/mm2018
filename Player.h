@@ -21,8 +21,8 @@ public:
   void activate_death_effects(DeathEffects effects);
 
 private:
-  int experience_points;
-  int victory_points;
+  int _exp_points;
+  int _victory_points;
 };
 
 #endif

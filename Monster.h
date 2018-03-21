@@ -14,7 +14,7 @@ public:
   void die(node_id_t hell_node_id);
 
 private:
-  int base_health;
+  int _base_health;
 };
 
 #endif
