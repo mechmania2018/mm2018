@@ -10,13 +10,7 @@
 
 class Game{
 public:
-  Game(int num_nodes);
-
-  // TODO: use this
-  struct Decision {
-    node_id_t destination;
-    int level_up_choice;
-  };
+  Game(int num_nodes, std::string p1_name, std::string p2_name);
 
   /*
    * adds a connection between node1 and node2
@@ -39,6 +33,8 @@ public:
    * gets the list of units present at 'node'
    */
   std::vector<Unit*> get_units_at(node_id_t node);
+
+  void do_player_decisions();
 
   /*
    * handles movement counters, then movement for all units
@@ -65,9 +61,6 @@ public:
    * returns 0 if no winner yet, 1 if player 1 wins, 2 if player 2 wins, or 3 if it's a tie (both players are dead and have the same number of victory points)
    */
   int get_winner();
-
-  // just for debugging
-  void print_player_healths();
 
   void print_game();
 

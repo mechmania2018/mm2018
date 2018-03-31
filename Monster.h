@@ -6,10 +6,12 @@
 
 class Monster : public Unit {
 public:
-  Monster(int health, int kung_fu, int speed, node_id_t location, DeathEffects effects);
+  Monster(std::string name, int health, int kung_fu, int speed, node_id_t location, DeathEffects effects);
 
   bool is_player();
   bool is_monster();
+
+  std::string to_string();
 
   void die(node_id_t hell_node_id);
 

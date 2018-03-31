@@ -1,14 +1,12 @@
 #include <iostream>
+#include <string>
 
 #include "Game.h"
 
-Game::Game(int size) {
+Game::Game(int size, std::string p1_name, std::string p2_name) : _player1(p1_name), _player2(p2_name){
   for (node_id_t i = 0; i < size + 1; i ++) {
     _nodes.push_back(Node());
   }
-
-  _player1.change_destination(1); // just for debugging
-  _player2.change_destination(1); // just for debugging
 
   add_unit(_nodes[0], &_player1);
   add_unit(_nodes[0], &_player2);
@@ -29,6 +27,11 @@ std::vector<node_id_t> Game::get_adjacent_nodes(node_id_t node){
 
 std::vector<Unit*> Game::get_units_at(node_id_t node){
   return _nodes[node].units;
+}
+
+void Game::do_player_decisions() {
+  _player1.do_decision(_nodes[_player1.get_location()].adjacent);
+  _player2.do_decision(_nodes[_player2.get_location()].adjacent);
 }
 
 void Game::do_movement_tick(){
@@ -67,11 +70,6 @@ void Game::do_monster_deaths(Player& p) {
 
   for (Unit* u : _nodes[p.get_location()].units) {
     if (u->is_monster() && u->get_health() <= p.get_kung_fu()) {
-      // Monster u is dead
-      u->die(get_hell_node_id());
-      remove_unit(_nodes[p.get_location()], u);
-      add_unit(_nodes[get_hell_node_id()], u);
-
       if (_player1.get_location() == u->get_location())
       {
         _player1.activate_death_effects(u->get_death_effects());
@@ -81,6 +79,11 @@ void Game::do_monster_deaths(Player& p) {
       {
         _player2.activate_death_effects(u->get_death_effects());
       }
+
+      // Monster u is dead
+      u->die(get_hell_node_id());
+      remove_unit(_nodes[p.get_location()], u);
+      add_unit(_nodes[get_hell_node_id()], u);
     }
   }
 }
@@ -125,15 +128,16 @@ int Game::get_winner() {
   return 0;
 }
 
-void Game::print_player_healths() {
-  std::cout << "Player 1 health: " << _player1.get_health() << std::endl;
-  std::cout << "Player 1 location: " << _player1.get_location() << std::endl;
-  std::cout << "Player 2 health: " << _player2.get_health() << std::endl;
-  std::cout << "Player 2 location: " << _player2.get_location() << std::endl;
-}
+void Game::print_game() {
+  for (unsigned i = 0; i < _nodes.size() - 1; i ++) {
+    std::cout << "Node " << i << std::endl;
 
-void print_game() {
-  //TODO
+    for (Unit* u : _nodes[i].units) {
+      std::cout << u->to_string() << std::endl;
+    }
+
+    std::cout << std::endl;
+  }
 }
 
 int Game::get_hell_node_id() {

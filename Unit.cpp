@@ -1,8 +1,10 @@
 #include <iostream>
+#include <string>
 
 #include "Unit.h"
 
-Unit::Unit(int init_health, int kung_fu, int speed, node_id_t location, DeathEffects effects) : _effects(effects) {
+Unit::Unit(std::string name, int init_health, int kung_fu, int speed, node_id_t location, DeathEffects effects) : _effects(effects) {
+  _name = name;
   _health = init_health;
   _kung_fu = kung_fu;
   _speed = speed;
@@ -20,8 +22,10 @@ node_id_t Unit::get_destination(){
 }
 
 void Unit::change_destination(node_id_t node){
-  _movement_counter = BASE_MOVEMENT_COUNTER;
-  _destination = node;
+  if (node != _destination) {
+    _movement_counter = BASE_MOVEMENT_COUNTER;
+    _destination = node;
+  }
 }
 
 node_id_t Unit::get_location(){
@@ -38,6 +42,10 @@ int Unit::get_health() {
 
 int Unit::get_kung_fu(){
   return _kung_fu;
+}
+
+std::string Unit::get_name() {
+  return _name;
 }
 
 void Unit::decrement_movement_counter() {
@@ -72,4 +80,8 @@ void Unit::add_speed(int speed_added) {
 
 void Unit::add_kung_fu(int kung_fu_added) {
   _kung_fu += kung_fu_added;
+}
+
+int Unit::get_speed() {
+  return _speed;
 }
