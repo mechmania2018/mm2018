@@ -62,15 +62,25 @@ void Game::do_monster_deaths(){
   do_monster_deaths(_player2);
 }
 
-//TODO: do the death effects stuff when monsters die
 void Game::do_monster_deaths(Player& p) {
   if (p.get_location() == get_hell_node_id()) return;
 
   for (Unit* u : _nodes[p.get_location()].units) {
     if (u->is_monster() && u->get_health() <= p.get_kung_fu()) {
+      // Monster u is dead
       u->die(get_hell_node_id());
       remove_unit(_nodes[p.get_location()], u);
       add_unit(_nodes[get_hell_node_id()], u);
+
+      if (_player1.get_location() == u->get_location())
+      {
+        _player1.activate_death_effects(u->get_death_effects());
+      }
+
+      if (_player2.get_location() == u->get_location())
+      {
+        _player2.activate_death_effects(u->get_death_effects());
+      }
     }
   }
 }
