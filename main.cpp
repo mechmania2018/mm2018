@@ -1,10 +1,75 @@
 #include <iostream>
+#include <unistd.h>
+#include <stdio.h>
 
 #include "Game.h"
 #include "Unit.h"
 #include "Monster.h"
 
-int main() {
+void start_script(char* name, int pipe_to[2], int pipe_from[2]) {
+  pid_t child_id = fork();
+
+  if (!child_id) {
+    // Child Process
+
+    /* dup pipe read/write to stdin/stdout */
+    dup2( pipe_to[0], STDIN_FILENO );
+    dup2( pipe_from[1], STDOUT_FILENO  );
+    /* close unnecessary pipe descriptors for a clean environment */
+    close( pipe_to[0] );
+    close( pipe_to[1] );
+    close( pipe_from[0] );
+    close( pipe_from[1] );
+
+    execlp(name, name, NULL);
+    exit(1);
+  }
+
+  // Parent Process
+  close(pipe_to[0]);
+  close(pipe_from[1]);
+}
+
+int main(int argc, char *argv[]) {
+  if (argc < 3) {
+    std::cout << "not enough args" << std::endl;
+  }
+
+  int pipe_to_p1[2];
+  if (pipe(pipe_to_p1)) {
+    perror("pipe_to_p1");
+    exit(1);
+  }
+
+  int pipe_from_p1[2];
+  if (pipe(pipe_from_p1)) {
+    perror("pipe_from_p1");
+    exit(1);
+  }
+
+  start_script(argv[1], pipe_to_p1, pipe_from_p1);
+
+  int pipe_to_p2[2];
+  if (pipe(pipe_to_p2)) {
+    perror("pipe_to_p2");
+    exit(1);
+  }
+
+  int pipe_from_p2[2];
+  if (pipe(pipe_from_p2)) {
+    perror("pipe_from_p2");
+    exit(1);
+  }
+
+  start_script(argv[2], pipe_to_p2, pipe_from_p2);
+
+  FILE* stream = fdopen(pipe_from_p1[0], "r");
+  char* buff = NULL;
+  size_t size = 0;
+  getline(&buff, &size, stream);
+
+  std::cout << buff << std::endl;
+
   Game game = Game(10, "Player1", "Player2");
 
   game.add_connection(0, 1);
