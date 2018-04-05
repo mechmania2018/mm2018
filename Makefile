@@ -1,7 +1,7 @@
 # based on a Makefile from CS225
 EXENAME = game.exe
 
-OBJS = Unit.o Player.o Monster.o Game.o main.o
+OBJS = ScriptIO.o Unit.o Player.o Monster.o Game.o main.o
 
 CXX = clang++
 LD = clang++
@@ -27,6 +27,9 @@ Player.o : Player.cpp Player.h
 
 Monster.o : Monster.cpp Monster.h
 	$(CXX) $(CXXFLAGS) Monster.cpp
+
+ScriptIO.o : ScriptIO.cpp ScriptIO.h
+	$(CXX) $(CXXFLAGS) ScriptIO.cpp
 
 clean :
 	rm -f *.o $(EXENAME)
