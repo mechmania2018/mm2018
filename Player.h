@@ -17,6 +17,8 @@ public:
 
   std::string to_string();
 
+  std::string to_json();
+
   /*
    * makes the appropriate changes to the Player based on the death effects from another Unit
    */
