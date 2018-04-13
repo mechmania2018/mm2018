@@ -8,9 +8,11 @@
 #include "Player.h"
 #include "types.h"
 
+using namespace std;
+
 class Game{
 public:
-  Game(int num_nodes, std::string p1_name, std::string p2_name);
+  Game(int num_nodes, string p1_name, string p2_name);
 
   /*
    * adds a connection between node1 and node2
@@ -27,12 +29,12 @@ public:
   /*
    * gets the list of nodes that are adjacent to 'node'
    */
-  std::vector<node_id_t> get_adjacent_nodes(node_id_t node);
+  vector<node_id_t> get_adjacent_nodes(node_id_t node);
 
   /*
    * gets the list of units present at 'node'
    */
-  std::vector<Unit*> get_units_at(node_id_t node);
+  vector<Unit*> get_units_at(node_id_t node);
 
   void do_player_decisions();
 
@@ -74,15 +76,15 @@ private:
    * internal representation of a Node
    */
   struct Node {
-    std::vector<node_id_t> adjacent;
-    std::vector<Unit*> units;
+    vector<node_id_t> adjacent;
+    vector<Unit*> units;
   };
 
   /*
    * list of the nodes in the game
    * when a Node is referred to using a node_id, it is just the index of the node in this vector
    */
-  std::vector<Node> _nodes;
+  vector<Node> _nodes;
 
   /*
    * stores each of the two players
