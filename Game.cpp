@@ -171,11 +171,13 @@ void Game::add_unit(Node& n, Unit* unit) {
 
 std::string Game::send_state() {
   std::string state = "{";
-  for (int i = 0; i < all_units.size(); i++) {
+  for (size_t i = 0; i < all_units.size(); i++) {
     state += all_units[i]->to_json();
     if (i != all_units.size() - 1) {
       state += ",";
     }
   }
   state += "}";
+
+  return state;
 }

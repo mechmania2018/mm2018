@@ -5,8 +5,8 @@ OBJS = ScriptIO.o Unit.o Player.o Monster.o Game.o main.o
 
 CXX = clang++
 LD = clang++
-CXXFLAGS = -std=c++1y -stdlib=libc++ -c -g -O0 -Wall -Wextra -Werror -pedantic
-LDFLAGS = -std=c++1y -stdlib=libc++ -lpthread
+CXXFLAGS = -std=c++1y -stdlib=libstdc++ -c -g -O0 -Wall -Wextra -Werror -pedantic
+LDFLAGS = -std=c++1y -stdlib=libstdc++ -lpthread
 
 all : $(EXENAME)
 

@@ -18,7 +18,7 @@ bool Monster::is_monster() {
 }
 
 string Monster::get_string() {
-  return "Name: " + get_name() + ", health = " + to_string(get_health()) + ", kung fu = " + to_string(get_kung_fu()) + ", speed = " + to_string(get_speed());
+  return "Name: " + get_name() + ", health = " + std::to_string(get_health()) + ", kung fu = " + std::to_string(get_kung_fu()) + ", speed = " + std::to_string(get_speed());
 }
 
 std::string Monster::to_json() {
@@ -31,6 +31,8 @@ std::string Monster::to_json() {
     as_json = as_json + "\"location\": " + "\"" + std::to_string(_location)+ "\",";
     as_json = as_json + "\"destination\": " + "\"" + std::to_string(_destination)+ "\"";
     as_json = as_json + "}";
+
+    return as_json;
 }
 
 void Monster::die(node_id_t hell_node_id) {
