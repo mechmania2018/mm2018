@@ -4,14 +4,16 @@
 #include "types.h"
 #include "Unit.h"
 
+using namespace std;
+
 class Monster : public Unit {
 public:
-  Monster(std::string name, int health, int kung_fu, int speed, node_id_t location, DeathEffects effects);
+  Monster(string name, int health, int kung_fu, int speed, node_id_t location, DeathEffects effects);
 
   bool is_player();
   bool is_monster();
 
-  std::string to_string();
+  string get_string();
 
   std::string to_json();
 

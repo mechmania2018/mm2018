@@ -70,7 +70,7 @@ void start_scripts(char* script1, char* script2) {
   start_script(script2, to_p2_fd, from_p2_fd);
 }
 
-std::string read_from(int fd) {
+string read_from(int fd) {
   FILE* stream = fdopen(dup(fd), "r");
 
   char* buf = NULL;
@@ -87,21 +87,21 @@ std::string read_from(int fd) {
 
   fclose(stream);
 
-  return std::string(buf);
+  return string(buf);
 }
 
-std::string read_from_player(int player_num) {
+string read_from_player(int player_num) {
   if (player_num == 1) {
     return read_from(from_p1_fd);
   } else if (player_num == 2) {
     return read_from(from_p2_fd);
   } else {
-    std::cout << "Invalid player number passed to read_from_player" << std::endl;
+    cout << "Invalid player number passed to read_from_player" << endl;
     return "";
   }
 }
 
-void write_to(int fd, std::string str) {
+void write_to(int fd, string str) {
   const char* cstr = str.c_str();
   size_t bytes_read = 0;
   size_t len = str.length();
@@ -118,12 +118,12 @@ void write_to(int fd, std::string str) {
   }
 }
 
-void write_to_player(int player_num, std::string str) {
+void write_to_player(int player_num, string str) {
   if (player_num == 1) {
     write_to(to_p1_fd, str);
   } else if (player_num == 2) {
     write_to(to_p2_fd, str);
   } else {
-    std::cout << "Invalid player number passed to write_to_player" << std::endl;
+    cout << "Invalid player number passed to write_to_player" << endl;
   }
 }

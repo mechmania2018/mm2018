@@ -4,6 +4,8 @@
 #include "types.h"
 #include <string>
 
+using namespace std;
+
 #define BASE_MOVEMENT_COUNTER 7
 #define MAX_SPEED 5
 
@@ -28,7 +30,7 @@ public:
     int victory_points;
   };
 
-  Unit(std::string name, int init_health, int kung_fu, int speed, node_id_t location, DeathEffects effects);
+  Unit(string name, int init_health, int kung_fu, int speed, node_id_t location, DeathEffects effects);
 
   /*
    * get the DeathEffects from killing this Unit
@@ -57,7 +59,7 @@ public:
   int get_health();
   int get_kung_fu();
 
-  std::string get_name();
+  string get_name();
 
   /*
    * abstract methods for checking if a unit is a monster or a player
@@ -65,9 +67,10 @@ public:
    */
   virtual bool is_monster() = 0;
   virtual bool is_player() = 0;
-
-  virtual std::string to_string() = 0;
-  virtual std::string to_json() = 0;
+  
+  virtual string to_string() = 0;
+  virtual string to_json() = 0;
+  virtual string get_string() = 0;
 
   /*
    * decrements the Unit's movement counter
@@ -112,9 +115,8 @@ protected:
    */
   void add_kung_fu(int kung_fu_added);
 
-
-
-protected:
+private:
+  string _name;
   int _health;
   int _kung_fu;
   int _speed;

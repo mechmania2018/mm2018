@@ -3,7 +3,9 @@
 
 #include "Unit.h"
 
-Unit::Unit(std::string name, int init_health, int kung_fu, int speed, node_id_t location, DeathEffects effects) : _effects(effects) {
+using namespace std;
+
+Unit::Unit(string name, int init_health, int kung_fu, int speed, node_id_t location, DeathEffects effects) : _effects(effects) {
   _name = name;
   _health = init_health;
   _kung_fu = kung_fu;
@@ -44,7 +46,7 @@ int Unit::get_kung_fu(){
   return _kung_fu;
 }
 
-std::string Unit::get_name() {
+string Unit::get_name() {
   return _name;
 }
 
@@ -75,7 +77,7 @@ void Unit::set_health(int new_health) {
 }
 
 void Unit::add_speed(int speed_added) {
-  _speed = std::min(_speed + speed_added, MAX_SPEED);
+  _speed = min(_speed + speed_added, MAX_SPEED);
 }
 
 void Unit::add_kung_fu(int kung_fu_added) {

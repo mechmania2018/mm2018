@@ -3,7 +3,9 @@
 
 #include "Game.h"
 
-Game::Game(int size, std::string p1_name, std::string p2_name) : _player1(p1_name), _player2(p2_name){
+using namespace std;
+
+Game::Game(int size, string p1_name, string p2_name) : _player1(p1_name), _player2(p2_name){
   for (node_id_t i = 0; i < size + 1; i ++) {
     _nodes.push_back(Node());
   }
@@ -22,11 +24,11 @@ void Game::add_unit(Unit* u){
   all_units.push_back(u);
 }
 
-std::vector<node_id_t> Game::get_adjacent_nodes(node_id_t node){
+vector<node_id_t> Game::get_adjacent_nodes(node_id_t node){
   return _nodes[node].adjacent;
 }
 
-std::vector<Unit*> Game::get_units_at(node_id_t node){
+vector<Unit*> Game::get_units_at(node_id_t node){
   return _nodes[node].units;
 }
 
@@ -131,13 +133,13 @@ int Game::get_winner() {
 
 void Game::print_game() {
   for (unsigned i = 0; i < _nodes.size() - 1; i ++) {
-    std::cout << "Node " << i << std::endl;
+    cout << "Node " << i << endl;
 
     for (Unit* u : _nodes[i].units) {
-      std::cout << u->to_string() << std::endl;
+      cout << u->get_string() << endl;
     }
 
-    std::cout << std::endl;
+    cout << endl;
   }
 }
 

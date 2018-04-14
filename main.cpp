@@ -7,19 +7,21 @@
 #include "Monster.h"
 #include "ScriptIO.h"
 
+using namespace std;
+
 int main(int argc, char *argv[]) {
   if (argc < 3) {
-    std::cout << "not enough args" << std::endl;
+    cout << "not enough args" << endl;
     return 1;
   }
 
   start_scripts(argv[1], argv[2]);
 
   // just some stuff for debugging player IO
-  /*std::string s = read_from_player(1);
-  std::cout << "Player 1 returned " << s << std::endl;
+  /*string s = read_from_player(1);
+  cout << "Player 1 returned " << s << endl;
   write_to_player(1, "Test\n");
-  std::cout << "Now player 1 returned " << read_from_player(1) << std::endl;*/
+  cout << "Now player 1 returned " << read_from_player(1) << endl;*/
 
 
   Game game = Game(10, "Player1", "Player2");
@@ -80,7 +82,7 @@ int main(int argc, char *argv[]) {
     game.do_player_deaths();
   }
 
-  std::cout << "Winner: " << game.get_winner() << std::endl;
+  cout << "Winner: " << game.get_winner() << endl;
 
   return 0;
 }

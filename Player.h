@@ -4,18 +4,20 @@
 #include "Unit.h"
 #include "types.h"
 
+using namespace std;
+
 #define INIT_PLAYER_HEALTH 20
 
 class Player : public Unit {
 public:
-  Player(std::string name);
+  Player(string name);
 
   int get_num_victory_points();
 
   bool is_player();
   bool is_monster();
 
-  std::string to_string();
+  string get_string();
 
   std::string to_json();
 
@@ -24,7 +26,7 @@ public:
    */
   void activate_death_effects(DeathEffects effects);
 
-  void do_decision(const std::vector<node_id_t>& adjacent);
+  void do_decision(const vector<node_id_t>& adjacent);
 
 private:
   int _exp_points;
