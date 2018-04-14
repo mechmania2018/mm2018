@@ -23,6 +23,7 @@ int main(int argc, char *argv[]) {
   write_to_player(1, "Test\n");
   cout << "Now player 1 returned " << read_from_player(1) << endl;*/
 
+  // TODO: tell each player which player they are
 
   Game game = Game(10, "Player1", "Player2");
 
@@ -64,13 +65,15 @@ int main(int argc, char *argv[]) {
   game.add_unit(&m4);
 
   // add speed monster
-  Monster m3("sped monster", 0, 0, 0, 3, Unit::DeathEffects(0, 1, 0, 0, 0));
+  Monster m3("speed monster", 0, 0, 0, 3, Unit::DeathEffects(0, 1, 0, 0, 0));
   game.add_unit(&m3);
 
   // add victory point monster
   Monster victory("victory point monster", 0, 0, -23, game.get_hell_node_id(), Unit::DeathEffects(0, 0, 0, 0, 1));
   victory.change_destination(0);
   game.add_unit(&victory);
+
+  cout << game.to_json() << endl;
 
   while (game.get_winner() == 0) {
     game.print_game();

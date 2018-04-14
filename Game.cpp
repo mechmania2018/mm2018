@@ -166,18 +166,24 @@ void Game::remove_unit(Node& n, Unit* unit) {
 
 void Game::add_unit(Node& n, Unit* unit) {
   n.units.push_back(unit);
-  all_units.push_back(unit);
 }
 
-std::string Game::send_state() {
-  std::string state = "{";
+std::string Game::to_json() {
+  string state = "[";
+
+  state += _player1.to_json() + ",";
+  state += _player2.to_json();
+  if (all_units.size() > 0) {
+    state += ",";
+  }
+
   for (size_t i = 0; i < all_units.size(); i++) {
     state += all_units[i]->to_json();
     if (i != all_units.size() - 1) {
       state += ",";
     }
   }
-  state += "}";
+  state += "]";
 
   return state;
 }
