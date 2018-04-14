@@ -21,6 +21,7 @@ void Game::add_connection(node_id_t node1, node_id_t node2){
 
 void Game::add_unit(Unit* u){
   add_unit(_nodes[u->get_location()], u);
+  all_units.push_back(u);
 }
 
 vector<node_id_t> Game::get_adjacent_nodes(node_id_t node){
@@ -165,4 +166,16 @@ void Game::remove_unit(Node& n, Unit* unit) {
 
 void Game::add_unit(Node& n, Unit* unit) {
   n.units.push_back(unit);
+  all_units.push_back(unit);
+}
+
+std::string Game::send_state() {
+  std::string state = "{";
+  for (int i = 0; i < all_units.size(); i++) {
+    state += all_units[i]->to_json();
+    if (i != all_units.size() - 1) {
+      state += ",";
+    }
+  }
+  state += "}";
 }

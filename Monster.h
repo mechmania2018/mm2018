@@ -15,6 +15,8 @@ public:
 
   string get_string();
 
+  std::string to_json();
+
   void die(node_id_t hell_node_id);
 
 private:

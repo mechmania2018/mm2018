@@ -74,6 +74,7 @@ int main(int argc, char *argv[]) {
 
   while (game.get_winner() == 0) {
     game.print_game();
+
     game.do_player_decisions();
     game.do_movement_tick();
     game.do_damage_tick();

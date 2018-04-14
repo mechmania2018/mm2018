@@ -66,6 +66,8 @@ public:
 
   void print_game();
 
+  std::string send_state();
+
   /*
    * gets the node_id for hell
    */
@@ -79,7 +81,7 @@ private:
     vector<node_id_t> adjacent;
     vector<Unit*> units;
   };
-
+    std::vector<Unit*> all_units;
   /*
    * list of the nodes in the game
    * when a Node is referred to using a node_id, it is just the index of the node in this vector

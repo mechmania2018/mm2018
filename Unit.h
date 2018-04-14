@@ -67,7 +67,9 @@ public:
    */
   virtual bool is_monster() = 0;
   virtual bool is_player() = 0;
-
+  
+  virtual string to_string() = 0;
+  virtual string to_json() = 0;
   virtual string get_string() = 0;
 
   /*
@@ -119,6 +121,7 @@ private:
   int _kung_fu;
   int _speed;
   int _movement_counter;
+  std::string _name;
   node_id_t _location;
   node_id_t _destination;
   DeathEffects _effects;
