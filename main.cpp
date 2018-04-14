@@ -18,10 +18,11 @@ int main(int argc, char *argv[]) {
   start_scripts(argv[1], argv[2]);
 
   // just some stuff for debugging player IO
-  /*string s = read_from_player(1);
+  string s = read_from_player(1);
   cout << "Player 1 returned " << s << endl;
   write_to_player(1, "Test\n");
-  cout << "Now player 1 returned " << read_from_player(1) << endl;*/
+  cout << "Now player 1 returned " << read_from_player(1) << endl;
+  return 0;
 
   // TODO: tell each player which player they are
 
