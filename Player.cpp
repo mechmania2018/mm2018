@@ -68,12 +68,12 @@ string Player::get_string() {
 string Player::to_json() {
     string as_json = "{";
     as_json = as_json + "\"name\": " + "\"" + _name + "\",";
-    as_json = as_json + "\"health\": " + "\"" + std::to_string(_health)+ "\",";
-    as_json = as_json + "\"kung_fu\": " + "\"" + std::to_string(_kung_fu)+ "\",";
-    as_json = as_json + "\"speed\": " + "\"" + std::to_string(_speed)+ "\",";
-    as_json = as_json + "\"movement_counter\": " + "\"" + std::to_string(_movement_counter)+ "\",";
-    as_json = as_json + "\"location\": " + "\"" + std::to_string(_location)+ "\",";
-    as_json = as_json + "\"destination\": " + "\"" + std::to_string(_destination)+ "\"";
+    as_json = as_json + "\"health\": " + std::to_string(_health)+ ",";
+    as_json = as_json + "\"kung_fu\": " + std::to_string(_kung_fu)+ ",";
+    as_json = as_json + "\"speed\": " + std::to_string(_speed)+ ",";
+    as_json = as_json + "\"movement_counter\": " + std::to_string(_movement_counter)+ ",";
+    as_json = as_json + "\"location\": " + std::to_string(_location)+ ",";
+    as_json = as_json + "\"destination\": " + std::to_string(_destination);
     as_json = as_json + "}";
 
     return as_json;
