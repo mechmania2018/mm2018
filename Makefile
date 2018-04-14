@@ -22,10 +22,10 @@ Game.o :	Game.h Game.cpp
 Unit.o : Unit.cpp Unit.h
 	$(CXX) $(CXXFLAGS) Unit.cpp
 
-Player.o : Player.cpp Player.h
+Player.o : Player.cpp Player.h Unit.h
 	$(CXX) $(CXXFLAGS) Player.cpp
 
-Monster.o : Monster.cpp Monster.h
+Monster.o : Monster.cpp Monster.h Unit.h
 	$(CXX) $(CXXFLAGS) Monster.cpp
 
 ScriptIO.o : ScriptIO.cpp ScriptIO.h
