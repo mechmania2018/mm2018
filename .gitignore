@@ -32,6 +32,3 @@
 *.app
 
 CMakeLists.txt
-
-#included libraries
-json.hpp
