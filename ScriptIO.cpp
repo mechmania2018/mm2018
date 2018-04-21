@@ -14,6 +14,20 @@ static int from_p1_fd;
 static int to_p2_fd;
 static int from_p2_fd;
 
+int get_arg_count(char* str) {
+  int args = 1;
+  int idx = 0;
+
+  while (*(str + idx)) {
+    if (*(str + idx) == ' ') {
+      args ++;
+    }
+    idx ++;
+  }
+
+  return args;
+}
+
 void start_script(char* name, int& stream_to, int& stream_from) {
   int pipe_to[2];
   if (pipe(pipe_to)) {
@@ -50,8 +64,26 @@ void start_script(char* name, int& stream_to, int& stream_from) {
       exit(1);
     }
 
-    execlp(name, name, NULL);
-    perror("execlp()");
+    int num_args = get_arg_count(name);
+    char* args[num_args + 1];
+    args[num_args] = NULL;
+    args[0] = name;
+
+    int idx = 0;
+    int arg = 1;
+    while (arg < num_args) {
+      if (*(name + idx) == ' ') {
+        *(name + idx) = '\0';
+        args[arg] = name + idx + 1;
+        arg ++;
+      }
+      idx ++;
+    }
+
+    fprintf(stderr, "args[0] = %s\n", args[0]);
+
+    execvp(args[0], args);
+    perror("execvp()");
     exit(1);
   }
   // Parent Process
