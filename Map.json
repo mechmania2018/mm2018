@@ -1,15 +1,15 @@
 ﻿{
 	"Nodes" : [
-		{"Name": "Node_1", "Coordinates": [0,0]}, 
-		{"Name": "Node_2", "Coordinates": [0, 3]}, 
-		{"Name": "Node_3", "Coordinates": [0, 5]}, 
-		{"Name": "Node_4", "Coordinates": [3, 4]},
-		{"Name": "Node_5", "Coordinates": [5, 1]},
-		{"Name": "Node_6", "Coordinates": [2, -2]},
-		{"Name": "Node_7", "Coordinates": [4, -4]},
-		{"Name": "Node_8", "Coordinates": [-2, -1]},
-		{"Name": "Node_9", "Coordinates": [-3, -3]},
-		{"Name": "Node_10", "Coordinates": [-3, 1]}
+		{"Name": "Node_0", "Number": 0, "Coordinates": [0,0]},
+		{"Name": "Node_2", "Number": 1, "Coordinates": [0, 5]},
+		{"Name": "Node_1", "Number": 2, "Coordinates": [0, 3]},
+		{"Name": "Node_3", "Number": 3, "Coordinates": [3, 4]},
+		{"Name": "Node_4", "Number": 4, "Coordinates": [5, 1]},
+		{"Name": "Node_5", "Number": 5, "Coordinates": [2, -2]},
+		{"Name": "Node_6", "Number": 6, "Coordinates": [4, -4]},
+		{"Name": "Node_7", "Number": 7, "Coordinates": [-2, -1]},
+		{"Name": "Node_8", "Number": 8, "Coordinates": [-3, -3]},
+		{"Name": "Node_9", "Number": 9, "Coordinates": [-3, 1]}
 		],
 
 	"Edges" : [
@@ -23,5 +23,9 @@
 		{"Name": "Edge_1_8", "Adjacents": [1, 8]},
 		{"Name": "Edge_8_9", "Adjacents": [8, 9]},
 		{"Name": "Edge_8_10", "Adjacents": [8, 10]}
-		]
+	],
+	"Monsters" : [
+		{"Name": "", "Health": 1, "kung_fu": 1, "speed": 1, "location": 1, "DeathEffects":
+			{"exp": 0, "speed": 0, "kung_fu": 0, "health": 0, "victory_points": 0}}
+	]
 }
