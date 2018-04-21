@@ -2,10 +2,14 @@
 #include <unistd.h>
 #include <stdio.h>
 
+#include "json.hpp"
+
 #include "Game.h"
 #include "Unit.h"
 #include "Monster.h"
 #include "ScriptIO.h"
+
+using json = nlohmann::json;
 
 using namespace std;
 
