@@ -2,7 +2,7 @@
 #include <unistd.h>
 #include <stdio.h>
 
-#include "nlohmann/json.hpp"
+#include "json.hpp"
 
 #include "Game.h"
 #include "Unit.h"
