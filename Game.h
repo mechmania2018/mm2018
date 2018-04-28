@@ -7,8 +7,10 @@
 #include "Unit.h"
 #include "Player.h"
 #include "types.h"
+#include "nlohmann/json.hpp"
 
 using namespace std;
+using json = nlohmann::json;
 
 class Game{
 public:

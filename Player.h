@@ -6,6 +6,7 @@
 
 using namespace std;
 
+
 #define INIT_PLAYER_HEALTH 20
 
 class Player : public Unit {
@@ -19,7 +20,7 @@ public:
 
   string get_string();
 
-  std::string to_json();
+  json to_json();
 
   /*
    * makes the appropriate changes to the Player based on the death effects from another Unit

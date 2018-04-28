@@ -3,8 +3,10 @@
 
 #include "types.h"
 #include <string>
+#include "nlohmann/json.hpp"
 
 using namespace std;
+using json = nlohmann::json;
 
 #define BASE_MOVEMENT_COUNTER 7
 #define MAX_SPEED 5
@@ -69,7 +71,7 @@ public:
   virtual bool is_player() = 0;
   
   //virtual string to_string() = 0;
-  virtual string to_json() = 0;
+  virtual json to_json() = 0;
   virtual string get_string() = 0;
 
   /*
