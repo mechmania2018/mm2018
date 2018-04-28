@@ -9,15 +9,22 @@ using namespace std;
 
 Game::Game(string json_str, string p1_name, string p2_name): _player1(p1_name), _player2(p2_name) {
   json::basic_json map = json::parse(json_str);
-}
 
-Game::Game(int size, string p1_name, string p2_name) : _player1(p1_name), _player2(p2_name){
-  for (node_id_t i = 0; i < size + 1; i ++) {
+  json::basic_json nodes_json = map["Nodes"];
+  json::basic_json edges = map["Edges"];
+  json::basic_json monsters_json = map["Monsters"];
+
+  for (node_id_t i = 0; i < (int)nodes_json.size(); i ++) {
     _nodes.push_back(Node());
   }
 
   add_unit(_nodes[0], &_player1);
   add_unit(_nodes[0], &_player2);
+
+  for (json::basic_json edge : edges) {
+    json::basic_json adj = edges["Adjacents"];
+    add_connection(adj[0], adj[1]);
+  }
 }
 
 void Game::add_connection(node_id_t node1, node_id_t node2){
@@ -25,9 +32,11 @@ void Game::add_connection(node_id_t node1, node_id_t node2){
   _nodes[node2].adjacent.push_back(node1);
 }
 
-void Game::add_unit(Unit* u){
+void Game::add_unit(Unit u){
   add_unit(_nodes[u->get_location()], u);
-  all_units.push_back(u);
+  if (u->is_monster()){
+    _monsters.push_back(u);
+  }
 }
 
 vector<node_id_t> Game::get_adjacent_nodes(node_id_t node){

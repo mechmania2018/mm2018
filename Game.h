@@ -17,7 +17,7 @@ public:
    */
   Game(string json_map, string p1_name, string p2_name);
 
-  Game(int num_nodes, string p1_name, string p2_name);
+  ~Game();
 
   /*
    * adds a connection between node1 and node2
@@ -86,7 +86,7 @@ private:
     vector<node_id_t> adjacent;
     vector<Unit*> units;
   };
-  std::vector<Unit*> all_units;
+  std::vector<Unit> _monsters;
   /*
    * list of the nodes in the game
    * when a Node is referred to using a node_id, it is just the index of the node in this vector

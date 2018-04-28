@@ -41,7 +41,7 @@ int main(int argc, char *argv[]) {
 
   Game game = Game(map_str, "Player1", "Player2");
 
-  */Game game = Game(10, "Player1", "Player2");
+  /*Game game = Game(10, "Player1", "Player2");
 
   game.add_connection(0, 1);
   game.add_connection(1, 2);
