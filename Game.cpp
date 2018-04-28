@@ -1,9 +1,15 @@
 #include <iostream>
 #include <string>
 
+#include "json.hpp"
 #include "Game.h"
 
+using json = nlohmann::json;
 using namespace std;
+
+Game::Game(string json_str, string p1_name, string p2_name): _player1(p1_name), _player2(p2_name) {
+  json::basic_json map = json::parse(json_str);
+}
 
 Game::Game(int size, string p1_name, string p2_name) : _player1(p1_name), _player2(p2_name){
   for (node_id_t i = 0; i < size + 1; i ++) {

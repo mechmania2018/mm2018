@@ -1,6 +1,8 @@
 #include <iostream>
 #include <unistd.h>
 #include <stdio.h>
+#include <fstream>
+#include <streambuf>
 
 #include "json.hpp"
 
@@ -14,12 +16,20 @@ using json = nlohmann::json;
 using namespace std;
 
 int main(int argc, char *argv[]) {
-  if (argc < 3) {
-    cout << "not enough args" << endl;
+  if (argc < 4) {
+    cout << "not enough args. expected player1script, player2script, mapfile" << endl;
     return 1;
   }
 
   start_scripts(argv[1], argv[2]);
+
+  ifstream t(argv[3]);
+  string map_str;
+  t.seekg(0, ios::end);
+  map_str.reserve(t.tellg());
+  t.seekg(0, ios::beg);
+
+  map_str.assign((istreambuf_iterator<char>(t)), istreambuf_iterator<char>());
 
   // just some stuff for debugging player IO
   /*string s = read_from_player(1);
@@ -29,7 +39,9 @@ int main(int argc, char *argv[]) {
 
   // TODO: tell each player which player they are
 
-  Game game = Game(10, "Player1", "Player2");
+  Game game = Game(map_str, "Player1", "Player2");
+
+  */Game game = Game(10, "Player1", "Player2");
 
   game.add_connection(0, 1);
   game.add_connection(1, 2);
@@ -75,7 +87,7 @@ int main(int argc, char *argv[]) {
   // add victory point monster
   Monster victory("victory point monster", 0, 0, -23, game.get_hell_node_id(), Unit::DeathEffects(0, 0, 0, 0, 1));
   victory.change_destination(0);
-  game.add_unit(&victory);
+  game.add_unit(&victory);*/
 
   cout << game.to_json() << endl;
 

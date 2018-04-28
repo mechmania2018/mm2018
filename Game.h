@@ -12,6 +12,11 @@ using namespace std;
 
 class Game{
 public:
+  /*
+   * create a map from a json string
+   */
+  Game(string json_map, string p1_name, string p2_name);
+
   Game(int num_nodes, string p1_name, string p2_name);
 
   /*
