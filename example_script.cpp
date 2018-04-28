@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <time.h>
 
 int main() {
 	printf("Hello world!\n");
@@ -15,4 +16,10 @@ int main() {
 	fflush(stdout);
 
 	free(buf);
+
+	while(1){
+		printf("0 0\n");
+		fflush(stdout);
+		sleep(0.5);
+	}
 }

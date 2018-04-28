@@ -1,6 +1,5 @@
 #include <iostream>
 #include <string>
-
 #include "Game.h"
 
 using namespace std;
@@ -32,9 +31,11 @@ vector<Unit*> Game::get_units_at(node_id_t node){
   return _nodes[node].units;
 }
 
-void Game::do_player_decisions() {
-  _player1.do_decision(_nodes[_player1.get_location()].adjacent);
-  _player2.do_decision(_nodes[_player2.get_location()].adjacent);
+void Game::do_player_decisions(string dec1, string dec2) {
+  //_player1.do_decision(_nodes[_player1.get_location()].adjacent);
+  //_player2.do_decision(_nodes[_player2.get_location()].adjacent);
+  _player1.do_decision(dec1);
+  _player2.do_decision(dec2);
 }
 
 void Game::do_movement_tick(){
