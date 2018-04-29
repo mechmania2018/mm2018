@@ -13,19 +13,19 @@ all : $(EXENAME)
 $(EXENAME) : $(OBJS)
 	$(LD) $(OBJS) $(LDFLAGS) -o $(EXENAME)
 
-main.o : main.cpp
+main.o : main.cpp Game.o
 	$(CXX) $(CXXFLAGS) main.cpp
 
-Game.o :	Game.h Game.cpp
+Game.o : Game.cpp Game.h
 	$(CXX) $(CXXFLAGS) Game.cpp
 
 Unit.o : Unit.cpp Unit.h
 	$(CXX) $(CXXFLAGS) Unit.cpp
 
-Player.o : Player.cpp Player.h Unit.h
+Player.o : Player.cpp Player.h Unit.o
 	$(CXX) $(CXXFLAGS) Player.cpp
 
-Monster.o : Monster.cpp Monster.h Unit.h
+Monster.o : Monster.cpp Monster.h Unit.o
 	$(CXX) $(CXXFLAGS) Monster.cpp
 
 ScriptIO.o : ScriptIO.cpp ScriptIO.h

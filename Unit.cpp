@@ -50,6 +50,26 @@ string Unit::get_name() {
   return _name;
 }
 
+bool Unit::is_monster() {
+  cout << "Oopsie Woopsie: is_monster called from Unit class" << endl;
+  return false;
+}
+
+bool Unit::is_player() {
+  cout << "Oopsie Woopsie: is_player called from Unit class" << endl;
+  return false;
+}
+
+string Unit::to_json() {
+  cout << "Oopsie Woopsie: to_json called from Unit class" << endl;
+  return "";
+}
+
+string Unit::get_string() {
+  cout << "Oopsie Woopsie: to_string called from Unit class" << endl;
+    return "Health = " + std::to_string(_health);
+}
+
 void Unit::decrement_movement_counter() {
   _movement_counter --;
 }

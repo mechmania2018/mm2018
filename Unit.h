@@ -2,8 +2,12 @@
 #define UNIT_H
 
 #include "types.h"
+
+#include "json.hpp"
+
 #include <string>
 
+using json = nlohmann::json;
 using namespace std;
 
 #define BASE_MOVEMENT_COUNTER 7
@@ -21,6 +25,14 @@ public:
       kung_fu = k;
       health = h;
       victory_points = v;
+    }
+
+    DeathEffects(json::basic_json j) {
+      exp = j["Exp"];
+      speed = j["Speed"];
+      kung_fu = j["Kung_fu"];
+      health = j["Health"];
+      victory_points = j["Victory_points"];
     }
 
     int exp;
@@ -65,12 +77,12 @@ public:
    * abstract methods for checking if a unit is a monster or a player
    * (overridden in child classes)
    */
-  virtual bool is_monster() = 0;
-  virtual bool is_player() = 0;
-  
+  virtual bool is_monster();
+  virtual bool is_player();
+
   //virtual string to_string() = 0;
-  virtual string to_json() = 0;
-  virtual string get_string() = 0;
+  virtual string to_json();
+  virtual string get_string();
 
   /*
    * decrements the Unit's movement counter

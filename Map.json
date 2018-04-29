@@ -25,25 +25,25 @@
 		{"Name": "Edge_8_10", "Adjacents": [8, 10]}
 	],
 	"Monsters" : [
-		{"Name": "hard monster", "Health": 5, "kung_fu": 0, "speed": 0, "location": 8, "DeathEffects":
-			{"exp": 2, "speed": 0, "kung_fu": 0, "health": 2, "victory_points": 0}} ,
-		{"Name": "hard monster", "Health": 5, "kung_fu": 0, "speed": 0, "location": 9, "DeathEffects":
-			{"exp": 2, "speed": 0, "kung_fu": 0, "health": 2, "victory_points": 0}} ,
-		{"Name": "hard monster", "Health": 5, "kung_fu": 0, "speed": 0, "location": 1, "DeathEffects":
-			{"exp": 2, "speed": 0, "kung_fu": 0, "health": 2, "victory_points": 0}} ,
-		{"Name": "hard monster", "Health": 5, "kung_fu": 0, "speed": 0, "location": 2, "DeathEffects":
-			{"exp": 2, "speed": 0, "kung_fu": 0, "health": 2, "victory_points": 0}} ,
-		{"Name": "hard monster", "Health": 5, "kung_fu": 0, "speed": 0, "location": 6, "DeathEffects":
-			{"exp": 2, "speed": 0, "kung_fu": 0, "health": 2, "victory_points": 0}} ,
-		{"Name": "easy monster", "Health": 3, "kung_fu": 0, "speed": 0, "location": 5, "DeathEffects":
-			{"exp": 1, "speed": 0, "kung_fu": 0, "health": 3, "victory_points": 0}} ,
-		{"Name": "easy monster", "Health": 3, "kung_fu": 0, "speed": 0, "location": 7, "DeathEffects":
-			{"exp": 1, "speed": 0, "kung_fu": 0, "health": 3, "victory_points": 0}} ,
-		{"Name": "easy monster", "Health": 3, "kung_fu": 0, "speed": 0, "location": 4, "DeathEffects":
-			{"exp": 1, "speed": 0, "kung_fu": 0, "health": 3, "victory_points": 0}} ,
-		{"Name": "speed monster", "Health": 0, "kung_fu": 0, "speed": 0, "location": 3, "DeathEffects":
-			{"exp": 0, "speed": 1, "kung_fu": 0, "health": 0, "victory_points": 0}} ,
-		{"Name": "victory point monster", "Health": 0, "kung_fu": 0, "speed": -23, "location": 10, "DeathEffects":
-			{"exp": 0, "speed": 0, "kung_fu": 0, "health": 0, "victory_points": 1}}
+		{"Name": "hard monster", "Health": 5, "Kung_fu": 0, "Speed": 0, "Location": 8, "DeathEffects":
+			{"Exp": 2, "Speed": 0, "Kung_fu": 0, "Health": 2, "Victory_points": 0}} ,
+		{"Name": "hard monster", "Health": 5, "Kung_fu": 0, "Speed": 0, "Location": 9, "DeathEffects":
+			{"Exp": 2, "Speed": 0, "Kung_fu": 0, "Health": 2, "Victory_points": 0}} ,
+		{"Name": "hard monster", "Health": 5, "Kung_fu": 0, "Speed": 0, "Location": 1, "DeathEffects":
+			{"Exp": 2, "Speed": 0, "Kung_fu": 0, "Health": 2, "Victory_points": 0}} ,
+		{"Name": "hard monster", "Health": 5, "Kung_fu": 0, "Speed": 0, "Location": 2, "DeathEffects":
+			{"Exp": 2, "Speed": 0, "Kung_fu": 0, "Health": 2, "Victory_points": 0}} ,
+		{"Name": "hard monster", "Health": 5, "Kung_fu": 0, "Speed": 0, "Location": 6, "DeathEffects":
+			{"Exp": 2, "Speed": 0, "Kung_fu": 0, "Health": 2, "Victory_points": 0}} ,
+		{"Name": "easy monster", "Health": 3, "Kung_fu": 0, "Speed": 0, "Location": 5, "DeathEffects":
+			{"Exp": 1, "Speed": 0, "Kung_fu": 0, "Health": 3, "Victory_points": 0}} ,
+		{"Name": "easy monster", "Health": 3, "Kung_fu": 0, "Speed": 0, "Location": 7, "DeathEffects":
+			{"Exp": 1, "Speed": 0, "Kung_fu": 0, "Health": 3, "Victory_points": 0}} ,
+		{"Name": "easy monster", "Health": 3, "Kung_fu": 0, "Speed": 0, "Location": 4, "DeathEffects":
+			{"Exp": 1, "Speed": 0, "Kung_fu": 0, "Health": 3, "Victory_points": 0}} ,
+		{"Name": "speed monster", "Health": 0, "Kung_fu": 0, "Speed": 0, "Location": 3, "DeathEffects":
+			{"Exp": 0, "Speed": 1, "Kung_fu": 0, "Health": 0, "Victory_points": 0}} ,
+		{"Name": "victory point monster", "Health": 0, "Kung_fu": 0, "Speed": -23, "Location": 10, "DeathEffects":
+			{"Exp": 0, "Speed": 0, "Kung_fu": 0, "Health": 0, "Victory_points": 1}}
 	]
 }
