@@ -11,6 +11,9 @@
 
 using json = nlohmann::json;
 
+#define RESPONSE_SECS 1
+#define RESPONSE_NSECS 0
+
 using namespace std;
 
 int main(int argc, char *argv[]) {
@@ -79,10 +82,32 @@ int main(int argc, char *argv[]) {
 
   cout << game.to_json() << endl;
 
+  struct timespec sleepFor;
+  sleepFor.tv_sec = RESPONSE_SECS;
+  sleepFor.tv_nsec = RESPONSE_NSECS;
+
+  string default_action = string("0 0");
   while (game.get_winner() == 0) {
     game.print_game();
 
-    game.do_player_decisions();
+    string p1_json = "1 " + game.to_json() + "\n";
+    string p2_json = "2 " + game.to_json() + "\n";
+
+    write_to_player(1, p1_json);
+    write_to_player(2, p2_json);
+    nanosleep(&sleepFor, NULL);
+    string* p1_buffer = read_from_player(1);
+    string* p2_buffer = read_from_player(2);
+    printf("Player1 sent %s, Player2 sent %s\n", 
+      p1_buffer ? p1_buffer->c_str() : "no response", 
+      p2_buffer ? p2_buffer->c_str() : "no response");
+    game.do_player_decisions(
+      p1_buffer ? *p1_buffer : default_action, 
+      p2_buffer ? *p2_buffer : default_action);
+    
+    if(p1_buffer) delete p1_buffer;
+    if(p2_buffer) delete p2_buffer;
+
     game.do_movement_tick();
     game.do_damage_tick();
     game.do_monster_deaths();

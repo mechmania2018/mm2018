@@ -27,7 +27,7 @@ public:
    */
   void activate_death_effects(DeathEffects effects);
 
-  void do_decision(const vector<node_id_t>& adjacent);
+  void do_decision(string decision);
 
 private:
   int _exp_points;

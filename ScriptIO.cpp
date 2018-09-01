@@ -2,11 +2,15 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <fcntl.h>
 
 #include <iostream>
+#include <string.h>
 #include <string>
 
 #include "ScriptIO.h"
+
+#define READ_BUF_SIZE 64
 
 static int to_p1_fd;
 static int from_p1_fd;
@@ -95,6 +99,17 @@ void start_script(char* name, int& stream_to, int& stream_from) {
 
   stream_to = pipe_to[1];
   stream_from = pipe_from[0];
+
+  // Modify reading stream to not block on reads
+  int flags = 0;
+  if ((flags = fcntl(stream_from, F_GETFL, 0)) == -1){
+    perror("fcntl() (get flags)");
+    exit(1);
+  }
+  if(fcntl(stream_from, F_SETFL, flags | O_NONBLOCK)){
+    perror("fcntl() (set flags)");
+    exit(1);
+  }
 }
 
 void start_scripts(char* script1, char* script2) {
@@ -102,34 +117,50 @@ void start_scripts(char* script1, char* script2) {
   start_script(script2, to_p2_fd, from_p2_fd);
 }
 
-string read_from(int fd) {
-  FILE* stream = fdopen(dup(fd), "r");
+// Read all input from player, and return only the first line
+string* read_from(int fd) {
+  char buf[READ_BUF_SIZE];
+  char trash[READ_BUF_SIZE];
 
-  char* buf = NULL;
-  size_t size = 0;
+  // I assume one line contains less than READ_BUF_SIZE bytes
+  // since it's only really supposed to be "(number) (number)\n"
+  ssize_t len = read(fd, &buf, READ_BUF_SIZE);
+  string* return_string;
 
-  ssize_t len = getline(&buf, &size, stream);
-
-  if (len == -1 && errno == EINVAL) {
-    perror("getline()");
+  if (len == -1 && (errno == EAGAIN || errno == EWOULDBLOCK)) {
+    // Player sent nothing
+    return NULL;
+  } else if (len == -1){
+    // Something else broke
+    perror("read()");
     exit(1);
-  } else if (len > 0 && buf[len - 1] == '\n') {
-    buf[len-1] = '\0';
+  } else {
+    // Find the first newline character and set it to NULL
+    char* eol = strchr(buf, '\n');
+    if(!eol){
+      // No newline == invalid input
+      return_string = NULL;
+    } else {
+      *eol = '\0';
+      return_string = new string(buf);
+    }
   }
 
-  fclose(stream);
+  while(read(fd, &trash, READ_BUF_SIZE) > 0){
+    // Nothing to do here
+  }
 
-  return string(buf);
+  return return_string;
 }
 
-string read_from_player(int player_num) {
+string* read_from_player(int player_num) {
   if (player_num == 1) {
     return read_from(from_p1_fd);
   } else if (player_num == 2) {
     return read_from(from_p2_fd);
   } else {
     cout << "Invalid player number passed to read_from_player" << endl;
-    return "";
+    return NULL;
   }
 }
 
