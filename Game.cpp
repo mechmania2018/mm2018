@@ -198,9 +198,8 @@ std::string Game::to_json() {
   state += _player1.to_json();
   state += _player2.to_json();
 
-  for (size_t i = 0; i < all_units.size(); i++) {
-    state += all_units[i]->to_json();
-
+  for (size_t i = 0; i < _monsters.size(); i++) {
+    state += _monsters[i].to_json();
   }
   string ret = state.dump();
   return ret;

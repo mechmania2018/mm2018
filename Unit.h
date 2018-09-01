@@ -10,7 +10,6 @@
 
 using json = nlohmann::json;
 using namespace std;
-using json = nlohmann::json;
 
 #define BASE_MOVEMENT_COUNTER 7
 #define MAX_SPEED 5
@@ -79,8 +78,8 @@ public:
    * abstract methods for checking if a unit is a monster or a player
    * (overridden in child classes)
    */
-  virtual bool is_monster();
-  virtual bool is_player();
+  virtual bool is_monster() = 0;
+  virtual bool is_player() = 0;
 
   //virtual string to_string() = 0;
   virtual json to_json() = 0;
