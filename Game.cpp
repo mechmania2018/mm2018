@@ -53,9 +53,11 @@ vector<Unit*> Game::get_units_at(node_id_t node){
   return _nodes[node].units;
 }
 
-void Game::do_player_decisions() {
-  _player1.do_decision(_nodes[_player1.get_location()].adjacent);
-  _player2.do_decision(_nodes[_player2.get_location()].adjacent);
+void Game::do_player_decisions(string dec1, string dec2) {
+  //_player1.do_decision(_nodes[_player1.get_location()].adjacent);
+  //_player2.do_decision(_nodes[_player2.get_location()].adjacent);
+  _player1.do_decision(dec1);
+  _player2.do_decision(dec2);
 }
 
 void Game::do_movement_tick(){
@@ -190,21 +192,16 @@ void Game::add_unit_to_node(Node& n, Unit* unit) {
 }
 
 std::string Game::to_json() {
-  string state = "[";
-/*
-  state += _player1.to_json() + ",";
+
+  json state;
+
+  state += _player1.to_json();
   state += _player2.to_json();
-  if (all_units.size() > 0) {
-    state += ",";
-  }
 
   for (size_t i = 0; i < all_units.size(); i++) {
     state += all_units[i]->to_json();
-    if (i != all_units.size() - 1) {
-      state += ",";
-    }
+
   }
-  state += "]";
-*/
-  return state;
+  string ret = state.dump();
+  return ret;
 }

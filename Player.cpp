@@ -6,6 +6,7 @@
 
 using namespace std;
 
+
 Player::Player(string name) : Unit(name, INIT_PLAYER_HEALTH, 0, 0, 0, DeathEffects(0, 0, 0, 0, 0)){
   _exp_points = 0;
   _victory_points = 0;
@@ -31,22 +32,30 @@ void Player::activate_death_effects(DeathEffects effects) {
   _victory_points += effects.victory_points;
 }
 
-void Player::do_decision(const vector<node_id_t>& adjacent) {
-  cout << get_name() << "'s decision" << endl;
-  cout << "Enter destination (options = ";
-  for (node_id_t node : adjacent) {
-    cout << node << ", ";
-  }
-  cout << ") :";
+//void Player::do_decision(const vector<node_id_t>& adjacent, string decision) {
+  //cout << get_name() << "'s decision" << endl;
+  //cout << "Enter destination (options = ";
+  //for (node_id_t node : adjacent) {
+    //cout << node << ", ";
+  //}
+  //cout << ") :";
 
-  int new_dest;
-  cin>> new_dest;
+void Player::do_decision(string decision) {
+  int new_dest = 0;
+  int stat = 0;
+  //cin>> new_dest;
+  int num_decisions = sscanf(decision.c_str(), "%d %d", &new_dest, &stat);
+  if (num_decisions != 1 && num_decisions != 2){
+    new_dest = 0;
+    stat = 0;
+  }
+  printf("new_dest = %d, stat = %d\n", new_dest, stat);
   change_destination(new_dest);
 
   if (_exp_points > 1) {
-    cout << "Enter stat to boost (0=nothing, 1=kung-fu, 2=health, 3=speed):";
-    int stat;
-    cin>> stat;
+    //cout << "Enter stat to boost (0=nothing, 1=kung-fu, 2=health, 3=speed):";
+    //int stat;
+    //cin>> stat;
 
     if (stat == 1) {
       add_kung_fu(1);
@@ -65,16 +74,16 @@ string Player::get_string() {
     return "Name: " + get_name() + ", health = " + std::to_string(get_health()) + ", kung fu = " + std::to_string(get_kung_fu()) + ", speed = " + std::to_string(get_speed()) + ", exp = " + std::to_string(_exp_points);
 }
 
-string Player::to_json() {
-    string as_json = "{";
-    as_json = as_json + "\"name\": " + "\"" + _name + "\",";
-    as_json = as_json + "\"health\": " + std::to_string(_health)+ ",";
-    as_json = as_json + "\"kung_fu\": " + std::to_string(_kung_fu)+ ",";
-    as_json = as_json + "\"speed\": " + std::to_string(_speed)+ ",";
-    as_json = as_json + "\"movement_counter\": " + std::to_string(_movement_counter)+ ",";
-    as_json = as_json + "\"location\": " + std::to_string(_location)+ ",";
-    as_json = as_json + "\"destination\": " + std::to_string(_destination);
-    as_json = as_json + "}";
+json Player::to_json() {
 
-    return as_json;
+    json j;
+    j["name"] = _name;
+    j["health"] = _health;
+    j["kung_fu"] = _kung_fu;
+    j["speed"] = _speed;
+    j["movement_counter"] = _movement_counter;
+    j["location"] = _location;
+    j["destination"] = _destination;
+
+    return j;
 }

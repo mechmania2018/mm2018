@@ -34,3 +34,5 @@
 # stuff from some peoples' IDE's
 CMakeLists.txt
 .idea/
+*.swp
+cmake-build-debug/

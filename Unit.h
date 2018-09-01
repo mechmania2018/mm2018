@@ -6,9 +6,11 @@
 #include "json.hpp"
 
 #include <string>
+#include "includes/json.hpp"
 
 using json = nlohmann::json;
 using namespace std;
+using json = nlohmann::json;
 
 #define BASE_MOVEMENT_COUNTER 7
 #define MAX_SPEED 5
@@ -81,8 +83,8 @@ public:
   virtual bool is_player();
 
   //virtual string to_string() = 0;
-  virtual string to_json();
-  virtual string get_string();
+  virtual json to_json() = 0;
+  virtual string get_string() = 0;
 
   /*
    * decrements the Unit's movement counter

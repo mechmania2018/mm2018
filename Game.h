@@ -8,8 +8,10 @@
 #include "Unit.h"
 #include "Player.h"
 #include "types.h"
+#include "includes/json.hpp"
 
 using namespace std;
+using json = nlohmann::json;
 
 class Game{
 public:
@@ -34,7 +36,7 @@ public:
    */
   vector<Unit*> get_units_at(node_id_t node);
 
-  void do_player_decisions();
+  void do_player_decisions(string dec1, string dec2);
 
   /*
    * handles movement counters, then movement for all units
