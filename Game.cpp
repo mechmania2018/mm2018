@@ -1,27 +1,48 @@
 #include <iostream>
 #include <string>
 
+#include "json.hpp"
+#include "Unit.h"
+#include "Monster.h"
 #include "Game.h"
 
+using json = nlohmann::json;
 using namespace std;
 
-Game::Game(int size, string p1_name, string p2_name) : _player1(p1_name), _player2(p2_name){
-  for (node_id_t i = 0; i < size + 1; i ++) {
+Game::Game(string json_str, string p1_name, string p2_name): _player1(p1_name), _player2(p2_name) {
+  json::basic_json map = json::parse(json_str);
+
+  json::basic_json nodes_json = map["Nodes"];
+  json::basic_json edges = map["Edges"];
+  json::basic_json monsters_json = map["Monsters"];
+
+  for (node_id_t i = 0; i < (int)nodes_json.size(); i ++) {
     _nodes.push_back(Node());
   }
+  _nodes.push_back(Node());// add hell
 
-  add_unit(_nodes[0], &_player1);
-  add_unit(_nodes[0], &_player2);
+  add_unit_to_node(_nodes[0], &_player1);
+  add_unit_to_node(_nodes[0], &_player2);
+
+  for (json::basic_json edge : edges) {
+    json::basic_json adj = edge["Adjacents"];
+    add_connection(adj[0], adj[1]);
+  }
+
+  for (json::basic_json monster_j : monsters_json) {
+    Monster mon(monster_j);
+    _monsters.push_back(mon);
+  }
+
+  for (unsigned i = 0; i < _monsters.size(); i ++) {
+    Monster* m = &(_monsters[i]);
+    add_unit_to_node(_nodes[m->get_location()], m);
+  }
 }
 
 void Game::add_connection(node_id_t node1, node_id_t node2){
   _nodes[node1].adjacent.push_back(node2);
   _nodes[node2].adjacent.push_back(node1);
-}
-
-void Game::add_unit(Unit* u){
-  add_unit(_nodes[u->get_location()], u);
-  all_units.push_back(u);
 }
 
 vector<node_id_t> Game::get_adjacent_nodes(node_id_t node){
@@ -48,7 +69,7 @@ void Game::do_movement_tick(){
       if (u->time_to_move()) {
         u->reset_movement_counter();
         remove_unit(n, u);
-        add_unit(_nodes[u->get_destination()], u);
+        add_unit_to_node(_nodes[u->get_destination()], u);
         u->set_location(u->get_destination());
       }
     }
@@ -88,7 +109,7 @@ void Game::do_monster_deaths(Player& p) {
       // Monster u is dead
       u->die(get_hell_node_id());
       remove_unit(_nodes[p.get_location()], u);
-      add_unit(_nodes[get_hell_node_id()], u);
+      add_unit_to_node(_nodes[get_hell_node_id()], u);
     }
   }
 }
@@ -100,13 +121,13 @@ void Game::do_player_deaths(){
   if (p1_dies) {
     _player1.die(get_hell_node_id());
     remove_unit(_nodes[_player1.get_location()], &_player1);
-    add_unit(_nodes[get_hell_node_id()], &_player1);
+    add_unit_to_node(_nodes[get_hell_node_id()], &_player1);
   }
 
   if (p2_dies) {
     _player2.die(get_hell_node_id());
     remove_unit(_nodes[_player2.get_location()], &_player2);
-    add_unit(_nodes[get_hell_node_id()], &_player2);
+    add_unit_to_node(_nodes[get_hell_node_id()], &_player2);
   }
 }
 
@@ -166,7 +187,7 @@ void Game::remove_unit(Node& n, Unit* unit) {
   }
 }
 
-void Game::add_unit(Node& n, Unit* unit) {
+void Game::add_unit_to_node(Node& n, Unit* unit) {
   n.units.push_back(unit);
 }
 

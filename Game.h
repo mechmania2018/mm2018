@@ -4,6 +4,7 @@
 #include <map>
 #include <vector>
 
+#include "Monster.h"
 #include "Unit.h"
 #include "Player.h"
 #include "types.h"
@@ -14,19 +15,16 @@ using json = nlohmann::json;
 
 class Game{
 public:
-  Game(int num_nodes, string p1_name, string p2_name);
+  /*
+   * create a map from a json string
+   */
+  Game(string json_map, string p1_name, string p2_name);
 
   /*
    * adds a connection between node1 and node2
    * (assumes that node1 and node2 are not already connected)
    */
   void add_connection(node_id_t node1, node_id_t node2);
-
-  /*
-   * adds a unit to the Game (at the location specified by the unit)
-   * (Note: u is passed as a pointer, so make sure you don't free the unit's memory)
-   */
-  void add_unit(Unit* u);
 
   /*
    * gets the list of nodes that are adjacent to 'node'
@@ -83,7 +81,7 @@ private:
     vector<node_id_t> adjacent;
     vector<Unit*> units;
   };
-  std::vector<Unit*> all_units;
+  std::vector<Monster> _monsters;
   /*
    * list of the nodes in the game
    * when a Node is referred to using a node_id, it is just the index of the node in this vector
@@ -119,7 +117,7 @@ private:
   /*
    * helper function - adds a unit to a Node
    */
-  void add_unit(Node& n, Unit* unit);
+  void add_unit_to_node(Node& n, Unit* unit);
 };
 
 # endif

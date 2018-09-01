@@ -84,8 +84,6 @@ void start_script(char* name, int& stream_to, int& stream_from) {
       idx ++;
     }
 
-    fprintf(stderr, "args[0] = %s\n", args[0]);
-
     execvp(args[0], args);
     perror("execvp()");
     exit(1);
