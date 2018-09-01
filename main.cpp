@@ -22,12 +22,14 @@ int main(int argc, char *argv[]) {
   start_scripts(argv[1], argv[2]);
 
   // just some stuff for debugging player IO
-  /*string s = read_from_player(1);
-  cout << "Player 1 returned " << s << endl;
-  write_to_player(1, "Test\n");
-  cout << "Now player 1 returned " << read_from_player(1) << endl;*/
+//  string s = read_from_player(1);
+//  cout << "Player 1 returned " << s << endl;
+//  write_to_player(1, "Test\n");
+//  cout << "Now player 1 returned " << read_from_player(1) << endl;
 
   // TODO: tell each player which player they are
+  // TODO: functions to ensure script decisions are valid and notify script when it sends invalid decision
+  // will we be writing API to provide info to them? e.g adjacent nodes, nearest monsters, etc
 
   Game game = Game(10, "Player1", "Player2");
 
@@ -77,12 +79,28 @@ int main(int argc, char *argv[]) {
   victory.change_destination(0);
   game.add_unit(&victory);
 
-  cout << game.to_json() << endl;
-
   while (game.get_winner() == 0) {
-    game.print_game();
+    //sending player game info
+    write_to_player(1, game.to_json() + "\n");
+    write_to_player(2, game.to_json() + "\n");
 
-    game.do_player_decisions();
+    //processing player info requests
+    string player1_request = read_from_player(1);
+    cout << "player 1 requested: " << player1_request << "\n";
+    string player2_request = read_from_player(2);
+    cout << "player 2 requested: " << player2_request << "\n";
+
+    //responding to player requests
+    write_to_player(1, game.process_player_requests(player1_request,1) + "\n");
+    write_to_player(2, game.process_player_requests(player2_request,2) + "\n");
+
+    //reading player decisions
+    string a = read_from_player(1);
+    cout << "player 1 decision:" << a << "\n";
+    string b = read_from_player(2);
+    cout << "player 2 decision:" << b << "\n\n";
+
+    game.do_player_decisions(a, b);
     game.do_movement_tick();
     game.do_damage_tick();
     game.do_monster_deaths();

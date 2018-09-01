@@ -27,7 +27,17 @@ public:
    */
   void activate_death_effects(DeathEffects effects);
 
+  /*
+   * console input version without AI scripts.
+   */
   void do_decision(const vector<node_id_t>& adjacent);
+
+  /*
+   * changes player destination and stats based on AI script stdout.
+   * Player decisions must be in the form 'ds' where d = destination, s = statboost.
+   */
+  void do_decision(const vector<node_id_t>& adjacent, string player_decision);
+
 
 private:
   int _exp_points;

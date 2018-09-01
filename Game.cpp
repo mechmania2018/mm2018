@@ -32,9 +32,25 @@ vector<Unit*> Game::get_units_at(node_id_t node){
   return _nodes[node].units;
 }
 
-void Game::do_player_decisions() {
-  _player1.do_decision(_nodes[_player1.get_location()].adjacent);
-  _player2.do_decision(_nodes[_player2.get_location()].adjacent);
+void Game::do_player_decisions(string player1_decision, string player2_decision) {
+  _player1.do_decision(_nodes[_player1.get_location()].adjacent, player1_decision);
+  _player2.do_decision(_nodes[_player2.get_location()].adjacent, player2_decision);
+}
+
+string Game::process_player_requests(string player_requests, int player_num) {
+  string response = "";
+  for (char c : player_requests) {
+    if (c == 'n') {
+      response += "157";
+    }
+    else if (c == 'h') {
+      response += "20";
+    }
+    else if (c == 'z') {
+      response += "";
+    }
+  }
+  return response;
 }
 
 void Game::do_movement_tick(){

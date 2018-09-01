@@ -38,7 +38,15 @@ public:
    */
   vector<Unit*> get_units_at(node_id_t node);
 
-  void do_player_decisions();
+  /*
+   * executes player decisions based on AI script stdout.
+   */
+  void do_player_decisions(string player1_decision, string player2_decision);
+
+  /*
+   * parses and handles player info requests
+   */
+  string process_player_requests(string player_requests, int player_num);
 
   /*
    * handles movement counters, then movement for all units

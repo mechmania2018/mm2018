@@ -42,7 +42,7 @@ void Player::do_decision(const vector<node_id_t>& adjacent) {
 
   int new_dest;
   cin>> new_dest;
-  change_destination(new_dest);
+  change_destination(new_dest); //need to make sure destination is valid
 
   if (_exp_points > 1) {
     cout << "Enter stat to boost (0=nothing, 1=kung-fu, 2=health, 3=speed):";
@@ -60,6 +60,27 @@ void Player::do_decision(const vector<node_id_t>& adjacent) {
       _exp_points --;
     }
   }
+}
+
+void Player::do_decision(const vector<node_id_t>& adjacent, string player_decision) {
+    //need to ensure response is valid format and within parameters
+    int response_destination = player_decision[0] - '0';
+    int response_statboost = player_decision[1] - '0';
+    node_id_t a = adjacent[0];
+
+    change_destination(response_destination); //need to make sure destination is valid
+    if (_exp_points > 1) {
+        if (response_statboost == 1) {
+            add_kung_fu(1);
+            _exp_points --;
+        } else if (response_statboost == 2) {
+            set_health(get_health() + 2);
+            _exp_points --;
+        } else if (response_statboost == 3) {
+            add_speed(1);
+            _exp_points --;
+        }
+    }
 }
 
 string Player::get_string() {
