@@ -15,13 +15,13 @@ int main() {
 
 		fprintf(stderr, "Player received %s\n", buf);
 
-		sleep(0.5);
+		sleep(100);
 
 		printf("0 4\n");
 		//printf("trashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrash\n");
 		fflush(stdout);
 
-		sleep(0.5);
+		sleep(100);
 
 		free(buf);
 	}
