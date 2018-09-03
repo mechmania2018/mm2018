@@ -47,7 +47,7 @@ int main(int argc, char *argv[]) {
   sleepFor.tv_nsec = RESPONSE_NSECS;
 
   string default_action = string("0 0");
-  while (game.get_winner() == 0) {
+  while (game.get_winner() == NO_WINNER) {
     game.print_game();
 
     //send the data for the current game state to the player
