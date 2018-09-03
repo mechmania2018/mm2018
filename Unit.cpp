@@ -87,3 +87,7 @@ void Unit::add_kung_fu(int kung_fu_added) {
 int Unit::get_speed() {
   return _speed;
 }
+
+int Unit::get_movement_counter() {
+  return _movement_counter;
+}

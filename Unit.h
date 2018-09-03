@@ -17,7 +17,7 @@ using namespace std;
 class Unit {
 public:
   /*
-   * struct that represents the effects of a Unit dying on the players in the same node as that unit
+   * struct that represents the effects on the players of a Unit dying in the same node as the player
    */
   struct DeathEffects {
     DeathEffects(int e, int s, int k, int h, int v) {
@@ -28,6 +28,7 @@ public:
       victory_points = v;
     }
 
+    // alternate constructor using JSON
     DeathEffects(json::basic_json j) {
       exp = j["Exp"];
       speed = j["Speed"];
@@ -36,11 +37,11 @@ public:
       victory_points = j["Victory_points"];
     }
 
-    int exp;
-    int speed;
-    int kung_fu;
-    int health;
-    int victory_points;
+    int exp; // experience gained by the player
+    int speed; // speed gained by the player
+    int kung_fu; // kung-fu gained by the player
+    int health; // health gained by the player
+    int victory_points; // victory points gained by the player
   };
 
   Unit(string name, int init_health, int kung_fu, int speed, node_id_t location, DeathEffects effects);
@@ -56,7 +57,7 @@ public:
   node_id_t get_destination();
 
   /*
-   * changes the unit's destination. Also resets the movement counter
+   * changes the unit's destination. Also resets the unit's movement counter
    */
   void change_destination(node_id_t node);
 
@@ -67,11 +68,10 @@ public:
   void set_location(node_id_t node);
 
   /*
-   * getters for health and kung_fu
+   * getters for health, kung_fu, and name
    */
   int get_health();
   int get_kung_fu();
-
   string get_name();
 
   /*
@@ -81,17 +81,20 @@ public:
   virtual bool is_monster() = 0;
   virtual bool is_player() = 0;
 
-  //virtual string to_string() = 0;
+  /*
+   * abstract methods for getting the string or json representation of a unit
+   * (overwritten in child classes)
+   */
   virtual json to_json() = 0;
   virtual string get_string() = 0;
 
   /*
-   * decrements the Unit's movement counter
+   * decrements the Unit's movement counter by 1
    */
   void decrement_movement_counter();
 
   /*
-   * returns true if it is time for the unit to move (when the movement counter is <= the unit's speed)
+   * returns true iff it is time for the unit to move (when the movement counter is <= the unit's speed)
    */
   bool time_to_move();
 
@@ -101,17 +104,20 @@ public:
   void reset_movement_counter();
 
   /*
-   * subtracts 1 from health
+   * subtracts 1 from the unit's health
    */
   void take_damage();
 
   /*
-   * changes the unit's location to 'hell_node_id', changes its destination to its former location, and resets its movement counter
+   * changes the unit's location to 'hell_node_id' (since it's dead)
+   * also changes its destination to its former location, and resets its movement counter
+   * (used so non-player units will respawn after some time)
    */
   virtual void die(node_id_t hell_node_id);
 
 protected:
   int get_speed();
+  int get_movement_counter();
 
   /*
    * set the unit's health to a specific value
@@ -128,7 +134,7 @@ protected:
    */
   void add_kung_fu(int kung_fu_added);
 
-protected:
+private:
   string _name;
   int _health;
   int _kung_fu;

@@ -24,8 +24,10 @@ int main(int argc, char *argv[]) {
     return 1;
   }
 
+  // initialize the player scripts
   start_scripts(argv[1], argv[2]);
 
+  // get the map json string from the file (argv[3])
   ifstream t(argv[3]);
   string map_str;
   t.seekg(0, ios::end);
@@ -33,12 +35,6 @@ int main(int argc, char *argv[]) {
   t.seekg(0, ios::beg);
 
   map_str.assign((istreambuf_iterator<char>(t)), istreambuf_iterator<char>());
-
-  // just some stuff for debugging player IO
-  /*string s = read_from_player(1);
-  cout << "Player 1 returned " << s << endl;
-  write_to_player(1, "Test\n");
-  cout << "Now player 1 returned " << read_from_player(1) << endl;*/
 
   // TODO: tell each player which player they are
 
@@ -122,6 +118,7 @@ int main(int argc, char *argv[]) {
     turn_number += 1;
     //game.print_game();
 
+<<<<<<< bf46058328330276a35f4c633eca8148ddeaba24
     json message_turn = {
       {"type", "turn"},
       {"turn_number", turn_number},
@@ -130,23 +127,37 @@ int main(int argc, char *argv[]) {
 
     write_to_player(1, message_turn);
     write_to_player(2, message_turn);
+=======
+    //send the data for the current game state to the player
+    string p1_json = "1 " + game.to_json() + "\n"; //TODO: remove the number and tell the player which player they are at the start
+    string p2_json = "2 " + game.to_json() + "\n";
+
+    write_to_player(1, p1_json);
+    write_to_player(2, p2_json);
+
+    // sleep to wait for the players to respond
+>>>>>>> cleaned up main, scriptIO, and started on Unit
     nanosleep(&sleepFor, NULL);
+
+    // get responses from players
     string* p1_buffer = read_from_player(1);
     string* p2_buffer = read_from_player(2);
-    printf("Player1 sent %s, Player2 sent %s\n", 
-      p1_buffer ? p1_buffer->c_str() : "no response", 
+    printf("Player1 sent %s, Player2 sent %s\n",
+      p1_buffer ? p1_buffer->c_str() : "no response",
       p2_buffer ? p2_buffer->c_str() : "no response");
+
+    // run the game's turn based on the players' actions
     game.do_player_decisions(
-      p1_buffer ? *p1_buffer : default_action, 
+      p1_buffer ? *p1_buffer : default_action,
       p2_buffer ? *p2_buffer : default_action);
-    
-    if(p1_buffer) delete p1_buffer;
-    if(p2_buffer) delete p2_buffer;
 
     game.do_movement_tick();
     game.do_damage_tick();
     game.do_monster_deaths();
     game.do_player_deaths();
+
+    if(p1_buffer) delete p1_buffer;
+    if(p2_buffer) delete p2_buffer;
   }
 
   cout << "Winner: " << game.get_winner() << endl;
