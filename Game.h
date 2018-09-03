@@ -10,6 +10,13 @@
 #include "types.h"
 #include "includes/json.hpp"
 
+#define NO_WINNER 0
+#define P1_WINS 1
+#define P2_WINS 2
+#define TIED_GAME 3
+
+// TODO: add something to force the game to end after a certain amount of time
+
 using namespace std;
 using json = nlohmann::json;
 
@@ -21,12 +28,6 @@ public:
   Game(string json_map, string p1_name, string p2_name);
 
   /*
-   * adds a connection between node1 and node2
-   * (assumes that node1 and node2 are not already connected)
-   */
-  void add_connection(node_id_t node1, node_id_t node2);
-
-  /*
    * gets the list of nodes that are adjacent to 'node'
    */
   vector<node_id_t> get_adjacent_nodes(node_id_t node);
@@ -36,6 +37,9 @@ public:
    */
   vector<Unit*> get_units_at(node_id_t node);
 
+  /*
+   * does one turn's worth of player decisions for each player
+   */
   void do_player_decisions(string dec1, string dec2);
 
   /*
@@ -60,13 +64,23 @@ public:
   void do_player_deaths();
 
   /*
-   * returns 0 if no winner yet, 1 if player 1 wins, 2 if player 2 wins, or 3 if it's a tie (both players are dead and have the same number of victory points)
+   * returns NO_WINNER, P1_WINS, P2_WINS, or TIED_GAME, respectively
    */
   int get_winner();
 
+  /*
+   * prints a representation of the game to stdout
+   */
   void print_game();
 
+<<<<<<< f94eb2e9441b000bd5541ba18c8a42fabc3636f7
   json to_json();
+=======
+  /*
+   * returns a json string representation of the current state of the game
+   */
+  std::string to_json();
+>>>>>>> added comments and other clarifying stuff
 
   /*
    * gets the node_id for hell
@@ -81,7 +95,8 @@ private:
     vector<node_id_t> adjacent;
     vector<Unit*> units;
   };
-  std::vector<Monster> _monsters;
+  std::vector<Monster> _monsters; // TODO: change to an array
+
   /*
    * list of the nodes in the game
    * when a Node is referred to using a node_id, it is just the index of the node in this vector
@@ -93,6 +108,12 @@ private:
    */
   Player _player1;
   Player _player2;
+
+  /*
+   * adds a connection between node1 and node2
+   * (assumes that node1 and node2 are not already connected)
+   */
+  void add_connection(node_id_t node1, node_id_t node2);
 
   /*
    * helper function - does the monster deaths associated with just one of the players
@@ -112,7 +133,7 @@ private:
   /*
    * helper function - removes a unit from a Node
    */
-  void remove_unit(Node& n, Unit* unit);
+  void remove_unit_from_node(Node& n, Unit* unit);
 
   /*
    * helper function - adds a unit to a Node

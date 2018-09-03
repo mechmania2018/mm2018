@@ -112,13 +112,14 @@ int main(int argc, char *argv[]) {
   sleepFor.tv_nsec = RESPONSE_NSECS;
 
   string default_action = string("0 0");
+  while (game.get_winner() == NO_WINNER) {
+    game.print_game();
 
   int turn_number = 0;
   while (game.get_winner() == 0) {
     turn_number += 1;
     //game.print_game();
 
-<<<<<<< bf46058328330276a35f4c633eca8148ddeaba24
     json message_turn = {
       {"type", "turn"},
       {"turn_number", turn_number},
@@ -127,16 +128,6 @@ int main(int argc, char *argv[]) {
 
     write_to_player(1, message_turn);
     write_to_player(2, message_turn);
-=======
-    //send the data for the current game state to the player
-    string p1_json = "1 " + game.to_json() + "\n"; //TODO: remove the number and tell the player which player they are at the start
-    string p2_json = "2 " + game.to_json() + "\n";
-
-    write_to_player(1, p1_json);
-    write_to_player(2, p2_json);
-
-    // sleep to wait for the players to respond
->>>>>>> cleaned up main, scriptIO, and started on Unit
     nanosleep(&sleepFor, NULL);
 
     // get responses from players
