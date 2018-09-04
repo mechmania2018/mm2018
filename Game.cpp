@@ -33,16 +33,20 @@ Game::Game(string json_str, string p1_name, string p2_name): _player1(p1_name), 
   }
 
   // create each of the monsters
-  for (json::basic_json monster_j : monsters_json) {
-    Monster mon(monster_j);
-    _monsters.push_back(mon);
-  }
+  num_monsters = monsters_json.size();
+  _monsters = new Monster[num_monsters];
+  for (size_t i = 0; i < num_monsters; i ++){
+    Monster mon(monsters_json[i]);
+    _monsters[i] = mon;
 
-  // add each monster to the monster-holding array
-  for (unsigned i = 0; i < _monsters.size(); i ++) {
+    // add each monster to its respective node
     Monster* m = &(_monsters[i]);
     add_unit_to_node(_nodes[m->get_location()], m);
   }
+}
+
+Game::~Game(){
+  delete[] _monsters;
 }
 
 void Game::add_connection(node_id_t node1, node_id_t node2){
@@ -60,8 +64,6 @@ vector<Unit*> Game::get_units_at(node_id_t node){
 
 void Game::do_player_decisions(string dec1, string dec2) {
   // TODO: restrict movement decisions to the nodes adjacent to each player
-  //_player1.do_decision(_nodes[_player1.get_location()].adjacent);
-  //_player2.do_decision(_nodes[_player2.get_location()].adjacent);
   _player1.do_decision(dec1);
   _player2.do_decision(dec2);
 }
@@ -200,18 +202,13 @@ void Game::add_unit_to_node(Node& n, Unit* unit) {
   n.units.push_back(unit);
 }
 
-<<<<<<< f94eb2e9441b000bd5541ba18c8a42fabc3636f7
 json Game::to_json() {
-
-=======
-std::string Game::to_json() {
->>>>>>> added comments and other clarifying stuff
   json state;
 
   state += _player1.to_json();
   state += _player2.to_json();
 
-  for (size_t i = 0; i < _monsters.size(); i++) {
+  for (size_t i = 0; i < num_monsters; i++) {
     state += _monsters[i].to_json();
   }
 

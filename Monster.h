@@ -11,6 +11,8 @@ using namespace std;
 
 class Monster : public Unit {
 public:
+  Monster();
+
   /*
    * constructor for creating monsters from map JSONs
    */

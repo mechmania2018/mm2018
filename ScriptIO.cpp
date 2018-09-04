@@ -124,6 +124,7 @@ void start_scripts(char* script1, char* script2) {
 
 // Read all input from player, and return only the first line, throwing the rest away
 string* read_from(int fd) {
+  // TODO: change so that this doesn't return null pointers to strings... just return an empty string instead
   char buf[READ_BUF_SIZE];
   char trash[READ_BUF_SIZE];
 
@@ -136,7 +137,6 @@ string* read_from(int fd) {
     // Player sent nothing
     return NULL;
   } else if (len == -1){
-    // Something else broke
     perror("read()");
     exit(1);
   } else {

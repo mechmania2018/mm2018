@@ -15,6 +15,9 @@
 #define P2_WINS 2
 #define TIED_GAME 3
 
+#define DEFAULT_DESTINATION 0
+#define DEFAULT_BUFF 0
+
 // TODO: add something to force the game to end after a certain amount of time
 
 using namespace std;
@@ -27,6 +30,8 @@ public:
    */
   Game(string json_map, string p1_name, string p2_name);
 
+  ~Game();
+
   /*
    * gets the list of nodes that are adjacent to 'node'
    */
@@ -36,6 +41,28 @@ public:
    * gets the list of units present at 'node'
    */
   vector<Unit*> get_units_at(node_id_t node);
+
+  struct Decision{
+    // constructor-- uses the JSON string passed by the player's script
+    Decision(string json_str){
+      //TODO: finish implemeting this class in Game
+      try {
+        json::basic_json jsn = json::parse(json_str);
+
+        dest = jsn["Dest"];
+        buff = jsn["Buff"];
+      } catch (exception e){
+        dest = DEFAULT_DESTINATION;
+        buff = DEFAULT_BUFF;
+      }
+    }
+
+    // chosen destination node
+    int dest;
+
+    // stat to buff (should be one of the static variables defined in Player.h)
+    int buff;
+  };
 
   /*
    * does one turn's worth of player decisions for each player
@@ -73,14 +100,7 @@ public:
    */
   void print_game();
 
-<<<<<<< f94eb2e9441b000bd5541ba18c8a42fabc3636f7
   json to_json();
-=======
-  /*
-   * returns a json string representation of the current state of the game
-   */
-  std::string to_json();
->>>>>>> added comments and other clarifying stuff
 
   /*
    * gets the node_id for hell
@@ -95,7 +115,10 @@ private:
     vector<node_id_t> adjacent;
     vector<Unit*> units;
   };
-  std::vector<Monster> _monsters; // TODO: change to an array
+
+  // array on the heap holding all of the monsters' data
+  Monster* _monsters;
+  size_t num_monsters;
 
   /*
    * list of the nodes in the game
