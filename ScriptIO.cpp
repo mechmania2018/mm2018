@@ -190,3 +190,8 @@ void write_to_player(int player_num, string str) {
     cout << "Invalid player number passed to write_to_player" << endl;
   }
 }
+
+void write_to_player(int player_num, json obj) {
+  write_to_player(player_num, obj.dump() + "\n");
+}
+

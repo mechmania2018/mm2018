@@ -170,7 +170,7 @@ void Game::add_unit(Node& n, Unit* unit) {
   n.units.push_back(unit);
 }
 
-std::string Game::to_json() {
+json Game::to_json() {
 
   json state;
 
@@ -181,6 +181,6 @@ std::string Game::to_json() {
     state += all_units[i]->to_json();
 
   }
-  string ret = state.dump();
-  return ret;
+
+  return state;
 }

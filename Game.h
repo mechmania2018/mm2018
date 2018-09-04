@@ -68,7 +68,7 @@ public:
 
   void print_game();
 
-  std::string to_json();
+  json to_json();
 
   /*
    * gets the node_id for hell

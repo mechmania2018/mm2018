@@ -1,15 +1,15 @@
 #include <iostream>
+#include <fstream>
 #include <unistd.h>
 #include <stdio.h>
 
 #include "includes/json.hpp"
+using json = nlohmann::json;
 
 #include "Game.h"
 #include "Unit.h"
 #include "Monster.h"
 #include "ScriptIO.h"
-
-using json = nlohmann::json;
 
 #define RESPONSE_SECS 1
 #define RESPONSE_NSECS 0
@@ -80,21 +80,44 @@ int main(int argc, char *argv[]) {
   victory.change_destination(0);
   game.add_unit(&victory);
 
-  cout << game.to_json() << endl;
+  // Send initial map data to player scripts
+  json map_data;
+  ifstream mapStream("Map.json");
+  mapStream >> map_data;
+
+  json message_map1 = {
+    {"type", "map"},
+    {"player_id", 1},
+    {"map", map_data}
+  };
+  json message_map2 = {
+    {"type", "map"},
+    {"player_id", 2},
+    {"map", map_data}
+  };
+
+  write_to_player(1, message_map1);
+  write_to_player(2, message_map2);
 
   struct timespec sleepFor;
   sleepFor.tv_sec = RESPONSE_SECS;
   sleepFor.tv_nsec = RESPONSE_NSECS;
 
   string default_action = string("0 0");
+
+  int turn_number = 0;
   while (game.get_winner() == 0) {
-    game.print_game();
+    turn_number += 1;
+    //game.print_game();
 
-    string p1_json = "1 " + game.to_json() + "\n";
-    string p2_json = "2 " + game.to_json() + "\n";
+    json message_turn = {
+      {"type", "turn"},
+      {"turn_number", turn_number},
+      {"game_data", game.to_json()},
+    };
 
-    write_to_player(1, p1_json);
-    write_to_player(2, p2_json);
+    write_to_player(1, message_turn);
+    write_to_player(2, message_turn);
     nanosleep(&sleepFor, NULL);
     string* p1_buffer = read_from_player(1);
     string* p2_buffer = read_from_player(2);
