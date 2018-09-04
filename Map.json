@@ -1,8 +1,8 @@
 ﻿{
 	"Nodes" : [
 		{"Name": "Node_0", "Number": 0, "Coordinates": [0,0]},
-		{"Name": "Node_2", "Number": 1, "Coordinates": [0, 5]},
-		{"Name": "Node_1", "Number": 2, "Coordinates": [0, 3]},
+		{"Name": "Node_1", "Number": 1, "Coordinates": [0, 5]},
+		{"Name": "Node_2", "Number": 2, "Coordinates": [0, 3]},
 		{"Name": "Node_3", "Number": 3, "Coordinates": [3, 4]},
 		{"Name": "Node_4", "Number": 4, "Coordinates": [5, 1]},
 		{"Name": "Node_5", "Number": 5, "Coordinates": [2, -2]},
@@ -25,7 +25,25 @@
 		{"Name": "Edge_8_10", "Adjacents": [8, 10]}
 	],
 	"Monsters" : [
-		{"Name": "", "Health": 1, "kung_fu": 1, "speed": 1, "location": 1, "DeathEffects":
-			{"exp": 0, "speed": 0, "kung_fu": 0, "health": 0, "victory_points": 0}}
+		{"Name": "hard monster", "Health": 5, "Kung_fu": 0, "Speed": 0, "Location": 8, "DeathEffects":
+			{"Exp": 2, "Speed": 0, "Kung_fu": 0, "Health": 2, "Victory_points": 0}} ,
+		{"Name": "hard monster", "Health": 5, "Kung_fu": 0, "Speed": 0, "Location": 9, "DeathEffects":
+			{"Exp": 2, "Speed": 0, "Kung_fu": 0, "Health": 2, "Victory_points": 0}} ,
+		{"Name": "hard monster", "Health": 5, "Kung_fu": 0, "Speed": 0, "Location": 1, "DeathEffects":
+			{"Exp": 2, "Speed": 0, "Kung_fu": 0, "Health": 2, "Victory_points": 0}} ,
+		{"Name": "hard monster", "Health": 5, "Kung_fu": 0, "Speed": 0, "Location": 2, "DeathEffects":
+			{"Exp": 2, "Speed": 0, "Kung_fu": 0, "Health": 2, "Victory_points": 0}} ,
+		{"Name": "hard monster", "Health": 5, "Kung_fu": 0, "Speed": 0, "Location": 6, "DeathEffects":
+			{"Exp": 2, "Speed": 0, "Kung_fu": 0, "Health": 2, "Victory_points": 0}} ,
+		{"Name": "easy monster", "Health": 3, "Kung_fu": 0, "Speed": 0, "Location": 5, "DeathEffects":
+			{"Exp": 1, "Speed": 0, "Kung_fu": 0, "Health": 3, "Victory_points": 0}} ,
+		{"Name": "easy monster", "Health": 3, "Kung_fu": 0, "Speed": 0, "Location": 7, "DeathEffects":
+			{"Exp": 1, "Speed": 0, "Kung_fu": 0, "Health": 3, "Victory_points": 0}} ,
+		{"Name": "easy monster", "Health": 3, "Kung_fu": 0, "Speed": 0, "Location": 4, "DeathEffects":
+			{"Exp": 1, "Speed": 0, "Kung_fu": 0, "Health": 3, "Victory_points": 0}} ,
+		{"Name": "speed monster", "Health": 0, "Kung_fu": 0, "Speed": 0, "Location": 3, "DeathEffects":
+			{"Exp": 0, "Speed": 1, "Kung_fu": 0, "Health": 0, "Victory_points": 0}} ,
+		{"Name": "victory point monster", "Health": 0, "Kung_fu": 0, "Speed": -23, "Location": 10, "DeathEffects":
+			{"Exp": 0, "Speed": 0, "Kung_fu": 0, "Health": 0, "Victory_points": 1}}
 	]
 }

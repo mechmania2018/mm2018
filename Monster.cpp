@@ -1,8 +1,16 @@
 #include <iostream>
 
+#include "json.hpp"
+
 #include "Monster.h"
 
+using json = nlohmann::json;
 using namespace std;
+
+Monster::Monster(json::basic_json j) :
+  Unit(j["Name"], j["Health"], j["Kung_fu"], j["Speed"], j["Location"], DeathEffects(j["DeathEffects"])) {
+    _base_health = get_health();
+}
 
 Monster::Monster(string name, int health, int kung_fu, int speed, node_id_t location, DeathEffects effects) :
   Unit(name, health, kung_fu, speed, location, effects){
