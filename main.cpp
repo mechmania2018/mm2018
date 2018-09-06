@@ -113,10 +113,7 @@ int main(int argc, char *argv[]) {
 
   string default_action = string("0 0");
   while (game.get_winner() == NO_WINNER) {
-    game.print_game();
-
-  int turn_number = 0;
-  while (game.get_winner() == 0) {
+    int turn_number = 0;
     turn_number += 1;
     //game.print_game();
 
