@@ -32,7 +32,7 @@ ScriptIO.o : ScriptIO.cpp ScriptIO.h
 	$(CXX) $(CXXFLAGS) ScriptIO.cpp
 
 example : example_script.cpp
-	$(CXX) example_script.cpp -o example.exe
+	$(CXX) $(CXXFLAGS) example_script.cpp -o example.exe
 
 clean :
 	rm -f *.o $(EXENAME)

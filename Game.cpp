@@ -191,7 +191,7 @@ void Game::add_unit_to_node(Node& n, Unit* unit) {
   n.units.push_back(unit);
 }
 
-std::string Game::to_json() {
+json Game::to_json() {
 
   json state;
 
@@ -201,6 +201,6 @@ std::string Game::to_json() {
   for (size_t i = 0; i < _monsters.size(); i++) {
     state += _monsters[i].to_json();
   }
-  string ret = state.dump();
-  return ret;
+
+  return state;
 }
