@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 
-#include "json.hpp"
+#include "./includes/json.hpp"
 #include "Unit.h"
 #include "Monster.h"
 #include "Game.h"
@@ -11,7 +11,6 @@ using namespace std;
 
 Game::Game(string json_str, string p1_name, string p2_name): _player1(p1_name), _player2(p2_name) {
   json::basic_json map = json::parse(json_str);
-
   json::basic_json nodes_json = map["Nodes"];
   json::basic_json edges = map["Edges"];
   json::basic_json monsters_json = map["Monsters"];

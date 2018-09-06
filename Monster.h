@@ -1,7 +1,7 @@
 #ifndef MONSTER_H
 #define MONSTER_H
 
-#include "json.hpp"
+#include "./includes/json.hpp"
 
 #include "types.h"
 #include "Unit.h"
@@ -14,7 +14,6 @@ public:
   Monster(json::basic_json j);
 
   Monster(string name, int health, int kung_fu, int speed, node_id_t location, DeathEffects effects);
-
   bool is_player();
   bool is_monster();
 

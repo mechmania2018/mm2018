@@ -41,7 +41,6 @@ int main(int argc, char *argv[]) {
   cout << "Now player 1 returned " << read_from_player(1) << endl;*/
 
   // TODO: tell each player which player they are
-
   Game game = Game(map_str, "Player1", "Player2");
 
   /*Game game = Game(10, "Player1", "Player2");
@@ -91,8 +90,6 @@ int main(int argc, char *argv[]) {
   Monster victory("victory point monster", 0, 0, -23, game.get_hell_node_id(), Unit::DeathEffects(0, 0, 0, 0, 1));
   victory.change_destination(0);
   game.add_unit(&victory);*/
-
-  cout << game.to_json() << endl;
 
   struct timespec sleepFor;
   sleepFor.tv_sec = RESPONSE_SECS;

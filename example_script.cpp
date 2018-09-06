@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <time.h>
+#include "Game_Api.h"
 
 #define RESPONSE_SECS 1
 #define RESPONSE_NSECS 0
