@@ -3,7 +3,7 @@
 CXX = clang++
 LD = clang++
 CXXFLAGS = -std=c++1y -stdlib=libstdc++ -c -g -O0 -Wall -Wextra -Werror -I./includes/
-LDFLAGS = -std=c++1y -stdlib=libstdc++ -lpthread
+LDFLAGS = -std=c++1y -stdlib=libstdc++
 
 all : $(EXENAME) example
 
@@ -29,8 +29,7 @@ ScriptIO.o : ScriptIO.cpp ScriptIO.h
 	$(CXX) $(CXXFLAGS) ScriptIO.cpp
 
 example : example_script.cpp
-	$(CXX) $(CXXFLAGS) example_script.cpp -o example.exe
-    
+	$(LD) example_script.cpp $(LDFLAGS) -o example.exe
     
 clean :
 	rm -f *.o $(EXENAME)
