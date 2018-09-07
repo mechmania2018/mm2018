@@ -17,7 +17,7 @@ int main() {
 	while(1){
 		char* buf = NULL;
 		size_t size = 0;
- 
+
 		getline(&buf, &size, stdin);
 		json data = json::parse(buf);
 
