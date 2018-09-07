@@ -86,10 +86,6 @@ int main(int argc, char *argv[]) {
       p1_buffer ? p1_buffer->c_str() : "no response",
       p2_buffer ? p2_buffer->c_str() : "no response");
 
-    Game::Decision p1_dec = Game::Decision(*p1_buffer);
-    Game::Decision p2_dec = Game::Decision(*p2_buffer);
-    cout << p1_dec.dest << p2_dec.dest;
-
     // run the game's turn based on the players' actions
     game.do_player_decisions(
       p1_buffer ? *p1_buffer : default_action,

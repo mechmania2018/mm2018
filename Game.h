@@ -42,28 +42,6 @@ public:
    */
   vector<Unit*> get_units_at(node_id_t node);
 
-  struct Decision{
-    // constructor-- uses the JSON string passed by the player's script
-    Decision(string json_str){
-      //TODO: finish implemeting this class in Game
-      try {
-        json::basic_json jsn = json::parse(json_str);
-
-        dest = jsn["Dest"];
-        buff = jsn["Buff"];
-      } catch (exception e){
-        dest = DEFAULT_DESTINATION;
-        buff = DEFAULT_BUFF;
-      }
-    }
-
-    // chosen destination node
-    int dest;
-
-    // stat to buff (should be one of the static variables defined in Player.h)
-    int buff;
-  };
-
   /*
    * does one turn's worth of player decisions for each player
    */
