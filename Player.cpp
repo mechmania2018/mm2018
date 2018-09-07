@@ -68,13 +68,14 @@ string Player::get_string() {
 
 json Player::to_json() {
     json j;
-    j["name"] = get_name();
-    j["health"] = get_health();
-    j["kung_fu"] = get_kung_fu();
-    j["speed"] = get_speed();
-    j["movement_counter"] = get_movement_counter();
-    j["location"] = get_location();
-    j["destination"] = get_destination();
+    j["Name"] = get_name();
+    j["Health"] = get_health();
+    j["Kung_fu"] = get_kung_fu();
+    j["Speed"] = get_speed();
+    j["Movement_counter"] = get_movement_counter();
+    j["Location"] = get_location();
+    j["Destination"] = get_destination();
+    j["Dead"] = dead();
 
     return j;
 }
