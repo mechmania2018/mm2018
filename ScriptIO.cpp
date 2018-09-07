@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <fcntl.h>
+#include <signal.h>
+#include<sys/types.h>
 
 #include <iostream>
 #include <string.h>
@@ -12,9 +14,11 @@
 
 #define READ_BUF_SIZE 64
 
+static pid_t p1_pid;
 static int to_p1_fd;
 static int from_p1_fd;
 
+static pid_t p2_pid;
 static int to_p2_fd;
 static int from_p2_fd;
 
@@ -35,7 +39,7 @@ int get_arg_count(char* str) {
 
 // helper function to start one script, setting stream_to and stream_from
 // to be file descriptors for a pipe to and from the script, respectively
-void start_script(char* name, int& stream_to, int& stream_from) {
+pid_t start_script(char* name, int& stream_to, int& stream_from) {
   int pipe_to[2];
   if (pipe(pipe_to)) {
     perror("pipe()");
@@ -114,12 +118,19 @@ void start_script(char* name, int& stream_to, int& stream_from) {
     perror("fcntl() (set flags)");
     exit(1);
   }
+
+  return child_id;
 }
 
 // public function to start each of the player scripts
 void start_scripts(char* script1, char* script2) {
-  start_script(script1, to_p1_fd, from_p1_fd);
-  start_script(script2, to_p2_fd, from_p2_fd);
+  p1_pid = start_script(script1, to_p1_fd, from_p1_fd);
+  p2_pid = start_script(script2, to_p2_fd, from_p2_fd);
+}
+
+void terminate_scripts() {
+  kill(p1_pid, 9);
+  kill(p1_pid, 9);
 }
 
 // Read all input from player, and return only the first line, throwing the rest away
@@ -202,4 +213,3 @@ void write_to_player(int player_num, string str) {
 void write_to_player(int player_num, json obj) {
   write_to_player(player_num, obj.dump() + "\n");
 }
-

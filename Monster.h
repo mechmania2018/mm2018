@@ -32,9 +32,9 @@ public:
   json to_json();
 
   /*
-   * Sets the monster's location to hell and sets it to respawn after some time (based off its speed)
+   * overridden from Unit class -- brings the monster back to life if it is time for it to respawn
    */
-  void die(node_id_t hell_node_id);
+  void decrement_movement_counter();
 
 private:
   // health the monster regenerates to whenever it respawns

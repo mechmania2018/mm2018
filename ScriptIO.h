@@ -9,6 +9,11 @@ using namespace std;
 void start_scripts(char* script1, char* script2);
 
 /*
+ * kills each of the player scripts
+ */
+void terminate_scripts();
+
+/*
  * reads one line from the player indicated by player_num, discarding any further output from them
  */
 string* read_from_player(int player_num);

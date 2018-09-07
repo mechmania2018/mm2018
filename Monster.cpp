@@ -44,7 +44,10 @@ json Monster::to_json() {
   return j;
 }
 
-void Monster::die(node_id_t hell_node_id) {
-  Unit::die(hell_node_id);
-  set_health(_base_health);
+void Monster::decrement_movement_counter() {
+  Unit::decrement_movement_counter();
+
+  if (time_to_move()) {
+    revive(_base_health);
+  }
 }

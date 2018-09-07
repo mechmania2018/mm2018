@@ -102,11 +102,6 @@ public:
 
   json to_json();
 
-  /*
-   * gets the node_id for hell
-   */
-  node_id_t get_hell_node_id();
-
 private:
   /*
    * internal representation of a Node

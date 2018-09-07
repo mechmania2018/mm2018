@@ -68,11 +68,12 @@ public:
   void set_location(node_id_t node);
 
   /*
-   * getters for health, kung_fu, and name
+   * getters for health, kung_fu, name, and death status
    */
   int get_health();
   int get_kung_fu();
   string get_name();
+  bool dead();
 
   /*
    * abstract methods for checking if a unit is a monster or a player
@@ -91,7 +92,7 @@ public:
   /*
    * decrements the Unit's movement counter by 1
    */
-  void decrement_movement_counter();
+  virtual void decrement_movement_counter();
 
   /*
    * returns true iff it is time for the unit to move (when the movement counter is <= the unit's speed)
@@ -109,11 +110,9 @@ public:
   void take_damage();
 
   /*
-   * changes the unit's location to 'hell_node_id' (since it's dead)
-   * also changes its destination to its former location, and resets its movement counter
-   * (used so non-player units will respawn after some time)
+   * sets the monster to be dead
    */
-  virtual void die(node_id_t hell_node_id);
+  virtual void die();
 
 protected:
   int get_speed();
@@ -134,6 +133,11 @@ protected:
    */
   void add_kung_fu(int kung_fu_added);
 
+  /*
+   * brings a unit back to life, with a specified amount of health
+   */
+  void revive(int health);
+
 private:
   string _name;
   int _health;
@@ -143,6 +147,7 @@ private:
   node_id_t _location;
   node_id_t _destination;
   DeathEffects _effects;
+  bool _dead;
 };
 
 #endif

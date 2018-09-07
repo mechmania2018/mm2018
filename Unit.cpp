@@ -13,6 +13,7 @@ Unit::Unit(string name, int init_health, int kung_fu, int speed, node_id_t locat
   _location = location;
   _movement_counter = BASE_MOVEMENT_COUNTER;
   _destination = location;
+  _dead = false;
 }
 
 Unit::DeathEffects Unit::get_death_effects() {
@@ -50,6 +51,10 @@ string Unit::get_name() {
   return _name;
 }
 
+bool Unit::dead() {
+  return _dead;
+}
+
 void Unit::decrement_movement_counter() {
   _movement_counter --;
 }
@@ -66,10 +71,10 @@ void Unit::take_damage() {
   _health --;
 }
 
-void Unit::die(node_id_t hell_node_id) {
+void Unit::die() {
   _destination = _location;
-  _location = hell_node_id;
   _movement_counter = BASE_MOVEMENT_COUNTER;
+  _dead = true;
 }
 
 void Unit::set_health(int new_health) {
@@ -90,4 +95,9 @@ int Unit::get_speed() {
 
 int Unit::get_movement_counter() {
   return _movement_counter;
+}
+
+void Unit::revive(int health) {
+  _dead = false;
+  _health = health;
 }

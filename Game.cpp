@@ -20,7 +20,6 @@ Game::Game(string json_str, string p1_name, string p2_name): _player1(p1_name), 
   for (node_id_t i = 0; i < (int)nodes_json.size(); i ++) {
     _nodes.push_back(Node());
   }
-  _nodes.push_back(Node());// add hell
 
   // add each player to node 0
   add_unit_to_node(_nodes[0], &_player1);
@@ -85,11 +84,11 @@ void Game::do_movement_tick(){
 }
 
 void Game::do_damage_tick(){
-  if (_player1.get_location() != get_hell_node_id()) {
+  if (!_player1.dead()) {
     do_damage_tick(_nodes[_player1.get_location()]);
   }
 
-  if (_player1.get_location() != _player2.get_location() && _player2.get_location() != get_hell_node_id()) {
+  if (!_player2.dead() && !_player1.dead() && _player1.get_location() != _player2.get_location()) {
     do_damage_tick(_nodes[_player2.get_location()]);
   }
 }
@@ -100,8 +99,8 @@ void Game::do_monster_deaths(){
 }
 
 void Game::do_monster_deaths(Player& p) {
-  // if the player is in hell, they can't be hurting monsters
-  if (p.get_location() == get_hell_node_id()) return;
+  // if the player is dead, they can't be hurting monsters
+  if (p.dead()) return;
 
   for (Unit* u : _nodes[p.get_location()].units) {
     if (u->is_monster() && u->get_health() <= p.get_kung_fu()) {
@@ -117,9 +116,7 @@ void Game::do_monster_deaths(Player& p) {
       }
 
       // Monster u is dead
-      u->die(get_hell_node_id());
-      remove_unit_from_node(_nodes[p.get_location()], u);
-      add_unit_to_node(_nodes[get_hell_node_id()], u);
+      u->die();
     }
   }
 }
@@ -130,20 +127,16 @@ void Game::do_player_deaths(){
   bool p2_dies = will_player_die(_player2);
 
   if (p1_dies) {
-    _player1.die(get_hell_node_id());
-    remove_unit_from_node(_nodes[_player1.get_location()], &_player1);
-    add_unit_to_node(_nodes[get_hell_node_id()], &_player1);
+    _player1.die();
   }
 
   if (p2_dies) {
-    _player2.die(get_hell_node_id());
-    remove_unit_from_node(_nodes[_player2.get_location()], &_player2);
-    add_unit_to_node(_nodes[get_hell_node_id()], &_player2);
+    _player2.die();
   }
 }
 
 bool Game::will_player_die(Player& p){
-  if (p.get_location() == get_hell_node_id()) return false;
+  if (p.dead()) return false;
 
   for (Unit* u : _nodes[p.get_location()].units) {
     if (u != &p && u->get_kung_fu() > p.get_health()) {
@@ -159,7 +152,7 @@ int Game::get_winner() {
     return P1_WINS;
   } else if (_player2.get_num_victory_points() > _player1.get_num_victory_points()) {
     return P2_WINS;
-  } else if (_player1.get_location() == get_hell_node_id() && _player2.get_location() == get_hell_node_id()) {
+  } else if (_player1.dead() && _player2.dead()) {
     return TIED_GAME;
   }
   return NO_WINNER;
@@ -175,10 +168,6 @@ void Game::print_game() {
 
     cout << endl;
   }
-}
-
-int Game::get_hell_node_id() {
-  return _nodes.size() - 1;
 }
 
 void Game::do_damage_tick(Node& n) {
