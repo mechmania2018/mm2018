@@ -111,3 +111,28 @@ void Game_Api::update(string json_string) {
         idx++;
     }
 }
+
+string Game_Api::get_adjacent_nodes(int player_number) {
+  string response = "";
+  node_id_t player_location = all_units[player_number]._location;
+  for (node_id_t node_id : nodes[player_location].adjacent) {
+    response += std::to_string(node_id);
+  }
+  return response;
+}
+
+// string Game_Api::get_path_nearest_powerup(string powerup_name) {
+//
+// }
+//
+// string Game_Api::get_path_nearest_monster(string monster_name) {
+//
+// }
+//
+// string Game_Api::get_path_other_player() {
+//
+// }
+//
+// string Game_Api::get_path_node(node_id_t node) {
+//
+// }

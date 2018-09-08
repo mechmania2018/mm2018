@@ -38,15 +38,14 @@ private:
     };
 
 public:
-    Unit * _player1;
-    Unit * _player2;
+    Unit * _player1; //0th unit in all_units
+    Unit * _player2; //1st unit in all_units
     vector<Unit> all_units; //doesnt include players
     vector<Node> nodes;
-
-    Game_Api(string json);
+    explicit Game_Api(string json);
     void update(string json);
     void print();
-    string get_adjacent_nodes();
+    string get_adjacent_nodes(int player_number);
     string get_path_nearest_powerup(string powerup_name); //powerup_name refers to 'type' of powerup
     string get_path_nearest_monster(string monster_name); //'type' of monster
     string get_path_other_player(); //shortest path

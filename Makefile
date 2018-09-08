@@ -1,5 +1,7 @@
 # base
+EXENAME = game.exe
 
+OBJS = ScriptIO.o Unit.o Player.o Monster.o Game.o main.o Game_Api.o
 CXX = clang++
 LD = clang++
 CXXFLAGS = -std=c++1y -stdlib=libstdc++ -c -g -O0 -Wall -Wextra -Werror -I./includes/
@@ -28,13 +30,14 @@ Monster.o : Monster.cpp Monster.h Unit.o
 ScriptIO.o : ScriptIO.cpp ScriptIO.h
 	$(CXX) $(CXXFLAGS) ScriptIO.cpp
 
-example.exe : example_script.cpp
-	$(LD) example_script.cpp $(LDFLAGS) -o example.exe
-    
-clean :
-<<<<<<< HEAD
-	rm -f *.o $(EXENAME)
+Game_Api.o : Game_Api.h Game_Api.cpp
+	$(CXX) $(CXXFLAGS)	Game_Api.cpp
 
-=======
+example : example_script.cpp Game_Api.o
+	$(CXX) example_script.cpp $(CXXFLAGS) -o example.exe
+
+
+clean :
 	rm -f *.o $(EXENAME) example.exe
->>>>>>> 1726a7a5984a206a769c27cbc45ec91cfdf25ec3
+=======
+>>>>>>> working on example
