@@ -63,11 +63,13 @@ int main(int argc, char *argv[]) {
   sleepFor.tv_sec = RESPONSE_SECS;
   sleepFor.tv_nsec = RESPONSE_NSECS;
 
+  int turn_number = 0;
+
   string default_action = string("0 0");
   while (game.get_winner() == NO_WINNER) {
-    int turn_number = 0;
     turn_number += 1;
-    //game.print_game();
+
+    //cout << game.to_json() << endl;
 
     json message_turn = {
       {"type", "turn"},
@@ -80,24 +82,17 @@ int main(int argc, char *argv[]) {
     nanosleep(&sleepFor, NULL);
 
     // get responses from players
-    string* p1_buffer = read_from_player(1);
-    string* p2_buffer = read_from_player(2);
-    printf("Player1 sent %s, Player2 sent %s\n",
-      p1_buffer ? p1_buffer->c_str() : "no response",
-      p2_buffer ? p2_buffer->c_str() : "no response");
+    string p1_reply = read_from_player(1);
+    string p2_reply = read_from_player(2);
+    printf("Player1 sent %s, Player2 sent %s\n", p1_reply.c_str(), p2_reply.c_str());
 
     // run the game's turn based on the players' actions
-    game.do_player_decisions(
-      p1_buffer ? *p1_buffer : default_action,
-      p2_buffer ? *p2_buffer : default_action);
+    game.do_player_decisions(p1_reply, p2_reply);
 
     game.do_movement_tick();
     game.do_damage_tick();
     game.do_monster_deaths();
     game.do_player_deaths();
-
-    if(p1_buffer) delete p1_buffer;
-    if(p2_buffer) delete p2_buffer;
   }
 
   cout << "Winner: " << game.get_winner() << endl;

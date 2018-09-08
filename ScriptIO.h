@@ -16,7 +16,7 @@ void terminate_scripts();
 /*
  * reads one line from the player indicated by player_num, discarding any further output from them
  */
-string* read_from_player(int player_num);
+string read_from_player(int player_num);
 
 /*
  * writes the string str into the respective player's stdin
