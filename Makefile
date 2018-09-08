@@ -33,11 +33,9 @@ ScriptIO.o : ScriptIO.cpp ScriptIO.h
 Game_Api.o : Game_Api.h Game_Api.cpp
 	$(CXX) $(CXXFLAGS)	Game_Api.cpp
 
-example : example_script.cpp Game_Api.o
-	$(CXX) example_script.cpp $(CXXFLAGS) -o example.exe
+example.exe : example_script.cpp Game_Api.o
+	$(LD) example_script.cpp $(LDFLAGS) -o example.exe
 
 
 clean :
 	rm -f *.o $(EXENAME) example.exe
-=======
->>>>>>> working on example
