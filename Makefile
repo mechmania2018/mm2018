@@ -5,7 +5,7 @@ LD = clang++
 CXXFLAGS = -std=c++1y -stdlib=libstdc++ -c -g -O0 -Wall -Wextra -Werror -I./includes/
 LDFLAGS = -std=c++1y -stdlib=libstdc++
 
-all : $(EXENAME) example
+all : $(EXENAME) example.exe
 
 $(EXENAME) : $(OBJS)
 	$(LD) $(OBJS) $(LDFLAGS) -o $(EXENAME)
@@ -28,9 +28,13 @@ Monster.o : Monster.cpp Monster.h Unit.o
 ScriptIO.o : ScriptIO.cpp ScriptIO.h
 	$(CXX) $(CXXFLAGS) ScriptIO.cpp
 
-example : example_script.cpp
+example.exe : example_script.cpp
 	$(LD) example_script.cpp $(LDFLAGS) -o example.exe
     
 clean :
+<<<<<<< HEAD
 	rm -f *.o $(EXENAME)
 
+=======
+	rm -f *.o $(EXENAME) example.exe
+>>>>>>> 1726a7a5984a206a769c27cbc45ec91cfdf25ec3
