@@ -16,28 +16,36 @@ Game::Game(string json_str, string p1_name, string p2_name): _player1(p1_name), 
   json::basic_json edges = map["Edges"];
   json::basic_json monsters_json = map["Monsters"];
 
+  // create each of the nodes in the map
   for (node_id_t i = 0; i < (int)nodes_json.size(); i ++) {
     _nodes.push_back(Node());
   }
-  _nodes.push_back(Node());// add hell
 
+  // add each player to node 0
   add_unit_to_node(_nodes[0], &_player1);
   add_unit_to_node(_nodes[0], &_player2);
 
+  // add adjacent edges to each node
   for (json::basic_json edge : edges) {
     json::basic_json adj = edge["Adjacents"];
     add_connection(adj[0], adj[1]);
   }
 
-  for (json::basic_json monster_j : monsters_json) {
-    Monster mon(monster_j);
-    _monsters.push_back(mon);
-  }
+  // create each of the monsters
+  num_monsters = monsters_json.size();
+  _monsters = new Monster[num_monsters];
+  for (size_t i = 0; i < num_monsters; i ++){
+    Monster mon(monsters_json[i]);
+    _monsters[i] = mon;
 
-  for (unsigned i = 0; i < _monsters.size(); i ++) {
+    // add each monster to its respective node
     Monster* m = &(_monsters[i]);
     add_unit_to_node(_nodes[m->get_location()], m);
   }
+}
+
+Game::~Game(){
+  delete[] _monsters;
 }
 
 void Game::add_connection(node_id_t node1, node_id_t node2){
@@ -54,8 +62,7 @@ vector<Unit*> Game::get_units_at(node_id_t node){
 }
 
 void Game::do_player_decisions(string dec1, string dec2) {
-  //_player1.do_decision(_nodes[_player1.get_location()].adjacent);
-  //_player2.do_decision(_nodes[_player2.get_location()].adjacent);
+  // TODO: restrict movement decisions to the nodes adjacent to each player
   _player1.do_decision(dec1);
   _player2.do_decision(dec2);
 }
@@ -68,7 +75,7 @@ void Game::do_movement_tick(){
       u->decrement_movement_counter();
       if (u->time_to_move()) {
         u->reset_movement_counter();
-        remove_unit(n, u);
+        remove_unit_from_node(n, u);
         add_unit_to_node(_nodes[u->get_destination()], u);
         u->set_location(u->get_destination());
       }
@@ -77,11 +84,11 @@ void Game::do_movement_tick(){
 }
 
 void Game::do_damage_tick(){
-  if (_player1.get_location() != get_hell_node_id()) {
+  if (!_player1.dead()) {
     do_damage_tick(_nodes[_player1.get_location()]);
   }
 
-  if (_player1.get_location() != _player2.get_location() && _player2.get_location() != get_hell_node_id()) {
+  if (!_player2.dead() && !_player1.dead() && _player1.get_location() != _player2.get_location()) {
     do_damage_tick(_nodes[_player2.get_location()]);
   }
 }
@@ -92,10 +99,12 @@ void Game::do_monster_deaths(){
 }
 
 void Game::do_monster_deaths(Player& p) {
-  if (p.get_location() == get_hell_node_id()) return;
+  // if the player is dead, they can't be hurting monsters
+  if (p.dead()) return;
 
   for (Unit* u : _nodes[p.get_location()].units) {
     if (u->is_monster() && u->get_health() <= p.get_kung_fu()) {
+      // monster will die, so activate its death effects on whichever player is on the same node
       if (_player1.get_location() == u->get_location())
       {
         _player1.activate_death_effects(u->get_death_effects());
@@ -107,32 +116,27 @@ void Game::do_monster_deaths(Player& p) {
       }
 
       // Monster u is dead
-      u->die(get_hell_node_id());
-      remove_unit(_nodes[p.get_location()], u);
-      add_unit_to_node(_nodes[get_hell_node_id()], u);
+      u->die();
     }
   }
 }
 
 void Game::do_player_deaths(){
+  // do checks before taking any action so that the turn order doesn't matter
   bool p1_dies = will_player_die(_player1);
   bool p2_dies = will_player_die(_player2);
 
   if (p1_dies) {
-    _player1.die(get_hell_node_id());
-    remove_unit(_nodes[_player1.get_location()], &_player1);
-    add_unit_to_node(_nodes[get_hell_node_id()], &_player1);
+    _player1.die();
   }
 
   if (p2_dies) {
-    _player2.die(get_hell_node_id());
-    remove_unit(_nodes[_player2.get_location()], &_player2);
-    add_unit_to_node(_nodes[get_hell_node_id()], &_player2);
+    _player2.die();
   }
 }
 
 bool Game::will_player_die(Player& p){
-  if (p.get_location() == get_hell_node_id()) return false;
+  if (p.dead()) return false;
 
   for (Unit* u : _nodes[p.get_location()].units) {
     if (u != &p && u->get_kung_fu() > p.get_health()) {
@@ -145,13 +149,13 @@ bool Game::will_player_die(Player& p){
 
 int Game::get_winner() {
   if (_player1.get_num_victory_points() > _player2.get_num_victory_points()) {
-    return 1;
+    return P1_WINS;
   } else if (_player2.get_num_victory_points() > _player1.get_num_victory_points()) {
-    return 2;
-  } else if (_player1.get_location() == get_hell_node_id() && _player2.get_location() == get_hell_node_id()) {
-    return 3;
+    return P2_WINS;
+  } else if (_player1.dead() && _player2.dead()) {
+    return TIED_GAME;
   }
-  return 0;
+  return NO_WINNER;
 }
 
 void Game::print_game() {
@@ -166,10 +170,6 @@ void Game::print_game() {
   }
 }
 
-int Game::get_hell_node_id() {
-  return _nodes.size() - 1;
-}
-
 void Game::do_damage_tick(Node& n) {
   if (n.units.size() > 1) {
     for (Unit* u : n.units) {
@@ -178,7 +178,7 @@ void Game::do_damage_tick(Node& n) {
   }
 }
 
-void Game::remove_unit(Node& n, Unit* unit) {
+void Game::remove_unit_from_node(Node& n, Unit* unit) {
   for (unsigned i = 0; i < n.units.size(); i ++) {
     if (n.units[i] == unit) {
       n.units.erase(n.units.begin() + i);
@@ -192,13 +192,12 @@ void Game::add_unit_to_node(Node& n, Unit* unit) {
 }
 
 json Game::to_json() {
-
   json state;
 
   state += _player1.to_json();
   state += _player2.to_json();
 
-  for (size_t i = 0; i < _monsters.size(); i++) {
+  for (size_t i = 0; i < num_monsters; i++) {
     state += _monsters[i].to_json();
   }
 

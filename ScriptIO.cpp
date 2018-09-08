@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <fcntl.h>
+#include <signal.h>
+#include<sys/types.h>
 
 #include <iostream>
 #include <string.h>
@@ -12,12 +14,15 @@
 
 #define READ_BUF_SIZE 64
 
+static pid_t p1_pid;
 static int to_p1_fd;
 static int from_p1_fd;
 
+static pid_t p2_pid;
 static int to_p2_fd;
 static int from_p2_fd;
 
+// helper fucntion -- gets the number of arguments contained in a string
 int get_arg_count(char* str) {
   int args = 1;
   int idx = 0;
@@ -32,7 +37,9 @@ int get_arg_count(char* str) {
   return args;
 }
 
-void start_script(char* name, int& stream_to, int& stream_from) {
+// helper function to start one script, setting stream_to and stream_from
+// to be file descriptors for a pipe to and from the script, respectively
+pid_t start_script(char* name, int& stream_to, int& stream_from) {
   int pipe_to[2];
   if (pipe(pipe_to)) {
     perror("pipe()");
@@ -59,6 +66,7 @@ void start_script(char* name, int& stream_to, int& stream_from) {
       perror("dup2()");
       exit(1);
     }
+
     /* close unnecessary pipe descriptors for a clean environment */
     if (close( pipe_to[0] ) ||
         close( pipe_to[1] ) ||
@@ -84,6 +92,7 @@ void start_script(char* name, int& stream_to, int& stream_from) {
       idx ++;
     }
 
+    //execute the script
     execvp(args[0], args);
     perror("execvp()");
     exit(1);
@@ -95,6 +104,7 @@ void start_script(char* name, int& stream_to, int& stream_from) {
         exit(1);
   }
 
+  //set up the pipe between you and the newly started script
   stream_to = pipe_to[1];
   stream_from = pipe_from[0];
 
@@ -108,19 +118,28 @@ void start_script(char* name, int& stream_to, int& stream_from) {
     perror("fcntl() (set flags)");
     exit(1);
   }
+
+  return child_id;
 }
 
+// public function to start each of the player scripts
 void start_scripts(char* script1, char* script2) {
-  start_script(script1, to_p1_fd, from_p1_fd);
-  start_script(script2, to_p2_fd, from_p2_fd);
+  p1_pid = start_script(script1, to_p1_fd, from_p1_fd);
+  p2_pid = start_script(script2, to_p2_fd, from_p2_fd);
 }
 
-// Read all input from player, and return only the first line
+void terminate_scripts() {
+  kill(p1_pid, 9);
+  kill(p1_pid, 9);
+}
+
+// Read all input from player, and return only the first line, throwing the rest away
 string* read_from(int fd) {
+  // TODO: change so that this doesn't return null pointers to strings... just return an empty string instead
   char buf[READ_BUF_SIZE];
   char trash[READ_BUF_SIZE];
 
-  // I assume one line contains less than READ_BUF_SIZE bytes
+  // I assume one line contains less than READ_BUF_SIZE bytes --TODO: change? bad assumption, people can be jerks/incompetent
   // since it's only really supposed to be "(number) (number)\n"
   ssize_t len = read(fd, &buf, READ_BUF_SIZE);
   string* return_string;
@@ -129,7 +148,6 @@ string* read_from(int fd) {
     // Player sent nothing
     return NULL;
   } else if (len == -1){
-    // Something else broke
     perror("read()");
     exit(1);
   } else {
@@ -151,6 +169,7 @@ string* read_from(int fd) {
   return return_string;
 }
 
+// public method that gets the player's output
 string* read_from_player(int player_num) {
   if (player_num == 1) {
     return read_from(from_p1_fd);
@@ -162,6 +181,7 @@ string* read_from_player(int player_num) {
   }
 }
 
+// helper function to write an entire string to a file descriptor
 void write_to(int fd, string str) {
   const char* cstr = str.c_str();
   size_t bytes_read = 0;
@@ -179,6 +199,7 @@ void write_to(int fd, string str) {
   }
 }
 
+// public method that writes str into the respective player's stdin
 void write_to_player(int player_num, string str) {
   if (player_num == 1) {
     write_to(to_p1_fd, str);
@@ -192,4 +213,3 @@ void write_to_player(int player_num, string str) {
 void write_to_player(int player_num, json obj) {
   write_to_player(player_num, obj.dump() + "\n");
 }
-
