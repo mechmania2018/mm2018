@@ -61,10 +61,28 @@ vector<Unit*> Game::get_units_at(node_id_t node){
   return _nodes[node].units;
 }
 
-void Game::do_player_decisions(string dec1, string dec2) {
-  // TODO: restrict movement decisions to the nodes adjacent to each player
-  _player1.do_decision(dec1);
-  _player2.do_decision(dec2);
+void Game::do_player_decisions(string dec1_str, string dec2_str) {
+  do_player_decision(_player1, dec1_str);
+  do_player_decision(_player2, dec2_str);
+}
+
+void Game::do_player_decision(Player& player, string decision) {
+  Player::Decision dec(decision);
+
+  Node location = _nodes[player.get_location()];
+
+  bool valid_dest = false;
+
+  for (int i : get_adjacent_nodes(player.get_location())) {
+    if (i == dec.dest) valid_dest = true;
+  }
+
+  if (!valid_dest) {
+    cerr << "Player " << player.get_name() << " attempted to set destination to invalid node" << endl;
+    dec.dest = player.get_location();
+  }
+
+  player.do_decision(dec);
 }
 
 void Game::do_movement_tick(){

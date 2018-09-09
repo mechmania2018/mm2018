@@ -32,15 +32,8 @@ string Monster::get_string() {
 }
 
 json Monster::to_json() {
-  json j;
-  j["Name"] = get_name();
-  j["Health"] = get_health();
-  j["Kung_fu"] = get_kung_fu();
-  j["Speed"] = get_speed();
-  j["Movement_counter"] = get_movement_counter();
-  j["Location"] = get_location();
-  j["Destination"] = get_destination();
-  j["Dead"] = dead();
+  json j = Unit::to_json();
+  j["Type"] = "Monster";
 
   return j;
 }

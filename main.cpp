@@ -35,9 +35,7 @@ int main(int argc, char *argv[]) {
   t.seekg(0, ios::beg);
 
   map_str.assign((istreambuf_iterator<char>(t)), istreambuf_iterator<char>());
-
-  // TODO: tell each player which player they are
-
+  
   Game game = Game(map_str, "Player1", "Player2");
 
   // Send initial map data to player scripts

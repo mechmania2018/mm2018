@@ -32,30 +32,18 @@ void Player::activate_death_effects(DeathEffects effects) {
   _victory_points += effects.victory_points;
 }
 
-void Player::do_decision(string decision) {
-  // TODO: change decision to a JSON
-  int new_dest = 0;
-  int stat = 0;
-
-  int num_decisions = sscanf(decision.c_str(), "%d %d", &new_dest, &stat);
-
-  if (num_decisions < 2){
-    // both decisions weren't chosen, so just do a default move
-    new_dest = 0;
-    stat = 0;
-  }
-
-  printf("new_dest = %d, stat = %d\n", new_dest, stat);
-  change_destination(new_dest);
+void Player::do_decision(Decision dec) {
+  //printf("new_dest = %d, stat = %d\n", new_dest, stat);
+  change_destination(dec.dest);
 
   if (_exp_points > 1) {
-    if (stat == BOOST_KUNG_FU) {
+    if (dec.buff == BOOST_KUNG_FU) {
       add_kung_fu(1);
       _exp_points --;
-    } else if (stat == BOOST_HEALTH) {
+    } else if (dec.buff == BOOST_HEALTH) {
       set_health(get_health() + 2);
       _exp_points --;
-    } else if (stat == BOOST_SPEED) {
+    } else if (dec.buff == BOOST_SPEED) {
       add_speed(1);
       _exp_points --;
     }
@@ -67,15 +55,8 @@ string Player::get_string() {
 }
 
 json Player::to_json() {
-    json j;
-    j["Name"] = get_name();
-    j["Health"] = get_health();
-    j["Kung_fu"] = get_kung_fu();
-    j["Speed"] = get_speed();
-    j["Movement_counter"] = get_movement_counter();
-    j["Location"] = get_location();
-    j["Destination"] = get_destination();
-    j["Dead"] = dead();
+    json j = Unit::to_json();
+    j["Type"] = "Player";
 
     return j;
 }

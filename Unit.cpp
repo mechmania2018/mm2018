@@ -55,6 +55,21 @@ bool Unit::dead() {
   return _dead;
 }
 
+json Unit::to_json(){
+  json j;
+  j["Name"] = _name;
+  j["Health"] = _health;
+  j["Kung_fu"] = _kung_fu;
+  j["Speed"] = _speed;
+  j["Movement_counter"] = _movement_counter;
+  j["Location"] = _location;
+  j["Destination"] = _destination;
+  j["Dead"] = _dead;
+  j["Death Effects"] = _effects.to_json();
+
+  return j;
+}
+
 void Unit::decrement_movement_counter() {
   _movement_counter --;
 }
