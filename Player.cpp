@@ -6,7 +6,6 @@
 
 using namespace std;
 
-
 Player::Player(string name) : Unit(name, INIT_PLAYER_HEALTH, 0, 0, 0, DeathEffects(0, 0, 0, 0, 0)){
   _exp_points = 0;
   _victory_points = 0;
@@ -34,19 +33,18 @@ void Player::activate_death_effects(DeathEffects effects) {
 
 void Player::do_decision(string decision) {
   // TODO: change decision to a JSON
+  // TODO: dont reset movement counter if destination decision doesnt change, or handle them deciding not to change destination.
   int new_dest = 0;
   int stat = 0;
-
-  int num_decisions = sscanf(decision.c_str(), "%d %d", &new_dest, &stat);
-
-  if (num_decisions < 2){
-    // both decisions weren't chosen, so just do a default move
-    new_dest = 0;
-    stat = 0;
+  if (decision.size() != 2) {
+    cout << "not enough decisions, performing default. \n";
+    change_destination(new_dest);
+    return;
   }
-
-  printf("new_dest = %d, stat = %d\n", new_dest, stat);
-  change_destination(new_dest);
+  printf("new_dest = %c, stat = %c\n", decision[1], decision[0]);
+  new_dest = (int)decision[1] - 48;
+  stat = (int)decision[0] - 48;
+  if (new_dest != _destination) change_destination(new_dest);
 
   if (_exp_points > 1) {
     if (stat == BOOST_KUNG_FU) {

@@ -22,13 +22,10 @@ public:
    * manual constructor
    */
   Monster(string name, int health, int kung_fu, int speed, node_id_t location, DeathEffects effects);
-<<<<<<< HEAD
-=======
 
   /*
    * Overridden methods from Unit
    */
->>>>>>> 1726a7a5984a206a769c27cbc45ec91cfdf25ec3
   bool is_player();
   bool is_monster();
   string get_string();

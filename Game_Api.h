@@ -19,7 +19,7 @@ class Game_Api {
 private:
     struct Unit { //make everything const
         Unit(string name, int h, int k, int s, node_id_t loc, Game_Api* api);
-        void update(string json);
+        void update(json unit_json);
         string _name;
         int _health;
         int _kung_fu;
@@ -42,8 +42,8 @@ public:
     Unit * _player2; //1st unit in all_units
     vector<Unit> all_units; //doesnt include players
     vector<Node> nodes;
-    explicit Game_Api(string json);
-    void update(string json);
+    explicit Game_Api(int i, string json_str);
+    void update(json json_str);
     void print();
     string get_adjacent_nodes(int player_number);
     string get_path_nearest_powerup(string powerup_name); //powerup_name refers to 'type' of powerup

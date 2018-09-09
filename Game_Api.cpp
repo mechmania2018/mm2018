@@ -22,31 +22,31 @@ Game_Api::Unit::Unit(string name, int h, int k, int s, node_id_t loc, Game_Api* 
     this->_victory_points = 0; //same as above
 }
 
-void Game_Api::Unit::update(string json_string) {
+void Game_Api::Unit::update(json unit_json) {
     //remove unit from previous location in case it has moved
-    json::basic_json unit_json = json::parse(json_string);
-    if (unit_json["location"] != this->_location) {
+    if (unit_json["Location"] != this->_location) {
+      std::cerr << "location changed" << "\n";
         Node& prev_location = _api->nodes[_location];
         for (unsigned i = 0; i < prev_location.units.size(); i++) {
             if (prev_location.units[i] == this) {
                 prev_location.units.erase(prev_location.units.begin() + i);
             }
         }
-        _location = unit_json["location"];
+        _location = unit_json["Location"];
         _api->nodes[_location].units.push_back(this);
     }
-    _name = unit_json["name"];
-    _health = unit_json["health"];
-    _kung_fu = unit_json["kung_fu"];
-    _speed = unit_json["speed"];
-    _destination = unit_json["destination"];
-    _movement_counter = unit_json["movement_counter"];
+    _name = unit_json["Name"];
+    _health = unit_json["Health"];
+    _kung_fu = unit_json["Kung_fu"];
+    _speed = unit_json["Speed"];
+    _destination = unit_json["Destination"];
+    _movement_counter = unit_json["Movement_counter"];
 
     //missing exp and victory points
 }
 
-Game_Api::Game_Api(string json_string) {
-
+Game_Api::Game_Api(int i, string json_string) {
+    i = 0;
     json::basic_json map = json::parse(json_string);
     json::basic_json nodes_json = map["Nodes"];
     json::basic_json edges_json = map["Edges"];
@@ -82,39 +82,36 @@ Game_Api::Game_Api(string json_string) {
         Unit* m = &(all_units[i]);
         nodes[m->_location].units.push_back(m);
     }
-    print();
+    //print();
 }
 
 void Game_Api::print() {
     for (Unit unit : all_units) {
-        cout << unit._name << "\n";
-        cout << unit._location << "\n";
-        cout << unit._destination << "\n";
+        std::cerr << unit._name << "\n";
+        std::cerr << unit._location << "\n";
+        std::cerr << unit._destination << "\n";
     }
     int idx = 0;
     for (Node node : nodes) {
         for (node_id_t i : node.adjacent) {
-            cout << "Node " << idx << " adjacent: " << i << "\n";
+            std::cerr << "Node " << idx << " adjacent: " << i << "\n";
         }
         for (Unit* unit : node.units) {
-            cout << "This node contains: " << unit->_name << "\n";
+            std::cerr << "This node contains: " << unit->_name << "\n";
         }
         idx++;
     }
 }
 
-void Game_Api::update(string json_string) {
-    json::basic_json units_json = json::parse(json_string);
-    int idx = 0;
-    for (json::basic_json unit_json : units_json) {
-        all_units[idx].update(unit_json); //all_units must be in same order as units in json received
-        idx++;
+void Game_Api::update(json json_string) {
+    for (unsigned i = 0; i < all_units.size(); i++) {
+          all_units[i].update(json_string[i]);
     }
 }
 
 string Game_Api::get_adjacent_nodes(int player_number) {
   string response = "";
-  node_id_t player_location = all_units[player_number]._location;
+  node_id_t player_location = all_units[(player_number-1)]._location;
   for (node_id_t node_id : nodes[player_location].adjacent) {
     response += std::to_string(node_id);
   }

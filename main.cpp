@@ -40,19 +40,17 @@ int main(int argc, char *argv[]) {
   Game game = Game(map_str, "Player1", "Player2");
 
   // Send initial map data to player scripts
-  json map_data;
-  ifstream mapStream(argv[3]);
-  mapStream >> map_data;
 
   json message_map1 = {
     {"type", "map"},
     {"player_id", 1},
-    {"map", map_data}
+    {"map", map_str}
   };
+
   json message_map2 = {
     {"type", "map"},
     {"player_id", 2},
-    {"map", map_data}
+    {"map", map_str}
   };
 
   write_to_player(1, message_map1);
@@ -62,12 +60,11 @@ int main(int argc, char *argv[]) {
   sleepFor.tv_sec = RESPONSE_SECS;
   sleepFor.tv_nsec = RESPONSE_NSECS;
 
-  string default_action = string("0 0");
+  string default_action = string("00");
   while (game.get_winner() == NO_WINNER) {
     int turn_number = 0;
     turn_number += 1;
     //game.print_game();
-
     json message_turn = {
       {"type", "turn"},
       {"turn_number", turn_number},
@@ -86,9 +83,7 @@ int main(int argc, char *argv[]) {
       p2_buffer ? p2_buffer->c_str() : "no response");
 
     // run the game's turn based on the players' actions
-    game.do_player_decisions(
-      p1_buffer ? *p1_buffer : default_action,
-      p2_buffer ? *p2_buffer : default_action);
+    game.do_player_decisions(p1_buffer->c_str(), p2_buffer->c_str());
 
     game.do_movement_tick();
     game.do_damage_tick();

@@ -13,6 +13,9 @@
 		],
 
 	"Edges" : [
+		{"Name": "Edge_0_1", "Adjacents": [0, 1]},
+		{"Name": "Edge_0_5", "Adjacents": [0, 5]},
+		{"Name": "Edge_0_7", "Adjacents": [0, 7]},
 		{"Name": "Edge_1_2", "Adjacents": [1, 2]},
 		{"Name": "Edge_2_3", "Adjacents": [2, 3]},
 		{"Name": "Edge_3_4", "Adjacents": [3, 4]},

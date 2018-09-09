@@ -138,7 +138,7 @@ protected:
    */
   void revive(int health);
 
-private:
+protected:
   string _name;
   int _health;
   int _kung_fu;
