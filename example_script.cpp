@@ -26,7 +26,11 @@ int main() {
 			//cerr << "Player " << my_player_num << " received map data" << endl;
 		} else {
 			//cerr << "Player " << my_player_num << " received turn " << data["turn_number"] << " data" << endl;
-			printf("{\"Stance\": \"Rock\", \"Dest\": %d}\n", my_player_num);
+			if (my_player_num == 1) {
+				printf("{\"Stance\": \"Rock\", \"Dest\": %d}\n", 1);
+			} else {
+				printf("{\"Stance\": \"Paper\", \"Dest\": %d}\n", 2);
+			}
 			//printf("trashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrashtrash\n");
 			fflush(stdout);
 		}

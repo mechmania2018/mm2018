@@ -28,11 +28,11 @@
 		{"Name": "Edge_8_10", "Adjacents": [8, 10]}
 	],
 	"Monsters" : [
-		{"Name": "rock monster", "Health": 5, "Stance": "Rock", "Speed": 0, "Location": 1, "Attack": 1, "DeathEffects":
+		{"Name": "rock monster", "Health": 5, "Stance": "Rock", "Speed": 0, "Location": 2, "Attack": 1, "DeathEffects":
 			{"Rock": 2, "Paper": 0, "Scissors": 0, "Speed": 0, "Health": 5}} ,
 		{"Name": "paper monster", "Health": 5, "Stance": "Paper", "Speed": 0, "Location": 9, "Attack": 1, "DeathEffects":
 			{"Rock": 0, "Paper": 2, "Scissors": 0, "Speed": 0, "Health": 5}} ,
 		{"Name": "scissors monster", "Health": 5, "Stance": "Scissors", "Speed": 0, "Location": 1, "Attack": 1, "DeathEffects":
-			{"Rock": 0, "Paper": 0, "Scissors": 2, "Speed": 0, "Health": 5}}
+			{"Rock": 1, "Paper": 0, "Scissors": 0, "Speed": 0, "Health": 5}}
 	]
 }

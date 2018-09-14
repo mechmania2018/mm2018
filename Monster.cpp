@@ -50,7 +50,7 @@ void Monster::attack(Unit* other) {
 void Monster::decrement_movement_counter() {
   Unit::decrement_movement_counter();
 
-  if (time_to_move()) {
+  if (time_to_move() && dead()) {
     revive(_base_health);
   }
 }

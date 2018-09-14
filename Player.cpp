@@ -49,7 +49,7 @@ void Player::do_decision(Decision dec) {
 }
 
 string Player::get_string() {
-    return "Name: " + get_name() + ", health = " + to_string(get_health()) + ", speed = " + to_string(get_speed());
+    return "Name: " + get_name() + ", health = " + to_string(get_health()) + ", speed = " + to_string(get_speed()) + ", rock = " + to_string(_rock) + ", paper = " + to_string(_paper) + ", scissors = " + to_string(_scissors) + ", stance = " + get_stance_str(get_stance()) + ", destination = " + to_string(get_destination());
 }
 
 json Player::to_json() {

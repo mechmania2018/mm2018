@@ -16,6 +16,8 @@ using json = nlohmann::json;
 #define RESPONSE_SECS 1
 #define RESPONSE_NSECS 0
 
+#define CONFINE_TURN_NUMBER 30
+
 using namespace std;
 
 int main(int argc, char *argv[]) {
@@ -63,6 +65,7 @@ int main(int argc, char *argv[]) {
     turn_number += 1;
 
     //cout << game.to_json() << endl;
+    game.print_game();
 
     json message_turn = {
       {"type", "turn"},
@@ -77,12 +80,17 @@ int main(int argc, char *argv[]) {
     // get responses from players
     string p1_reply = read_from_player(1);
     string p2_reply = read_from_player(2);
-    printf("Player1 sent %s, Player2 sent %s\n", p1_reply.c_str(), p2_reply.c_str());
+    //printf("Player1 sent %s, Player2 sent %s\n", p1_reply.c_str(), p2_reply.c_str());
 
     // run the game's turn based on the players' actions
     game.do_player_decisions(p1_reply, p2_reply);
 
-    game.do_movement_tick();
+    if (turn_number < CONFINE_TURN_NUMBER){
+      game.do_movement_tick();
+    } else {
+      game.move_players_to_start();
+    }
+
     game.do_damage_tick();
     game.do_monster_deaths();
     game.do_player_deaths();

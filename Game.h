@@ -15,8 +15,6 @@
 #define P2_WINS 2
 #define TIED_GAME 3
 
-// TODO: add something to force the game to end after a certain amount of time
-
 using namespace std;
 using json = nlohmann::json;
 
@@ -76,6 +74,8 @@ public:
   void print_game();
 
   json to_json();
+
+  void move_players_to_start();
 
 private:
   /*

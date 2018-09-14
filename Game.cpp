@@ -17,7 +17,7 @@ Game::Game(string json_str, string p1_name, string p2_name): _player1(p1_name), 
   json::basic_json monsters_json = map["Monsters"];
 
   // create each of the nodes in the map
-  for (node_id_t i = 0; i < (int)nodes_json.size(); i ++) {
+  while (_nodes.size() < nodes_json.size()) {
     _nodes.push_back(Node());
   }
 
@@ -33,6 +33,7 @@ Game::Game(string json_str, string p1_name, string p2_name): _player1(p1_name), 
 
   // create each of the monsters
   num_monsters = monsters_json.size();
+
   _monsters = new Monster[num_monsters];
   for (size_t i = 0; i < num_monsters; i ++){
     Monster mon(monsters_json[i]);
@@ -120,13 +121,13 @@ void Game::do_damage_tick(){
 void Game::do_monster_deaths(){
   for (node_id_t node_id = 0; node_id < (node_id_t)_nodes.size(); node_id ++) {
     for (Unit* u : _nodes[node_id].units) {
-      if (u->is_monster() && !u->dead() && u->get_health() < 0) {
+      if (u->is_monster() && !u->dead() && u->get_health() <= 0) {
         if (_player1.get_location() == node_id) {
           _player1.activate_death_effects(u->get_death_effects());
         }
 
         if (_player2.get_location() == node_id) {
-          _player1.activate_death_effects(u->get_death_effects());
+          _player2.activate_death_effects(u->get_death_effects());
         }
 
         u->die();
@@ -141,12 +142,10 @@ void Game::do_player_deaths(){
   bool p2_dies = will_player_die(_player2);
 
   if (p1_dies) {
-    cerr << "Player 1 has died -- health = " << _player1.get_health() << endl;
     _player1.die();
   }
 
   if (p2_dies) {
-    cerr << "Player 2 has died" << endl;
     _player2.die();
   }
 }
@@ -168,15 +167,18 @@ int Game::get_winner() {
 }
 
 void Game::print_game() {
-  for (unsigned i = 0; i < _nodes.size() - 1; i ++) {
-    cout << "Node " << i << endl;
+  for (unsigned i = 0; i < _nodes.size(); i ++) {
+    if (_nodes[i].units.size() > 0){
+      cout << "Node " << i << endl;
 
-    for (Unit* u : _nodes[i].units) {
-      cout << u->get_string() << endl;
+      for (Unit* u : _nodes[i].units) {
+        cout << u->get_string() << endl;
+      }
+
+      cout << endl;
     }
-
-    cout << endl;
   }
+  cout << endl;
 }
 
 void Game::remove_unit_from_node(Node& n, Unit* unit) {
@@ -203,4 +205,18 @@ json Game::to_json() {
   }
 
   return state;
+}
+
+void Game::move_players_to_start() {
+  if (_player1.get_location() != 0) {
+    _player1.set_location(0);
+    remove_unit_from_node(_nodes[_player1.get_location()], &_player1);
+    add_unit_to_node(_nodes[0], &_player1);
+  }
+
+  if (_player2.get_location() != 0) {
+    _player2.set_location(0);
+    remove_unit_from_node(_nodes[_player2.get_location()], &_player2);
+    add_unit_to_node(_nodes[0], &_player2);
+  }
 }
