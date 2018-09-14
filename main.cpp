@@ -35,23 +35,18 @@ int main(int argc, char *argv[]) {
   t.seekg(0, ios::beg);
 
   map_str.assign((istreambuf_iterator<char>(t)), istreambuf_iterator<char>());
-  
-  Game game = Game(map_str, "Player1", "Player2");
 
-  // Send initial map data to player scripts
-  json map_data;
-  ifstream mapStream(argv[3]);
-  mapStream >> map_data;
+  Game game = Game(map_str, "Player1", "Player2");
 
   json message_map1 = {
     {"type", "map"},
     {"player_id", 1},
-    {"map", map_data}
+    {"map", map_str}
   };
   json message_map2 = {
     {"type", "map"},
     {"player_id", 2},
-    {"map", map_data}
+    {"map", map_str}
   };
 
   write_to_player(1, message_map1);

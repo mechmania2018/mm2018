@@ -71,14 +71,14 @@ void Game::do_player_decision(Player& player, string decision) {
 
   Node location = _nodes[player.get_location()];
 
-  bool valid_dest = false;
+  bool valid_dest = (dec.dest == player.get_location());
 
   for (int i : get_adjacent_nodes(player.get_location())) {
     if (i == dec.dest) valid_dest = true;
   }
 
   if (!valid_dest) {
-    cerr << "Player " << player.get_name() << " attempted to set destination to invalid node" << endl;
+    cerr << "Player " << player.get_name() << " attempted to set destination to invalid node:" << dec.dest << endl;
     dec.dest = player.get_location();
   }
 
@@ -102,39 +102,35 @@ void Game::do_movement_tick(){
 }
 
 void Game::do_damage_tick(){
-  if (!_player1.dead()) {
-    do_damage_tick(_nodes[_player1.get_location()]);
-  }
-
-  if (!_player2.dead() && !_player1.dead() && _player1.get_location() != _player2.get_location()) {
-    do_damage_tick(_nodes[_player2.get_location()]);
+  for (Node& n : _nodes) {
+    if (n.units.size() > 1) {
+      for (Unit* u1 : n.units) {
+        if (!u1->dead()) {
+          for (Unit* u2 : n.units) {
+            if (u1 != u2 && !u2->dead()) {
+              u1->attack(u2);
+            }
+          }
+        }
+      }
+    }
   }
 }
 
 void Game::do_monster_deaths(){
-  do_monster_deaths(_player1);
-  do_monster_deaths(_player2);
-}
+  for (node_id_t node_id = 0; node_id < (node_id_t)_nodes.size(); node_id ++) {
+    for (Unit* u : _nodes[node_id].units) {
+      if (u->is_monster() && !u->dead() && u->get_health() < 0) {
+        if (_player1.get_location() == node_id) {
+          _player1.activate_death_effects(u->get_death_effects());
+        }
 
-void Game::do_monster_deaths(Player& p) {
-  // if the player is dead, they can't be hurting monsters
-  if (p.dead()) return;
+        if (_player2.get_location() == node_id) {
+          _player1.activate_death_effects(u->get_death_effects());
+        }
 
-  for (Unit* u : _nodes[p.get_location()].units) {
-    if (u->is_monster() && u->get_health() <= p.get_kung_fu()) {
-      // monster will die, so activate its death effects on whichever player is on the same node
-      if (_player1.get_location() == u->get_location())
-      {
-        _player1.activate_death_effects(u->get_death_effects());
+        u->die();
       }
-
-      if (_player2.get_location() == u->get_location())
-      {
-        _player2.activate_death_effects(u->get_death_effects());
-      }
-
-      // Monster u is dead
-      u->die();
     }
   }
 }
@@ -145,33 +141,28 @@ void Game::do_player_deaths(){
   bool p2_dies = will_player_die(_player2);
 
   if (p1_dies) {
+    cerr << "Player 1 has died -- health = " << _player1.get_health() << endl;
     _player1.die();
   }
 
   if (p2_dies) {
+    cerr << "Player 2 has died" << endl;
     _player2.die();
   }
 }
 
 bool Game::will_player_die(Player& p){
   if (p.dead()) return false;
-
-  for (Unit* u : _nodes[p.get_location()].units) {
-    if (u != &p && u->get_kung_fu() > p.get_health()) {
-      return true;
-    }
-  }
-
-  return false;
+  return (p.get_health() <= 0);
 }
 
 int Game::get_winner() {
-  if (_player1.get_num_victory_points() > _player2.get_num_victory_points()) {
-    return P1_WINS;
-  } else if (_player2.get_num_victory_points() > _player1.get_num_victory_points()) {
-    return P2_WINS;
-  } else if (_player1.dead() && _player2.dead()) {
+  if (_player1.dead() && _player2.dead()) {
     return TIED_GAME;
+  } else if (_player1.dead()) {
+    return P2_WINS;
+  } else if (_player2.dead()) {
+    return P1_WINS;
   }
   return NO_WINNER;
 }
@@ -185,14 +176,6 @@ void Game::print_game() {
     }
 
     cout << endl;
-  }
-}
-
-void Game::do_damage_tick(Node& n) {
-  if (n.units.size() > 1) {
-    for (Unit* u : n.units) {
-      u->take_damage();
-    }
   }
 }
 

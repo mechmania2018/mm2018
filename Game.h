@@ -114,19 +114,9 @@ private:
   void do_player_decision(Player& player, string decision);
 
   /*
-   * helper function - does the monster deaths associated with just one of the players
-   */
-  void do_monster_deaths(Player& p);
-
-  /*
    * helper function - checks weather a specific player should die right now
    */
   bool will_player_die(Player& p);
-
-  /*
-   * helper function - does the damage tick stuff for a single Node
-   */
-  void do_damage_tick(Node& n);
 
   /*
    * helper function - removes a unit from a Node

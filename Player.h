@@ -6,12 +6,7 @@
 
 using namespace std;
 
-#define INIT_PLAYER_HEALTH 5
-
-#define BUFF_NOTHING 0
-#define BOOST_KUNG_FU 1
-#define BOOST_HEALTH 2
-#define BOOST_SPEED 3
+#define INIT_PLAYER_HEALTH 20
 
 #define INVALID_DESTINATION -1
 
@@ -21,17 +16,13 @@ public:
   Player(string name);
 
   /*
-   * get the number of victory points the player has
-   */
-  int get_num_victory_points();
-
-  /*
    * overridden methods from the Unit class
    */
   bool is_player();
   bool is_monster();
   string get_string();
   json to_json();
+  void attack(Unit* other);
 
   /*
    * makes the appropriate changes to the Player based on the death effects from another Unit
@@ -44,17 +35,19 @@ public:
         json::basic_json j = json::parse(json_str);
 
         dest = j["Dest"];
-        buff = j["Buff"];
+
+        stance = get_stance_val(j["Stance"]);
+
       } catch (exception e) {
         // something was wrong with the decision string -- use the default decision
         cerr << "Received invalid decision: " << json_str << endl;
         dest = INVALID_DESTINATION;
-        buff = BUFF_NOTHING;
+        stance = INVALID_STANCE;
       }
     }
 
     int dest;
-    int buff;
+    int stance;
   };
 
   /*
@@ -63,8 +56,14 @@ public:
   void do_decision(Decision dec);
 
 private:
-  int _exp_points;
-  int _victory_points;
+  /*
+   * returns the stat value of the stance indicated by stance_id
+   */
+  int stance_stat(int stance_id);
+
+  int _rock;
+  int _paper;
+  int _scissors;
 };
 
 #endif
