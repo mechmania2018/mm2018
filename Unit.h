@@ -19,7 +19,8 @@ public:
   /*
    * struct that represents the effects on the players of a Unit dying in the same node as the player
    */
-  struct DeathEffects {
+  class DeathEffects {
+  public:
     DeathEffects(int e, int s, int k, int h, int v) {
       exp = e;
       speed = s;
@@ -35,6 +36,17 @@ public:
       kung_fu = j["Kung_fu"];
       health = j["Health"];
       victory_points = j["Victory_points"];
+    }
+
+    json to_json() {
+      json j;
+      j["Exp"] = exp;
+      j["Speed"] = speed;
+      j["Kung_fu"] = kung_fu;
+      j["Health"] = health;
+      j["Victory_points"] = victory_points;
+
+      return j;
     }
 
     int exp; // experience gained by the player
@@ -86,7 +98,7 @@ public:
    * abstract methods for getting the string or json representation of a unit
    * (overwritten in child classes)
    */
-  virtual json to_json() = 0;
+  virtual json to_json();
   virtual string get_string() = 0;
 
   /*

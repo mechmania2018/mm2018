@@ -134,19 +134,18 @@ void terminate_scripts() {
 }
 
 // Read all input from player, and return only the first line, throwing the rest away
-string* read_from(int fd) {
-  // TODO: change so that this doesn't return null pointers to strings... just return an empty string instead
+string read_from(int fd) {
   char buf[READ_BUF_SIZE];
   char trash[READ_BUF_SIZE];
 
-  // I assume one line contains less than READ_BUF_SIZE bytes --TODO: change? bad assumption, people can be jerks/incompetent
-  // since it's only really supposed to be "(number) (number)\n"
+  // I assume one usable line contains less than READ_BUF_SIZE bytes
+  // since it's only really supposed to be a small json
   ssize_t len = read(fd, &buf, READ_BUF_SIZE);
-  string* return_string;
+  string return_string;
 
   if (len == -1 && (errno == EAGAIN || errno == EWOULDBLOCK)) {
     // Player sent nothing
-    return NULL;
+    return "";
   } else if (len == -1){
     perror("read()");
     exit(1);
@@ -155,13 +154,14 @@ string* read_from(int fd) {
     char* eol = strchr(buf, '\n');
     if(!eol){
       // No newline == invalid input
-      return_string = NULL;
+      return_string = "";
     } else {
       *eol = '\0';
-      return_string = new string(buf);
+      return_string = string(buf);
     }
   }
 
+  // discard the rest of the contents of the file descriptor
   while(read(fd, &trash, READ_BUF_SIZE) > 0){
     // Nothing to do here
   }
@@ -170,7 +170,7 @@ string* read_from(int fd) {
 }
 
 // public method that gets the player's output
-string* read_from_player(int player_num) {
+string read_from_player(int player_num) {
   if (player_num == 1) {
     return read_from(from_p1_fd);
   } else if (player_num == 2) {

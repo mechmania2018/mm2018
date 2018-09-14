@@ -15,9 +15,6 @@
 #define P2_WINS 2
 #define TIED_GAME 3
 
-#define DEFAULT_DESTINATION 0
-#define DEFAULT_BUFF 0
-
 // TODO: add something to force the game to end after a certain amount of time
 
 using namespace std;
@@ -110,6 +107,11 @@ private:
    * (assumes that node1 and node2 are not already connected)
    */
   void add_connection(node_id_t node1, node_id_t node2);
+
+  /*
+   * does the decision for just one player
+   */
+  void do_player_decision(Player& player, string decision);
 
   /*
    * helper function - does the monster deaths associated with just one of the players
