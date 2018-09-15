@@ -21,7 +21,7 @@ public:
   /*
    * manual constructor
    */
-  Monster(string name, int health, int kung_fu, int speed, node_id_t location, DeathEffects effects);
+  Monster(string name, int health, int speed, int stance, int attack, node_id_t location, DeathEffects effects);
 
   /*
    * Overridden methods from Unit
@@ -30,6 +30,7 @@ public:
   bool is_monster();
   string get_string();
   json to_json();
+  void attack(Unit* other);
 
   /*
    * overridden from Unit class -- brings the monster back to life if it is time for it to respawn
@@ -39,6 +40,7 @@ public:
 private:
   // health the monster regenerates to whenever it respawns
   int _base_health;
+  int _attack;
 };
 
 #endif

@@ -15,8 +15,6 @@
 #define P2_WINS 2
 #define TIED_GAME 3
 
-// TODO: add something to force the game to end after a certain amount of time
-
 using namespace std;
 using json = nlohmann::json;
 
@@ -77,6 +75,8 @@ public:
 
   json to_json();
 
+  void move_players_to_start();
+
 private:
   /*
    * internal representation of a Node
@@ -114,19 +114,9 @@ private:
   void do_player_decision(Player& player, string decision);
 
   /*
-   * helper function - does the monster deaths associated with just one of the players
-   */
-  void do_monster_deaths(Player& p);
-
-  /*
    * helper function - checks weather a specific player should die right now
    */
   bool will_player_die(Player& p);
-
-  /*
-   * helper function - does the damage tick stuff for a single Node
-   */
-  void do_damage_tick(Node& n);
 
   /*
    * helper function - removes a unit from a Node

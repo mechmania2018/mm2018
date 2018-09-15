@@ -16,6 +16,8 @@ using json = nlohmann::json;
 #define RESPONSE_SECS 1
 #define RESPONSE_NSECS 0
 
+#define CONFINE_TURN_NUMBER 30
+
 using namespace std;
 
 int main(int argc, char *argv[]) {
@@ -35,23 +37,18 @@ int main(int argc, char *argv[]) {
   t.seekg(0, ios::beg);
 
   map_str.assign((istreambuf_iterator<char>(t)), istreambuf_iterator<char>());
-  
-  Game game = Game(map_str, "Player1", "Player2");
 
-  // Send initial map data to player scripts
-  json map_data;
-  ifstream mapStream(argv[3]);
-  mapStream >> map_data;
+  Game game = Game(map_str, "Player1", "Player2");
 
   json message_map1 = {
     {"type", "map"},
     {"player_id", 1},
-    {"map", map_data}
+    {"map", map_str}
   };
   json message_map2 = {
     {"type", "map"},
     {"player_id", 2},
-    {"map", map_data}
+    {"map", map_str}
   };
 
   write_to_player(1, message_map1);
@@ -67,7 +64,8 @@ int main(int argc, char *argv[]) {
   while (game.get_winner() == NO_WINNER) {
     turn_number += 1;
 
-    //cout << game.to_json() << endl;
+    cout << game.to_json() << endl;
+    //game.print_game();
 
     json message_turn = {
       {"type", "turn"},
@@ -82,12 +80,17 @@ int main(int argc, char *argv[]) {
     // get responses from players
     string p1_reply = read_from_player(1);
     string p2_reply = read_from_player(2);
-    printf("Player1 sent %s, Player2 sent %s\n", p1_reply.c_str(), p2_reply.c_str());
+    //printf("Player1 sent %s, Player2 sent %s\n", p1_reply.c_str(), p2_reply.c_str());
 
     // run the game's turn based on the players' actions
     game.do_player_decisions(p1_reply, p2_reply);
 
-    game.do_movement_tick();
+    if (turn_number < CONFINE_TURN_NUMBER){
+      game.do_movement_tick();
+    } else {
+      game.move_players_to_start();
+    }
+
     game.do_damage_tick();
     game.do_monster_deaths();
     game.do_player_deaths();
