@@ -16,7 +16,7 @@ public:
   /*
    * constructor for creating monsters from map JSONs
    */
-  Monster(json::basic_json j);
+  Monster(json j);
 
   /*
    * manual constructor

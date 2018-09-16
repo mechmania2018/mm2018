@@ -31,8 +31,11 @@ Monster.o : Monster.cpp Monster.h Unit.o
 ScriptIO.o : ScriptIO.cpp ScriptIO.h
 	$(CXX) $(CXXFLAGS) ScriptIO.cpp
 
-example.exe : example_script.cpp
-	$(LD) example_script.cpp $(LDFLAGS) -o example.exe
+Game_Api.o : Game_Api.h Game_Api.cpp
+	$(CXX) $(CXXFLAGS) Game_Api.cpp
+
+example.exe : example_script.cpp Game_Api.o
+	$(LD) example_script.cpp Game_Api.o $(LDFLAGS) -o example.exe
 
 clean :
 	rm -f *.o $(EXENAME) example.exe

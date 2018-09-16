@@ -34,7 +34,7 @@ public:
   struct Decision{
     Decision(string json_str) {
       try {
-        json::basic_json j = json::parse(json_str);
+        json j = json::parse(json_str);
 
         dest = j["Dest"];
 
