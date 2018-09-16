@@ -10,11 +10,11 @@ using json = nlohmann::json;
 using namespace std;
 
 Game::Game(string json_str, string p1_name, string p2_name): _player1(p1_name), _player2(p2_name) {
-  json::basic_json map = json::parse(json_str);
+  json map = json::parse(json_str);
 
-  json::basic_json nodes_json = map["Nodes"];
-  json::basic_json edges = map["Edges"];
-  json::basic_json monsters_json = map["Monsters"];
+  json nodes_json = map["Nodes"];
+  json edges = map["Edges"];
+  json monsters_json = map["Monsters"];
 
   // create each of the nodes in the map
   while (_nodes.size() < nodes_json.size()) {
@@ -26,8 +26,8 @@ Game::Game(string json_str, string p1_name, string p2_name): _player1(p1_name), 
   add_unit_to_node(_nodes[0], &_player2);
 
   // add adjacent edges to each node
-  for (json::basic_json edge : edges) {
-    json::basic_json adj = edge["Adjacents"];
+  for (json edge : edges) {
+    json adj = edge["Adjacents"];
     add_connection(adj[0], adj[1]);
   }
 

@@ -35,7 +35,7 @@ public:
     }
 
     // alternate constructor using JSON
-    DeathEffects(json::basic_json j) {
+    DeathEffects(json j) {
       rock = j["Rock"];
       paper = j["Paper"];
       scissors = j["Scissors"];
