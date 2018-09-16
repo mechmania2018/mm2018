@@ -10,7 +10,7 @@ using namespace std;
 Monster::Monster() : Unit("", 0, INVALID_STANCE, 0, 0, DeathEffects(0, 0, 0, 0, 0)){}
 
 Monster::Monster(json::basic_json j) :
-  Unit(j["Name"], j["Health"], get_stance_val(j["Stance"]), j["Speed"], j["Location"], DeathEffects(j["DeathEffects"])) {
+  Unit(j["Name"], j["Health"], get_stance_val(j["Stance"]), j["Speed"], j["Location"], DeathEffects(j["Death Effects"])) {
     _base_health = get_health();
     _attack = j["Attack"];
 }

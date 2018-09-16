@@ -64,8 +64,8 @@ int main(int argc, char *argv[]) {
   while (game.get_winner() == NO_WINNER) {
     turn_number += 1;
 
-    cout << game.to_json() << endl;
-    //game.print_game();
+    //cout << game.to_json() << endl;
+    game.print_game();
 
     json message_turn = {
       {"type", "turn"},

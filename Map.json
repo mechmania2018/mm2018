@@ -9,7 +9,8 @@
 		{"Name": "Node_6", "Number": 6, "Coordinates": [4, -4]},
 		{"Name": "Node_7", "Number": 7, "Coordinates": [-2, -1]},
 		{"Name": "Node_8", "Number": 8, "Coordinates": [-3, -3]},
-		{"Name": "Node_9", "Number": 9, "Coordinates": [-3, 1]}
+		{"Name": "Node_9", "Number": 9, "Coordinates": [-3, 1]},
+		{"Name": "Node_10", "Number": 10, "Coordinates": [-3, 1]}
 		],
 
 	"Edges" : [
@@ -28,11 +29,11 @@
 		{"Name": "Edge_8_10", "Adjacents": [8, 10]}
 	],
 	"Monsters" : [
-		{"Name": "rock monster", "Health": 5, "Stance": "Rock", "Speed": 0, "Location": 2, "Attack": 1, "DeathEffects":
+		{"Name": "rock monster", "Health": 5, "Stance": "Rock", "Speed": 0, "Location": 2, "Attack": 1, "Death Effects":
 			{"Rock": 2, "Paper": 0, "Scissors": 0, "Speed": 0, "Health": 5}} ,
-		{"Name": "paper monster", "Health": 5, "Stance": "Paper", "Speed": 0, "Location": 9, "Attack": 1, "DeathEffects":
+		{"Name": "paper monster", "Health": 5, "Stance": "Paper", "Speed": 0, "Location": 9, "Attack": 1, "Death Effects":
 			{"Rock": 0, "Paper": 2, "Scissors": 0, "Speed": 0, "Health": 5}} ,
-		{"Name": "scissors monster", "Health": 5, "Stance": "Scissors", "Speed": 0, "Location": 1, "Attack": 1, "DeathEffects":
+		{"Name": "scissors monster", "Health": 5, "Stance": "Scissors", "Speed": 0, "Location": 1, "Attack": 1, "Death Effects":
 			{"Rock": 1, "Paper": 0, "Scissors": 0, "Speed": 0, "Health": 5}}
 	]
 }
