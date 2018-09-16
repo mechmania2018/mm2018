@@ -8,6 +8,7 @@ using namespace std;
 
 
 Player::Player(string name) : Unit(name, INIT_PLAYER_HEALTH, 0, 0, 0, DeathEffects(0, 0, 0, 0, 0)){
+  _bad_decisions = 0;
   _rock = 1;
   _paper = 1;
   _scissors = 1;
@@ -44,6 +45,15 @@ void Player::activate_death_effects(DeathEffects effects) {
 }
 
 void Player::do_decision(Decision dec) {
+  if (dec.dest == INVALID_DESTINATION || dec.stance == INVALID_STANCE) {
+    _bad_decisions ++;
+
+    if (_bad_decisions > BAD_DECISIONS_ALLOWED) {
+      set_health(0);
+      die();
+    }
+  }
+
   change_destination(dec.dest);
   set_stance(dec.stance);
 }

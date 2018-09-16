@@ -10,6 +10,8 @@ using namespace std;
 
 #define INVALID_DESTINATION -1
 
+#define BAD_DECISIONS_ALLOWED 0
+
 class Player : public Unit {
 public:
   // constructor
@@ -60,6 +62,9 @@ private:
    * returns the stat value of the stance indicated by stance_id
    */
   int stance_stat(int stance_id);
+
+  // count of the number of times the player has sent an invalid or empty response in a turn
+  int _bad_decisions;
 
   int _rock;
   int _paper;

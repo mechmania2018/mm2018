@@ -61,7 +61,7 @@ json Unit::to_json(){
   j["Stance"] = get_stance_str(_stance);
   j["Health"] = _health;
   j["Speed"] = _speed;
-  j["Movement_counter"] = _movement_counter;
+  j["Movement Counter"] = _movement_counter;
   j["Location"] = _location;
   j["Destination"] = _destination;
   j["Dead"] = _dead;
