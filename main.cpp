@@ -97,7 +97,9 @@ int main(int argc, char *argv[]) {
     game.do_player_deaths();
   }
 
-  cout << "Winner: " << game.get_winner() << endl;
+  json j;
+  j["Winner"] = game.get_winner();
+  cout << j.dump() << endl;
 
   terminate_scripts();
 
