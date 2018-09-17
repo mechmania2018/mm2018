@@ -209,14 +209,14 @@ json Game::to_json() {
 
 void Game::move_players_to_start() {
   if (_player1.get_location() != 0) {
-    _player1.set_location(0);
     remove_unit_from_node(_nodes[_player1.get_location()], &_player1);
+    _player1.set_location(0);
     add_unit_to_node(_nodes[0], &_player1);
   }
 
   if (_player2.get_location() != 0) {
-    _player2.set_location(0);
     remove_unit_from_node(_nodes[_player2.get_location()], &_player2);
+    _player2.set_location(0);
     add_unit_to_node(_nodes[0], &_player2);
   }
 }

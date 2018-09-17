@@ -30,7 +30,7 @@ bool Monster::is_monster() {
 }
 
 string Monster::get_string() {
-  return "Name: " + get_name() + ", health = " + to_string(get_health()) + ", speed = " + to_string(get_speed());
+  return "Name: " + get_name() + ", health = " + to_string(get_health()) + ", movement_counter = " + to_string(get_movement_counter());
 }
 
 json Monster::to_json() {
