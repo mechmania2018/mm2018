@@ -130,7 +130,7 @@ void start_scripts(char* script1, char* script2) {
 
 void terminate_scripts() {
   kill(p1_pid, 9);
-  kill(p1_pid, 9);
+  kill(p2_pid, 9);
 }
 
 // Read all input from player, and return only the first line, throwing the rest away

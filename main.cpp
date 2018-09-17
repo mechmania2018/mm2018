@@ -65,6 +65,7 @@ int main(int argc, char *argv[]) {
     turn_number += 1;
 
     //cout << game.to_json() << endl;
+    cout << "-----Turn " << turn_number << "-----" << endl;
     game.print_game();
 
     json message_turn = {
@@ -87,7 +88,7 @@ int main(int argc, char *argv[]) {
 
     if (turn_number < CONFINE_TURN_NUMBER){
       game.do_movement_tick();
-    } else {
+    } else if (turn_number == CONFINE_TURN_NUMBER){
       game.move_players_to_start();
     }
 
