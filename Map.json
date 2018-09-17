@@ -29,11 +29,42 @@
 		{"Name": "Edge_8_10", "Adjacents": [8, 10]}
 	],
 	"Monsters" : [
-		{"Name": "rock monster", "Health": 5, "Stance": "Rock", "Speed": 0, "Location": 2, "Attack": 1, "Death Effects":
-			{"Rock": 2, "Paper": 0, "Scissors": 0, "Speed": 0, "Health": 5}} ,
-		{"Name": "paper monster", "Health": 5, "Stance": "Paper", "Speed": 0, "Location": 9, "Attack": 1, "Death Effects":
-			{"Rock": 0, "Paper": 2, "Scissors": 0, "Speed": 0, "Health": 5}} ,
-		{"Name": "scissors monster", "Health": 5, "Stance": "Scissors", "Speed": 0, "Location": 1, "Attack": 1, "Death Effects":
-			{"Rock": 1, "Paper": 0, "Scissors": 0, "Speed": 0, "Health": 5}}
+		{"Name": "Health 0", "Health": 4, "Stance": "Rock", "Speed": -33, "Location": 0, "Attack": 0, "Death Effects":
+			{"Rock": 0, "Paper": 0, "Scissors": 0, "Speed": 0, "Health": 20}} ,
+		{"Name": "Rock 1", "Health": 4, "Stance": "Rock", "Speed": -7, "Location": 1, "Attack": 1, "Death Effects":
+				{"Rock": 0, "Paper": 1, "Scissors": 0, "Speed": 0, "Health": 0}}, 
+		{"Name": "Paper 3", "Health": 8, "Stance": "Paper", "Speed": -53, "Location": 3, "Attack": 2, "Death Effects":
+			{"Rock": 0, "Paper": 0, "Scissors": 0, "Speed": 1, "Health": 0}},
+		{"Name": "Rock 4", "Health": 16, "Stance": "Rock", "Speed": -21, "Location": 4, "Attack": 4, "Death Effects":
+			{"Rock": 0, "Paper": 4, "Scissors": 0, "Speed": 0, "Health": 0}},
+		{"Name": "Paper 6", "Health": 4, "Stance": "Paper", "Speed": -7, "Location": 6, "Attack": 1, "Death Effects":
+			{"Rock": 0, "Paper": 0, "Scissors": 1, "Speed": 0, "Health": 0}},
+		{"Name": "Scissors 8", "Health": 16, "Stance": "Scissors", "Speed": -33, "Location": 8, "Attack": 4, "Death Effects":
+			{"Rock": 0, "Paper": 0, "Scissors": 4, "Speed": 0, "Health": 0}},
+		{"Name": "Scissors 10", "Health": 4, "Stance": "Scissors", "Speed": -7, "Location": 10, "Attack": 1, "Death Effects":
+			{"Rock": 1, "Paper": 0, "Scissors": 0, "Speed": 0, "Health": 0}},
+		{"Name": "Rock 11", "Health": 16, "Stance": "Rock", "Speed": -53, "Location": 11, "Attack": 4, "Death Effects":
+			{"Rock": 0, "Paper": 4, "Scissors": 0, "Speed": 0, "Health": 0}},
+		{"Name": "Rock 13", "Health": 8, "Stance": "Rock", "Speed": -21, "Location": 13, "Attack": 2, "Death Effects":
+			{"Rock": 2, "Paper": 0, "Scissors": 0, "Speed": 0, "Health": 0}},
+		{"Name": "Rock 15", "Health": 16, "Stance": "Rock", "Speed": -33, "Location": 15, "Attack": 4, "Death Effects":
+			{"Rock": 0, "Paper": 0, "Scissors": 4, "Speed": 0, "Health": 0}},
+		{"Name": "Rock 16", "Health": 8, "Stance": "Rock", "Speed": -21, "Location": 16, "Attack": 2, "Death Effects":
+			{"Rock": 2, "Paper": 0, "Scissors": 0, "Speed": 0, "Health": 0}},
+		{"Name": "Scissors 17", "Health": 16, "Stance": "Scissors", "Speed": -33, "Location": 17, "Attack": 4, "Death Effects":
+			{"Rock": 4, "Paper": 0, "Scissors": 0, "Speed": 0, "Health": 0}},
+		{"Name": "Paper 18", "Health": 8, "Stance": "Paper", "Speed": -21, "Location": 18, "Attack": 2, "Death Effects":
+			{"Rock": 0, "Paper": 2, "Scissors": 0, "Speed": 0, "Health": 0}},
+		{"Name": "Paper 20", "Health": 8, "Stance": "Paper", "Speed": -21, "Location": 20, "Attack": 2, "Death Effects":
+			{"Rock": 0, "Paper": 0, "Scissors": 2, "Speed": 0, "Health": 0}},
+		{"Name": "Scissors 21", "Health": 16, "Stance": "Scissors", "Speed": -53, "Location": 21, "Attack": 4, "Death Effects":
+			{"Rock": 0, "Paper": 0, "Scissors": 0, "Speed": 2, "Health": 0}},
+		{"Name": "Scissors 22", "Health": 8, "Stance": "Scissors", "Speed": -21, "Location": 22, "Attack": 2, "Death Effects":
+			{"Rock": 0, "Paper": 2, "Scissors": 0, "Speed": 0, "Health": 0}},
+		{"Name": "Scissors 23", "Health": 12, "Stance": "Scissors", "Speed": -33, "Location": 23, "Attack": 3, "Death Effects":
+			{"Rock": 1, "Paper": 0, "Scissors": 2, "Speed": 0, "Health": 0}},
+		{"Name": "Paper 20", "Health": 30, "Stance": "Paper", "Speed": -73, "Location": 20, "Attack": 5, "Death Effects":
+			{"Rock": 3, "Paper": 3, "Scissors": 3, "Speed": 0, "Health": 0}}
+	
 	]
 }
