@@ -140,7 +140,7 @@ string read_from(int fd) {
   int bytes_read = 0;
 
   while(!done) {
-    read_ret = read(fd, buf, READ_BUF_SIZE - bytes_read);
+    read_ret = read(fd, buf + bytes_read, READ_BUF_SIZE - bytes_read);
     if (read_ret == -1) {
       if (errno == EAGAIN) {
         done = true;
