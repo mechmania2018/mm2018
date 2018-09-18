@@ -62,13 +62,12 @@ vector<Unit*> Game::get_units_at(node_id_t node){
   return _nodes[node].units;
 }
 
-void Game::do_player_decisions(string dec1_str, string dec2_str) {
-  do_player_decision(_player1, dec1_str);
-  do_player_decision(_player2, dec2_str);
+void Game::do_player_decisions(Player::Decision dec1, Player::Decision dec2) {
+  do_player_decision(_player1, dec1);
+  do_player_decision(_player2, dec2);
 }
 
-void Game::do_player_decision(Player& player, string decision) {
-  Player::Decision dec(decision);
+void Game::do_player_decision(Player& player, Player::Decision dec) {
 
   Node location = _nodes[player.get_location()];
 

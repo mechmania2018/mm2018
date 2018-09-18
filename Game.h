@@ -40,7 +40,7 @@ public:
   /*
    * does one turn's worth of player decisions for each player
    */
-  void do_player_decisions(string dec1, string dec2);
+  void do_player_decisions(Player::Decision dec1, Player::Decision dec2);
 
   /*
    * handles movement counters, then movement for all units
@@ -111,7 +111,7 @@ private:
   /*
    * does the decision for just one player
    */
-  void do_player_decision(Player& player, string decision);
+  void do_player_decision(Player& player, Player::Decision dec);
 
   /*
    * helper function - checks weather a specific player should die right now
