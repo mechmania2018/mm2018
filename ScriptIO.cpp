@@ -12,8 +12,6 @@
 
 #include "ScriptIO.h"
 
-#define READ_BUF_SIZE 64
-
 static pid_t p1_pid;
 static int to_p1_fd;
 static int from_p1_fd;
@@ -133,7 +131,7 @@ void terminate_scripts() {
   kill(p2_pid, 9);
 }
 
-// Read all input from player, and return only the first line, throwing the rest away
+// read all input provided to player
 string read_from(int fd) {
   char buf[READ_BUF_SIZE + 1];
 
