@@ -135,38 +135,38 @@ void terminate_scripts() {
 
 // Read all input from player, and return only the first line, throwing the rest away
 string read_from(int fd) {
-  char buf[READ_BUF_SIZE];
-  char trash[READ_BUF_SIZE];
+  char buf[READ_BUF_SIZE + 1];
 
-  // I assume one usable line contains less than READ_BUF_SIZE bytes
-  // since it's only really supposed to be a small json
-  ssize_t len = read(fd, &buf, READ_BUF_SIZE);
-  string return_string;
+  bool done = false;
+  int read_ret;
+  int bytes_read = 0;
 
-  if (len == -1 && (errno == EAGAIN || errno == EWOULDBLOCK)) {
-    // Player sent nothing
-    return "";
-  } else if (len == -1){
-    perror("read()");
-    exit(1);
-  } else {
-    // Find the first newline character and set it to NULL
-    char* eol = strchr(buf, '\n');
-    if(!eol){
-      // No newline == invalid input
-      return_string = "";
-    } else {
-      *eol = '\0';
-      return_string = string(buf);
+  while(!done) {
+    read_ret = read(fd, buf, READ_BUF_SIZE - bytes_read);
+    if (read_ret == -1) {
+      if (errno == EAGAIN) {
+        done = true;
+      }
+      else {
+        perror("read");
+        exit(1);
+      }
+    }
+    else if (read_ret == 0) {
+      done = true;
+    }
+    else {
+      bytes_read += read_ret;
+
+      if (bytes_read == READ_BUF_SIZE) {
+        done = true;
+      }
     }
   }
 
-  // discard the rest of the contents of the file descriptor
-  while(read(fd, &trash, READ_BUF_SIZE) > 0){
-    // Nothing to do here
-  }
+  buf[bytes_read] = '\0';
 
-  return return_string;
+  return string(buf);
 }
 
 // public method that gets the player's output
@@ -206,7 +206,7 @@ void write_to_player(int player_num, string str) {
   } else if (player_num == 2) {
     write_to(to_p2_fd, str);
   } else {
-    cout << "Invalid player number passed to write_to_player" << endl;
+    cerr << "Invalid player number passed to write_to_player" << endl;
   }
 }
 
