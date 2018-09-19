@@ -13,8 +13,11 @@ using json = nlohmann::json;
 #include "Monster.h"
 #include "ScriptIO.h"
 
-#define RESPONSE_SECS 1
-#define RESPONSE_NSECS 0
+#define STARTUP_SLEEP_SECS 3
+
+#define SLEEP_SECS 0
+#define SLEEP_NSECS 100000000
+#define SLEEPS_PER_TURN 10
 
 #define CONFINE_TURN_NUMBER 30
 
@@ -22,12 +25,17 @@ using namespace std;
 
 int main(int argc, char *argv[]) {
   if (argc < 4) {
-    cout << "not enough args. expected player1script, player2script, mapfile" << endl;
+    cerr << "not enough args. expected player1script, player2script, mapfile" << endl;
     return 1;
   }
 
   // initialize the player scripts
   start_scripts(argv[1], argv[2]);
+
+  struct timespec startupSleep;
+  startupSleep.tv_sec = STARTUP_SLEEP_SECS;
+  startupSleep.tv_nsec = 0;
+  nanosleep(&startupSleep, NULL);
 
   // get the map json string from the file (argv[3])
   ifstream t(argv[3]);
@@ -54,19 +62,18 @@ int main(int argc, char *argv[]) {
   write_to_player(1, message_map1);
   write_to_player(2, message_map2);
 
-  struct timespec sleepFor;
-  sleepFor.tv_sec = RESPONSE_SECS;
-  sleepFor.tv_nsec = RESPONSE_NSECS;
-
   int turn_number = 0;
 
-  string default_action = string("0 0");
+  struct timespec sleepFor;
+  sleepFor.tv_sec = SLEEP_SECS;
+  sleepFor.tv_nsec = SLEEP_NSECS;
+
   while (game.get_winner() == NO_WINNER) {
     turn_number += 1;
 
-    //cout << game.to_json() << endl;
-    cout << "-----Turn " << turn_number << "-----" << endl;
-    game.print_game();
+    cout << game.to_json() << endl;
+    //cout << "-----Turn " << turn_number << "-----" << endl;
+    //game.print_game();
 
     json message_turn = {
       {"type", "turn"},
@@ -76,15 +83,43 @@ int main(int argc, char *argv[]) {
 
     write_to_player(1, message_turn);
     write_to_player(2, message_turn);
-    nanosleep(&sleepFor, NULL);
 
     // get responses from players
-    string p1_reply = read_from_player(1);
-    string p2_reply = read_from_player(2);
-    //printf("Player1 sent %s, Player2 sent %s\n", p1_reply.c_str(), p2_reply.c_str());
+    Player::Decision p1_dec("");
+    Player::Decision p2_dec("");
+    string p1_reply = "";
+    string p2_reply = "";
+
+    int sleeps_done = 0;
+    bool got_valid_p1_decision = false;
+    bool got_valid_p2_decision = false;
+    while (sleeps_done < SLEEPS_PER_TURN && (!got_valid_p1_decision || !got_valid_p2_decision)) {
+      nanosleep(&sleepFor, NULL);
+      if (!got_valid_p1_decision) {
+        p1_reply += read_from_player(1);
+        p1_dec = Player::Decision(p1_reply);
+        got_valid_p1_decision = p1_dec.is_valid();
+      }
+
+      if (!got_valid_p2_decision) {
+        p2_reply += read_from_player(2);
+        p2_dec = Player::Decision(p2_reply);
+        got_valid_p2_decision = p2_dec.is_valid();
+      }
+
+      sleeps_done ++;
+    }
+
+    if (!got_valid_p1_decision) {
+      cerr << "Invalid response from Player1: " << p1_reply << endl;
+    }
+
+    if (!got_valid_p2_decision) {
+      cerr << "Invalid response from Player2: " << p2_reply << endl;
+    }
 
     // run the game's turn based on the players' actions
-    game.do_player_decisions(p1_reply, p2_reply);
+    game.do_player_decisions(p1_dec, p2_dec);
 
     if (turn_number < CONFINE_TURN_NUMBER){
       game.do_movement_tick();
@@ -97,7 +132,9 @@ int main(int argc, char *argv[]) {
     game.do_player_deaths();
   }
 
-  cout << "Winner: " << game.get_winner() << endl;
+  json j;
+  j["Winner"] = game.get_winner();
+  cout << j.dump() << endl;
 
   terminate_scripts();
 

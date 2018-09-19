@@ -12,8 +12,6 @@
 
 #include "ScriptIO.h"
 
-#define READ_BUF_SIZE 64
-
 static pid_t p1_pid;
 static int to_p1_fd;
 static int from_p1_fd;
@@ -122,8 +120,19 @@ pid_t start_script(char* name, int& stream_to, int& stream_from) {
   return child_id;
 }
 
+bool player_open(int fd){
+  return (fcntl(fd, F_GETFD) != -1 || errno != EBADF);
+}
+
+void handle_sigpipe(int sig) {
+  sig ++;
+  // do nothing
+}
+
 // public function to start each of the player scripts
 void start_scripts(char* script1, char* script2) {
+  signal(SIGPIPE, handle_sigpipe);
+
   p1_pid = start_script(script1, to_p1_fd, from_p1_fd);
   p2_pid = start_script(script2, to_p2_fd, from_p2_fd);
 }
@@ -133,40 +142,40 @@ void terminate_scripts() {
   kill(p2_pid, 9);
 }
 
-// Read all input from player, and return only the first line, throwing the rest away
+// read all input provided to player
 string read_from(int fd) {
-  char buf[READ_BUF_SIZE];
-  char trash[READ_BUF_SIZE];
+  char buf[READ_BUF_SIZE + 1];
 
-  // I assume one usable line contains less than READ_BUF_SIZE bytes
-  // since it's only really supposed to be a small json
-  ssize_t len = read(fd, &buf, READ_BUF_SIZE);
-  string return_string;
+  bool done = false;
+  int read_ret;
+  int bytes_read = 0;
 
-  if (len == -1 && (errno == EAGAIN || errno == EWOULDBLOCK)) {
-    // Player sent nothing
-    return "";
-  } else if (len == -1){
-    perror("read()");
-    exit(1);
-  } else {
-    // Find the first newline character and set it to NULL
-    char* eol = strchr(buf, '\n');
-    if(!eol){
-      // No newline == invalid input
-      return_string = "";
-    } else {
-      *eol = '\0';
-      return_string = string(buf);
+  while(!done) {
+    read_ret = read(fd, buf + bytes_read, READ_BUF_SIZE - bytes_read);
+    if (read_ret == -1) {
+      if (errno == EAGAIN) {
+        done = true;
+      }
+      else {
+        perror("read");
+        exit(1);
+      }
+    }
+    else if (read_ret == 0) {
+      done = true;
+    }
+    else {
+      bytes_read += read_ret;
+
+      if (bytes_read == READ_BUF_SIZE) {
+        done = true;
+      }
     }
   }
 
-  // discard the rest of the contents of the file descriptor
-  while(read(fd, &trash, READ_BUF_SIZE) > 0){
-    // Nothing to do here
-  }
+  buf[bytes_read] = '\0';
 
-  return return_string;
+  return string(buf);
 }
 
 // public method that gets the player's output
@@ -184,17 +193,16 @@ string read_from_player(int player_num) {
 // helper function to write an entire string to a file descriptor
 void write_to(int fd, string str) {
   const char* cstr = str.c_str();
-  size_t bytes_read = 0;
+  size_t bytes_written = 0;
   size_t len = str.length();
 
-  while (bytes_read < len) {
-    ssize_t ret = write(fd, cstr + bytes_read, len - bytes_read);
+  while (bytes_written < len) {
+    ssize_t ret = write(fd, cstr + bytes_written, len - bytes_written);
 
     if (ret == -1 && errno != EINTR) {
-      perror("write()");
-      exit(1);
+      break;
     } else if (ret > 0) {
-      bytes_read += ret;
+      bytes_written += ret;
     }
   }
 }
@@ -206,7 +214,7 @@ void write_to_player(int player_num, string str) {
   } else if (player_num == 2) {
     write_to(to_p2_fd, str);
   } else {
-    cout << "Invalid player number passed to write_to_player" << endl;
+    cerr << "Invalid player number passed to write_to_player" << endl;
   }
 }
 

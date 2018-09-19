@@ -31,7 +31,8 @@ public:
    */
   void activate_death_effects(DeathEffects effects);
 
-  struct Decision{
+  class Decision{
+  public:
     Decision(string json_str) {
       try {
         json j = json::parse(json_str);
@@ -42,10 +43,14 @@ public:
 
       } catch (exception e) {
         // something was wrong with the decision string -- use the default decision
-        cerr << "Received invalid decision: " << json_str << endl;
+        //cerr << "Received invalid decision: " << json_str << endl;
         dest = INVALID_DESTINATION;
         stance = INVALID_STANCE;
       }
+    }
+
+    bool is_valid() {
+      return (dest != INVALID_DESTINATION && stance != INVALID_STANCE);
     }
 
     int dest;

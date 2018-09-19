@@ -13,8 +13,9 @@ void start_scripts(char* script1, char* script2);
  */
 void terminate_scripts();
 
+#define READ_BUF_SIZE 64
 /*
- * reads one line from the player indicated by player_num, discarding any further output from them
+ * reads up to READ_BUF_SIZE bytes of input from player_num's process
  */
 string read_from_player(int player_num);
 
