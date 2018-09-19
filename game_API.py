@@ -40,7 +40,7 @@ class Player:
 class Monster:
     def __init__(self): # only used to return invalid monster
         self.name = "No Monster"
-        self.stance = ""
+        self.stance = "Invalid Stance"
         self.health = 0
         self.respawn_rate = 0
         self.respawn_counter = 0
@@ -66,8 +66,8 @@ class Monster:
         self.name = jsn["Name"]
         self.stance = jsn["Stance"]
         self.health = jsn["Health"]
-        self.speed = jsn["Speed"]
-        self.movement_counter = jsn["Movement Counter"]
+        self.respawn_rate = 7 - jsn["Speed"]
+        self.respawn_counter = jsn["Movement Counter"] - jsn["Speed"]
         self.location = jsn["Location"]
         self.destination = jsn["Destination"]
         self.dead = jsn["Dead"]
@@ -113,6 +113,12 @@ class Game:
                     if monster.location == unit_json["Location"]:
                         monster.update(unit_json)
                         break
+
+    def log(str):
+        if (self.player_num == 1):
+            std.stderr.write("Player1: " + str + "\n")
+        else:
+            std.stderr.write("Player2: " + str + "\n")
 
     def get_duel_turn_num(self):
         return 30
@@ -178,7 +184,9 @@ class Game:
                     if parent == start:
                         reached_start = True
                     else:
-                        new_paths.append(path.insert(0,parent))
+                        new_path = [n for n in path]
+                        new_path.insert(0, parent)
+                        new_paths.insert(0, new_path)
             if not reached_start:
                 paths = new_paths
 

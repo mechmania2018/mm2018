@@ -2,8 +2,7 @@
 #define UNIT_H
 
 #include "types.h"
-
-#include "json.hpp"
+#include "includes/json.hpp"
 
 #include <string>
 #include "includes/json.hpp"
@@ -78,7 +77,6 @@ public:
    * changes the unit's destination. Also resets the unit's movement counter
    */
   void change_destination(node_id_t node);
-
   /*
    * getter and setter for unit's location
    */
