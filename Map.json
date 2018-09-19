@@ -100,7 +100,7 @@
 			{"Rock": 0, "Paper": 2, "Scissors": 0, "Speed": 0, "Health": 0}},
 		{"Name": "Scissors 23", "Health": 12, "Stance": "Scissors", "Speed": -33, "Location": 23, "Attack": 3, "Death Effects":
 			{"Rock": 1, "Paper": 0, "Scissors": 2, "Speed": 0, "Health": 0}},
-		{"Name": "Paper 20", "Health": 30, "Stance": "Paper", "Speed": -73, "Location": 20, "Attack": 5, "Death Effects":
+		{"Name": "Paper 24", "Health": 30, "Stance": "Paper", "Speed": -73, "Location": 24, "Attack": 5, "Death Effects":
 			{"Rock": 3, "Paper": 3, "Scissors": 3, "Speed": 0, "Health": 0}}
 	
 	]
