@@ -25,7 +25,7 @@ using namespace std;
 
 int main(int argc, char *argv[]) {
   if (argc < 4) {
-    cout << "not enough args. expected player1script, player2script, mapfile" << endl;
+    cerr << "not enough args. expected player1script, player2script, mapfile" << endl;
     return 1;
   }
 
@@ -106,14 +106,16 @@ int main(int argc, char *argv[]) {
         p2_dec = Player::Decision(p2_reply);
         got_valid_p2_decision = p2_dec.is_valid();
       }
+
+      sleeps_done ++;
     }
 
     if (!got_valid_p1_decision) {
-      cout << "Invalid response from Player1: " << p1_reply << endl;
+      cerr << "Invalid response from Player1: " << p1_reply << endl;
     }
 
     if (!got_valid_p2_decision) {
-      cout << "Invalid response from Player2: " << p2_reply << endl;
+      cerr << "Invalid response from Player2: " << p2_reply << endl;
     }
 
     // run the game's turn based on the players' actions

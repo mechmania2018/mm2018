@@ -120,8 +120,19 @@ pid_t start_script(char* name, int& stream_to, int& stream_from) {
   return child_id;
 }
 
+bool player_open(int fd){
+  return (fcntl(fd, F_GETFD) != -1 || errno != EBADF);
+}
+
+void handle_sigpipe(int sig) {
+  sig ++;
+  // do nothing
+}
+
 // public function to start each of the player scripts
 void start_scripts(char* script1, char* script2) {
+  signal(SIGPIPE, handle_sigpipe);
+
   p1_pid = start_script(script1, to_p1_fd, from_p1_fd);
   p2_pid = start_script(script2, to_p2_fd, from_p2_fd);
 }
@@ -182,17 +193,16 @@ string read_from_player(int player_num) {
 // helper function to write an entire string to a file descriptor
 void write_to(int fd, string str) {
   const char* cstr = str.c_str();
-  size_t bytes_read = 0;
+  size_t bytes_written = 0;
   size_t len = str.length();
 
-  while (bytes_read < len) {
-    ssize_t ret = write(fd, cstr + bytes_read, len - bytes_read);
+  while (bytes_written < len) {
+    ssize_t ret = write(fd, cstr + bytes_written, len - bytes_written);
 
     if (ret == -1 && errno != EINTR) {
-      perror("write()");
-      exit(1);
+      break;
     } else if (ret > 0) {
-      bytes_read += ret;
+      bytes_written += ret;
     }
   }
 }
