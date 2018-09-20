@@ -4,4 +4,5 @@ VOLUME /bots
 WORKDIR /app
 COPY . .
 RUN make
-CMD [ "./game.exe", "docker run --rm -i mechmania.io/bot/1", "docker run --rm -i mechmania.io/bot/2", "./Map.json" ]
+ENV TIMEOUT
+CMD [ "./game.exe", "docker run --rm -i mechmania.io/bot/1", "docker run --rm -i mechmania.io/bot/2", "./Map.json", "${TIMEOUT}" ]
