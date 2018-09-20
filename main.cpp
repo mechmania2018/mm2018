@@ -13,13 +13,13 @@ using json = nlohmann::json;
 #include "Monster.h"
 #include "ScriptIO.h"
 
-#define STARTUP_SLEEP_SECS 3
-
 #define SLEEP_SECS 0
 #define SLEEP_NSECS 100000000
 #define SLEEPS_PER_TURN 10
 
 #define CONFINE_TURN_NUMBER 30
+
+static int startup_sleep = 3;
 
 using namespace std;
 
@@ -27,13 +27,15 @@ int main(int argc, char *argv[]) {
   if (argc < 4) {
     cerr << "not enough args. expected player1script, player2script, mapfile" << endl;
     return 1;
+  } else if (argc == 5) {
+    startup_sleep = atoi(argv[4]);
   }
 
   // initialize the player scripts
   start_scripts(argv[1], argv[2]);
 
   struct timespec startupSleep;
-  startupSleep.tv_sec = STARTUP_SLEEP_SECS;
+  startupSleep.tv_sec = startup_sleep;
   startupSleep.tv_nsec = 0;
   nanosleep(&startupSleep, NULL);
 
