@@ -55,6 +55,7 @@ int main(int argc, char *argv[]) {
     {"player_id", 1},
     {"map", map_str}
   };
+
   json message_map2 = {
     {"type", "map"},
     {"player_id", 2},
@@ -73,18 +74,25 @@ int main(int argc, char *argv[]) {
   while (game.get_winner() == NO_WINNER) {
     turn_number += 1;
 
-    cout << game.to_json() << endl;
+    json game_json = game.to_json();
+    cout << game_json << endl;
     //cout << "-----Turn " << turn_number << "-----" << endl;
     //game.print_game();
 
     json message_turn = {
       {"type", "turn"},
       {"turn_number", turn_number},
-      {"game_data", game.to_json()},
+      {"game_data", game_json},
     };
 
-    write_to_player(1, message_turn);
-    write_to_player(2, message_turn);
+
+    json p1_msg = message_turn;
+    p1_msg["game_data"][1]["Destination"] = -1;
+    write_to_player(1, p1_msg);
+
+    json p2_msg = message_turn;
+    p2_msg["game_data"][0]["Destination"] = -1;
+    write_to_player(2, p2_msg);
 
     // get responses from players
     Player::Decision p1_dec("");
