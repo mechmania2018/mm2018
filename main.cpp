@@ -17,7 +17,7 @@ using json = nlohmann::json;
 #define SLEEP_NSECS 100000000
 #define SLEEPS_PER_TURN 10
 
-#define CONFINE_TURN_NUMBER 30
+#define CONFINE_TURN_NUMBER 300
 
 static int startup_sleep = 3;
 
