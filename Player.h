@@ -6,7 +6,7 @@
 
 using namespace std;
 
-#define INIT_PLAYER_HEALTH 20
+#define INIT_PLAYER_HEALTH 100
 
 #define INVALID_DESTINATION -1
 
