@@ -60,10 +60,8 @@
 		{"Name": "Edge_19_22", "Adjacents": [19, 22]},
 		{"Name": "Edge_19_23", "Adjacents": [19, 23]},
 		{"Name": "Edge_20_21", "Adjacents": [20, 21]},
-		{"Name": "Edge_20_21", "Adjacents": [20, 21]},
-		{"Name": "Edge_21_22", "Adjacents": [20, 21]},
-		{"Name": "Edge_23_24", "Adjacents": [23, 24]}
-		
+		{"Name": "Edge_21_22", "Adjacents": [21, 22]},
+		{"Name": "Edge_23_24", "Adjacents": [23, 24]}			
 	],
 	"Monsters" : [
 		{"Name": "Health 0", "Health": 4, "Stance": "Rock", "Speed": -33, "Location": 0, "Attack": 0, "Death Effects":
